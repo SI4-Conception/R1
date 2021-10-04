@@ -23,7 +23,7 @@ public class MyServiceSteps
         success = service.testMethod();
     }
 
-    @Then("^it should have been a success$")
+    @Then("^It should have been a success$")
     public void itShouldHaveBeenASuccess()
     {
         Assert.assertTrue(success);

@@ -8,7 +8,7 @@ import io.cucumber.java.en.When;
 
 public class SessionSteps
 {
-    Session session;
+    private Session session;
 
     @Given("valid datas for the session")
     public void validDatasForTheSession()
@@ -21,8 +21,8 @@ public class SessionSteps
         session = new Session();
     }
 
-    @Then("It should have been a success")
-    public void itShouldHaveBeenASuccess()
+    @Then("I should have a valid session")
+    public void iShouldHaveAValidSession()
     {
         Assert.assertNotNull(session);
     }
