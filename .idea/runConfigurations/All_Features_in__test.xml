@@ -4,7 +4,7 @@
     <option name="FILE_PATH" value="$PROJECT_DIR$/src/test" />
     <option name="GLUE" value="fr.polytech.conception.r1" />
     <option name="MAIN_CLASS_NAME" value="io.cucumber.core.cli.Main" />
-    <module name="R1" />
+    <module name="conception-r1" />
     <option name="PROGRAM_PARAMETERS" value=" --plugin org.jetbrains.plugins.cucumber.java.run.CucumberJvm5SMFormatter" />
     <shortenClasspath name="NONE" />
     <option name="SUGGESTED_NAME" value="All Features in: test" />
