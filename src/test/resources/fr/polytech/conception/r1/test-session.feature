@@ -9,3 +9,8 @@ Feature: Features of my session
     Given Previously created session
     When I change the session settings with valid datas
     Then I should have the changed valid session
+
+  Scenario: Trying to create session with invalid params
+    Given Invalid datas for the session
+    When I try to create the session
+    Then I should fail and should't have a session

@@ -12,6 +12,10 @@ public class SessionSteps
 {
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
+    private final ZonedDateTime validDateTimeBegin2 = ZonedDateTime.parse("2031-02-01T12:00:00.000+01:00[Europe/Paris]");
+    private final ZonedDateTime validDateTimeEnd2 = ZonedDateTime.parse("2031-02-01T15:00:00.000+01:00[Europe/Paris]");
+    private final ZonedDateTime invalidDateTimeBegin = ZonedDateTime.parse("2030-02-02T12:00:00.000+01:00[Europe/Paris]");
+    private final ZonedDateTime invalidDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
     private final String validAddress = "14 rue Bolchaia Loubianka";
     private final Sport validSport = new Sport("Tir aux pigeons");
 
@@ -65,6 +69,8 @@ public class SessionSteps
         try {
             session.setMaxParticipants(55);
             session.setMinParticipants(4);
+            session.setFin(validDateTimeEnd2);
+            session.setDebut(validDateTimeBegin2);
         } catch (InvalidSessionDataException e) {
             e.printStackTrace();
             Assert.fail();
@@ -77,5 +83,31 @@ public class SessionSteps
         Assert.assertNotNull(session);
         Assert.assertEquals(4, session.getMinParticipants());
         Assert.assertEquals(55, session.getMaxParticipants());
+        Assert.assertEquals(validDateTimeEnd2, session.getFin());
+        Assert.assertEquals(validDateTimeBegin2, session.getDebut());
+    }
+
+    @Given("Invalid datas for the session")
+    public void invalidDatasForTheSession()
+    {
+    }
+
+    @When("I try to create the session")
+    public void iTryToCreateTheSession()
+    {
+        try {
+            session = new Session(invalidDateTimeBegin, invalidDateTimeEnd, validAddress, validSport);
+            Assert.fail();
+        }
+        catch (InvalidSessionDataException e)
+        {
+            // Success
+        }
+    }
+
+    @Then("I should fail and should't have a session")
+    public void iShouldFailAndShouldTHaveASession()
+    {
+        Assert.assertNull(session);
     }
 }
