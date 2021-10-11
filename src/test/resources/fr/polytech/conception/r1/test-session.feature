@@ -19,3 +19,8 @@ Feature: Features of my session
     Given "Julien" wants to create a session at the same time as another session he has already created
     When I try to create a session at the same time as another session I have already created
     Then the session is not created
+
+  Scenario: Trying to change session with more min users than max users
+    Given Previously created session with correct 2 min and 6 max users
+    When I try to set 7 min users
+    Then I should have a session with 2 min and 6 max users
