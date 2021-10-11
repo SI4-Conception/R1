@@ -23,14 +23,21 @@ public class Session
     private Utilisateur organisateur;
     private List<Utilisateur> participants = new LinkedList<>();
 
-    public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport) throws InvalidSessionDataException {
+    public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, Utilisateur organisateur) throws InvalidSessionDataException
+    {
         // TODO: verify here than passed params are corrects
+
+        this.organisateur = organisateur;
+        if (organisateur.getListSessions().stream().anyMatch(session ->
+                Util.intersect(debut, fin, session)))
+            throw new InvalidSessionDataException("Création de 2 sessions se déroulant au même moment");
         checkDatesOrder(fin, debut);
         this.debut = debut;
         this.fin = fin;
         this.adresse = adresse;
         this.sport = sport;
         this.dateLimiteInscription = debut;
+        this.organisateur.getListSessions().add(this);
     }
 
     public ZonedDateTime getDebut()
@@ -115,7 +122,7 @@ public class Session
 
     public void setDateLimiteInscription(ZonedDateTime dateLimiteInscription) throws InvalidSessionDataException
     {
-        if(dateLimiteInscription.isAfter(debut))
+        if (dateLimiteInscription.isAfter(debut))
         {
             throw new InvalidSessionDataException("La date limite d'inscription doit etre avant le debut de la seance");
         }

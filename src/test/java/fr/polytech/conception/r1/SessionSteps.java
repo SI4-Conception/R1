@@ -18,6 +18,7 @@ public class SessionSteps
     private final ZonedDateTime invalidDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
     private final String validAddress = "14 rue Bolchaia Loubianka";
     private final Sport validSport = new Sport("Tir aux pigeons");
+    private final Utilisateur julien = new Utilisateur();
 
     private Session session = null;
 
@@ -30,7 +31,7 @@ public class SessionSteps
     public void iCreateTheSession()
     {
         try {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport);
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
         }
         catch (InvalidSessionDataException e)
         {
@@ -53,7 +54,7 @@ public class SessionSteps
     public void previouslyCreatedSession()
     {
         try {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport);
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
         }
         catch (InvalidSessionDataException e)
         {
@@ -96,7 +97,7 @@ public class SessionSteps
     public void iTryToCreateTheSession()
     {
         try {
-            session = new Session(invalidDateTimeBegin, invalidDateTimeEnd, validAddress, validSport);
+            session = new Session(invalidDateTimeBegin, invalidDateTimeEnd, validAddress, validSport, julien);
             Assert.fail();
         }
         catch (InvalidSessionDataException e)
@@ -109,5 +110,36 @@ public class SessionSteps
     public void iShouldFailAndShouldTHaveASession()
     {
         Assert.assertNull(session);
+    }
+
+    @Given("{string} wants to create a session at the same time as another session he has already created")
+    public void wantsToCreateASessionAtTheSameTimeAsAnotherSessionHeHasAlreadyCreated(String arg0)
+    {
+        try {
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @When("I try to create a session at the same time as another session I have already created")
+    public void iTryToCreateASessionAtTheSameTimeAsAnotherSessionIHaveAlreadyCreated()
+    {
+        try {
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            Assert.fail();
+        }
+        catch (InvalidSessionDataException e)
+        {
+            // Success
+        }
+    }
+
+    @Then("the session is not created")
+    public void theSessionIsNotCreated()
+    {
     }
 }
