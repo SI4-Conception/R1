@@ -147,7 +147,7 @@ public class SessionSteps
     public void previouslyCreatedSessionWithCorrectMinAndMaxUsers(int arg0, int arg1)
     {
         try {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport);
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
             session.setMaxParticipants(arg1);
             session.setMinParticipants(arg0);
         }
