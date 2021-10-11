@@ -16,6 +16,8 @@ public class SessionSteps
     private final ZonedDateTime validDateTimeEnd2 = ZonedDateTime.parse("2031-02-01T15:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeBegin = ZonedDateTime.parse("2030-02-02T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
+    private final ZonedDateTime validDateTimeEndSubscription = ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]");
+    private final ZonedDateTime invalidDateTimeEndSubscription = ZonedDateTime.parse("2035-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final String validAddress = "14 rue Bolchaia Loubianka";
     private final Sport validSport = new Sport("Tir aux pigeons");
     private final Utilisateur julien = new Utilisateur();
@@ -30,7 +32,8 @@ public class SessionSteps
     @When("I create the session")
     public void iCreateTheSession()
     {
-        try {
+        try
+        {
             session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
         }
         catch (InvalidSessionDataException e)
@@ -47,13 +50,11 @@ public class SessionSteps
     }
 
 
-
-
-
     @Given("Previously created session")
     public void previouslyCreatedSession()
     {
-        try {
+        try
+        {
             session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
         }
         catch (InvalidSessionDataException e)
@@ -67,12 +68,15 @@ public class SessionSteps
     public void iChangeTheSessionSettingsWithValidDatas()
     {
         // TODO: change session settings
-        try {
+        try
+        {
             session.setMaxParticipants(55);
             session.setMinParticipants(4);
             session.setFin(validDateTimeEnd2);
             session.setDebut(validDateTimeBegin2);
-        } catch (InvalidSessionDataException e) {
+        }
+        catch (InvalidSessionDataException e)
+        {
             e.printStackTrace();
             Assert.fail();
         }
@@ -88,15 +92,16 @@ public class SessionSteps
         Assert.assertEquals(validDateTimeBegin2, session.getDebut());
     }
 
-    @Given("Invalid datas for the session")
-    public void invalidDatasForTheSession()
+    @Given("Invalid time data for the session")
+    public void invalidTimeDataForTheSession()
     {
     }
 
-    @When("I try to create the session")
-    public void iTryToCreateTheSession()
+    @When("I try to create the session with invalid dates")
+    public void iTryToCreateTheSessionWithInvalidDates()
     {
-        try {
+        try
+        {
             session = new Session(invalidDateTimeBegin, invalidDateTimeEnd, validAddress, validSport, julien);
             Assert.fail();
         }
@@ -146,7 +151,8 @@ public class SessionSteps
     @Given("Previously created session with correct {int} min and {int} max users")
     public void previouslyCreatedSessionWithCorrectMinAndMaxUsers(int arg0, int arg1)
     {
-        try {
+        try
+        {
             session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
             session.setMaxParticipants(arg1);
             session.setMinParticipants(arg0);
@@ -161,10 +167,23 @@ public class SessionSteps
     @When("I try to set {int} min users")
     public void iTryToSetMinUsers(int arg0)
     {
-        try {
+        try
+        {
             session.setMinParticipants(arg0);
         }
-        catch (InvalidSessionDataException e)
+        catch (InvalidSessionDataException ignored)
+        {
+        }
+    }
+
+    @When("I try to set {int} max users")
+    public void iTryToSetMaxUsers(int arg0)
+    {
+        try
+        {
+            session.setMaxParticipants(arg0);
+        }
+        catch (InvalidSessionDataException ignored)
         {
         }
     }
@@ -175,5 +194,57 @@ public class SessionSteps
         Assert.assertNotNull(session);
         Assert.assertEquals(arg0, session.getMinParticipants());
         Assert.assertEquals(arg1, session.getMaxParticipants());
+    }
+
+    @When("I try to set a valid end subscription date")
+    public void iTryToSetAValidEndSubscriptionDate()
+    {
+        try
+        {
+            session.setDateLimiteInscription(validDateTimeEndSubscription);
+        }
+        catch (InvalidSessionDataException ignored)
+        {
+            //
+        }
+    }
+
+    @Then("I should have a session with this new end subscription date")
+    public void iShouldHaveASessionWithThisNewEndSubscriptionDate()
+    {
+        Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getDateLimiteInscription()));
+    }
+
+    @Given("Previously created session with valid end subscription date")
+    public void previouslyCreatedSessionWithValidEndSubscriptionDate()
+    {
+        try
+        {
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport,julien);
+            session.setDateLimiteInscription(validDateTimeEndSubscription);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @When("I try to set a invalid end subscription date")
+    public void iTryToSetAInvalidEndSubscriptionDate()
+    {
+        try
+        {
+            session.setDateLimiteInscription(invalidDateTimeEndSubscription);
+        }
+        catch (InvalidSessionDataException ignored)
+        {
+        }
+    }
+
+    @Then("I should have a session with old end subscription date")
+    public void iShouldHaveASessionWithOldEndSubscriptionDate()
+    {
+        Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getDateLimiteInscription()));
     }
 }

@@ -11,8 +11,8 @@ Feature: Features of my session
     Then I should have the changed valid session
 
   Scenario: Trying to create session with invalid params
-    Given Invalid datas for the session
-    When I try to create the session
+    Given Invalid time data for the session
+    When I try to create the session with invalid dates
     Then I should fail and should't have a session
 
   Scenario: not two simultaneous sessions
@@ -24,3 +24,28 @@ Feature: Features of my session
     Given Previously created session with correct 2 min and 6 max users
     When I try to set 7 min users
     Then I should have a session with 2 min and 6 max users
+
+  Scenario: Trying to change session with correct number of min users
+    Given Previously created session with correct 2 min and 6 max users
+    When I try to set 3 min users
+    Then I should have a session with 3 min and 6 max users
+
+  Scenario: Trying to change session with less max users than min users
+    Given Previously created session with correct 5 min and 6 max users
+    When I try to set 2 max users
+    Then I should have a session with 5 min and 6 max users
+
+  Scenario: Trying to change session with correct number of min users
+    Given Previously created session with correct 2 min and 6 max users
+    When I try to set 3 max users
+    Then I should have a session with 2 min and 3 max users
+
+  Scenario: Trying to change session with correct limit subscription date
+    Given Previously created session
+    When I try to set a valid end subscription date
+    Then I should have a session with this new end subscription date
+
+  Scenario: Trying to change session with incorrect limit subscription date
+    Given Previously created session with valid end subscription date
+    When I try to set a invalid end subscription date
+    Then I should have a session with old end subscription date
