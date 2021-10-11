@@ -15,7 +15,7 @@ public class Utilisateur
     private String nom;
     private Map<Sport, Niveau> sportFavoris;
     private List<Session> listSessionsOrganisees = new ArrayList<>();
-    private List<Session> listSessions = new ArrayList<>();
+    private final List<Session> listSessions = new ArrayList<>();
 
     public List<Session> getListSessionsOrganisees()
     {
