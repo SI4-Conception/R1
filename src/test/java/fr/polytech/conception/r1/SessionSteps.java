@@ -110,4 +110,38 @@ public class SessionSteps
     {
         Assert.assertNull(session);
     }
+
+    @Given("Previously created session with correct {int} min and {int} max users")
+    public void previouslyCreatedSessionWithCorrectMinAndMaxUsers(int arg0, int arg1)
+    {
+        try {
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport);
+            session.setMaxParticipants(arg1);
+            session.setMinParticipants(arg0);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @When("I try to set {int} min users")
+    public void iTryToSetMinUsers(int arg0)
+    {
+        try {
+            session.setMinParticipants(arg0);
+        }
+        catch (InvalidSessionDataException e)
+        {
+        }
+    }
+
+    @Then("I should have a session with {int} min and {int} max users")
+    public void iShouldHaveASessionWithMinAndMaxUsers(int arg0, int arg1)
+    {
+        Assert.assertNotNull(session);
+        Assert.assertEquals(arg0, session.getMinParticipants());
+        Assert.assertEquals(arg1, session.getMaxParticipants());
+    }
 }
