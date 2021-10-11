@@ -2,25 +2,26 @@ package fr.polytech.conception.r1;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-public class Utilisateur
+public class User
 {
     private String pseudo;
     private String password;
     private String pathToProfilePicture;
     private String email;
-    private String adresse;
-    private String prenom;
-    private String nom;
-    private Map<Sport, Niveau> sportFavoris;
+    private String address;
+    private String firstName;
+    private String lastName;
+    private Map<Sport, Level> favouriteSports;
 
-    public Utilisateur(String pseudo, String password, String email) throws InvalidProfileDataException
+    public User(String pseudo, String password, String email) throws InvalidProfileDataException
     {
         this.setPseudo(pseudo);
         this.setPassword(password);
-        this.email = email;
+        this.setEmail(email);
+        this.favouriteSports = new HashMap<>();
     }
 
     /*
@@ -111,4 +112,103 @@ public class Utilisateur
         }
     }
 
+    /*
+    no real check other than adress is not null
+     */
+    public void setAddress(String address) throws InvalidProfileDataException
+    {
+        if(address == null)
+        {
+            throw new InvalidProfileDataException("Given address is null !");
+        }
+        else
+        {
+            this.address = address;
+        }
+    }
+
+    /*
+    no real costraint since names are a complex thing
+     */
+    public void setFirstName(String firstName) throws InvalidProfileDataException
+    {
+        if(firstName == null)
+        {
+            throw new InvalidProfileDataException("Given first name is null !");
+        }
+        else
+        {
+            this.firstName = firstName;
+        }
+    }
+
+    /*
+    no real costraint since names
+     */
+    public void setLastName(String lastName) throws InvalidProfileDataException
+    {
+        if(lastName == null)
+        {
+            throw new InvalidProfileDataException("Given last name is null !");
+        }
+        else
+        {
+            this.lastName = lastName;
+        }
+    }
+
+    /*
+    once again no real constraint other than not null
+     */
+    public void addSportToFavourites(Sport sport, Level level) throws InvalidProfileDataException
+    {
+        if(sport == null || level == null)
+        {
+            throw new InvalidProfileDataException("Given sport or level is null !");
+        }
+        else
+        {
+            favouriteSports.put(sport, level);
+        }
+    }
+
+    public String getPseudo()
+    {
+        return pseudo;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public String getPathToProfilePicture()
+    {
+        return pathToProfilePicture;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public Map<Sport, Level> getFavouriteSports()
+    {
+        return favouriteSports;
+    }
 }

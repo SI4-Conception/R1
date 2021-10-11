@@ -1,6 +1,6 @@
 package fr.polytech.conception.r1;
 
-public enum Niveau
+public enum Level
 {
     DEBUTANT,
     INTERMEDIAIRE,

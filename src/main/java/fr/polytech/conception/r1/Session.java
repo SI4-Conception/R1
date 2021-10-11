@@ -17,11 +17,11 @@ public class Session
      * Set maxParticipants to zero to specify infinite number of participants
      */
     private int maxParticipants = 0;
-    private Niveau difficulte = Niveau.INTERMEDIAIRE;
+    private Level difficulte = Level.INTERMEDIAIRE;
     private boolean estAnnulee = false;
     private Sport sport;
-    private Utilisateur organisateur;
-    private List<Utilisateur> participants = new LinkedList<>();
+    private User organisateur;
+    private List<User> participants = new LinkedList<>();
 
     public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport) throws InvalidSessionDataException {
         // TODO: verify here than passed params are corrects
@@ -68,7 +68,7 @@ public class Session
         return maxParticipants;
     }
 
-    public Niveau getDifficulte()
+    public Level getDifficulte()
     {
         return difficulte;
     }
@@ -83,12 +83,12 @@ public class Session
         return sport;
     }
 
-    public Utilisateur getOrganisateur()
+    public User getOrganisateur()
     {
         return organisateur;
     }
 
-    public List<Utilisateur> getParticipants()
+    public List<User> getParticipants()
     {
         return participants;
     }
@@ -153,7 +153,7 @@ public class Session
         }
     }
 
-    public void setDifficulte(Niveau difficulte)
+    public void setDifficulte(Level difficulte)
     {
         this.difficulte = difficulte;
     }
