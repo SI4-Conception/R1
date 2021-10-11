@@ -24,3 +24,8 @@ Feature: Features of my session
     Given Previously created session with correct 2 min and 6 max users
     When I try to set 7 min users
     Then I should have a session with 2 min and 6 max users
+
+  Scenario: participate in a session
+    Given Previously created a correct session
+    When I try to participate in a session found
+    Then the registration is taken into account by the session

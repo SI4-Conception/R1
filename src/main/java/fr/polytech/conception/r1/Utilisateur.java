@@ -14,10 +14,23 @@ public class Utilisateur
     private String prenom;
     private String nom;
     private Map<Sport, Niveau> sportFavoris;
+    private List<Session> listSessionsOrganisees = new ArrayList<>();
     private List<Session> listSessions = new ArrayList<>();
+
+    public List<Session> getListSessionsOrganisees()
+    {
+        return listSessionsOrganisees;
+    }
 
     public List<Session> getListSessions()
     {
         return listSessions;
+    }
+
+    public boolean participer(Session session)
+    {
+        listSessions.add(session);
+        session.participer(this);
+        return true;
     }
 }

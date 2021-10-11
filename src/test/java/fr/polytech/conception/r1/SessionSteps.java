@@ -19,6 +19,7 @@ public class SessionSteps
     private final String validAddress = "14 rue Bolchaia Loubianka";
     private final Sport validSport = new Sport("Tir aux pigeons");
     private final Utilisateur julien = new Utilisateur();
+    private Utilisateur louis = null;
 
     private Session session = null;
 
@@ -175,5 +176,31 @@ public class SessionSteps
         Assert.assertNotNull(session);
         Assert.assertEquals(arg0, session.getMinParticipants());
         Assert.assertEquals(arg1, session.getMaxParticipants());
+    }
+
+    @Given("Previously created a correct session")
+    public void participateInASessionFound()
+    {
+        try {
+            louis = new Utilisateur();
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, louis);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @When("I try to participate in a session found")
+    public void iTryToParticipateInASessionFound()
+    {
+        louis.participer(session);
+    }
+
+    @Then("the registration is taken into account by the session")
+    public void theRegistrationIsTakenIntoAccountByTheSession()
+    {
+        Assert.assertNotNull(louis.getListSessions().get(0));
     }
 }

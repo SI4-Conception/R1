@@ -28,7 +28,7 @@ public class Session
         // TODO: verify here than passed params are corrects
 
         this.organisateur = organisateur;
-        if (organisateur.getListSessions().stream().anyMatch(session ->
+        if (organisateur.getListSessionsOrganisees().stream().anyMatch(session ->
                 Util.intersect(debut, fin, session)))
             throw new InvalidSessionDataException("Création de 2 sessions se déroulant au même moment");
         checkDatesOrder(fin, debut);
@@ -37,7 +37,7 @@ public class Session
         this.adresse = adresse;
         this.sport = sport;
         this.dateLimiteInscription = debut;
-        this.organisateur.getListSessions().add(this);
+        this.organisateur.getListSessionsOrganisees().add(this);
     }
 
     public ZonedDateTime getDebut()
@@ -173,5 +173,10 @@ public class Session
     public void setSport(Sport sport)
     {
         this.sport = sport;
+    }
+
+    public void participer(Utilisateur participant)
+    {
+        this.participants.add(participant);
     }
 }
