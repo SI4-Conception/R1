@@ -143,7 +143,7 @@ public class User
     }
 
     /*
-    no real costraint since names
+    no real costraint since names are a complex thing
      */
     public void setLastName(String lastName) throws InvalidProfileDataException
     {
