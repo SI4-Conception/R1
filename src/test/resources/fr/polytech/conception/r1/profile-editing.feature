@@ -36,9 +36,9 @@ Feature: profile editing features
     Then My profile picture should be updated
 
   Scenario: valid email change
-    Given an existing account and a valid passsword "thisPasswordIsGood"
-    When I change my password to the valid password
-    Then My password should be updated
+    Given an existing account and a valid email address "romainbaudet74@gmail.com"
+    When I change my password to the valid email address
+    Then My email address should be updated
 
   Scenario: wrong email
     Given an existing account and a wrong email "thisisnotgood"
@@ -46,26 +46,26 @@ Feature: profile editing features
     Then An error should occur because the email is wrong
 
   Scenario: valid address change
-    Given an existing account and a valid address
-    When I change my address to the valid address
-    Then My address should be updated
-
-  Scenario: valid address change
-    Given an existing account and a valid address
-    When I change my address to the valid address
-    Then My address should be updated
-
-  Scenario: valid address change
-    Given an existing account and a valid address
+    Given an existing account and a valid address "85 rue Henri Poincaré"
     When I change my address to the valid address
     Then My address should be updated
 
   Scenario: valid first name change
-    Given an existing account and a valid first name
+    Given an existing account and a valid first name "Serge"
     When I change my address to the valid first name
     Then My first name should be updated
 
   Scenario: valid last name change
-    Given an existing account and a valid last name
+    Given an existing account and a valid last name "Mongne"
     When I change my address to the valid last name
     Then My last name should be updated
+    
+  Scenario: adding a valid sport to favourites
+    Given an existing account and a sport "tennis"
+    When I add this sport to my favourites sports
+    Then The sport should appear as favourite in my profile
+
+  Scenario: adding multiple valid sports to favourites
+    Given an existing account and some sports "tennis" "badminton" "ski"
+    When I add these sports to my favourites sports
+    Then The sports should appear as favourites in my profile

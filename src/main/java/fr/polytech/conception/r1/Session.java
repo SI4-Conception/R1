@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
+import fr.polytech.conception.r1.profile.User;
+
 public class Session
 {
     private ZonedDateTime debut;

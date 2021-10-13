@@ -1,9 +1,12 @@
-package fr.polytech.conception.r1;
+package fr.polytech.conception.r1.profile;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import fr.polytech.conception.r1.Level;
+import fr.polytech.conception.r1.Sport;
 
 public class User
 {
