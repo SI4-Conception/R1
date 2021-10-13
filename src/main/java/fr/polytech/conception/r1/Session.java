@@ -25,7 +25,7 @@ public class Session
     private User organisateur;
     private List<User> participants = new LinkedList<>();
 
-    public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, Utilisateur organisateur) throws InvalidSessionDataException
+    public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {
         // TODO: verify here than passed params are corrects
 
@@ -177,7 +177,7 @@ public class Session
         this.sport = sport;
     }
 
-    public void participer(Utilisateur participant)
+    public void participer(User participant)
     {
         this.participants.add(participant);
     }

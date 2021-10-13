@@ -2,10 +2,13 @@ package fr.polytech.conception.r1.profile;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.polytech.conception.r1.Level;
+import fr.polytech.conception.r1.Session;
 import fr.polytech.conception.r1.Sport;
 
 public class User
@@ -18,6 +21,10 @@ public class User
     private String firstName;
     private String lastName;
     private Map<Sport, Level> favouriteSports;
+    private List<Session> listSessionsOrganisees = new ArrayList<>();
+    private final List<Session> listSessions = new ArrayList<>();
+
+    public User() { }
 
     public User(String pseudo, String password, String email) throws InvalidProfileDataException
     {
@@ -175,6 +182,12 @@ public class User
         }
     }
 
+    public boolean participer(Session session)
+    {
+        listSessions.add(session);
+        session.participer(this);
+        return true;
+    }
 
     public String getPseudo()
     {
@@ -214,5 +227,15 @@ public class User
     public Map<Sport, Level> getFavouriteSports()
     {
         return favouriteSports;
+    }
+
+    public List<Session> getListSessionsOrganisees()
+    {
+        return listSessionsOrganisees;
+    }
+
+    public List<Session> getListSessions()
+    {
+        return listSessions;
     }
 }

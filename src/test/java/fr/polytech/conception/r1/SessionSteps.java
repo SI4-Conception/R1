@@ -2,6 +2,7 @@ package fr.polytech.conception.r1;
 
 import org.junit.Assert;
 
+import fr.polytech.conception.r1.profile.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -20,8 +21,8 @@ public class SessionSteps
     private final ZonedDateTime invalidDateTimeEndSubscription = ZonedDateTime.parse("2035-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final String validAddress = "14 rue Bolchaia Loubianka";
     private final Sport validSport = new Sport("Tir aux pigeons");
-    private final Utilisateur julien = new Utilisateur();
-    private Utilisateur louis = null;
+    private final User julien = new User();
+    private User louis = null;
 
     private Session session = null;
 
@@ -253,7 +254,7 @@ public class SessionSteps
     public void participateInASessionFound()
     {
         try {
-            louis = new Utilisateur();
+            louis = new User();
             session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, louis);
         }
         catch (InvalidSessionDataException e)
