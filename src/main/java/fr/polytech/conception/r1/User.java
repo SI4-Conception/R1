@@ -172,6 +172,7 @@ public class User
         }
     }
 
+
     public String getPseudo()
     {
         return pseudo;

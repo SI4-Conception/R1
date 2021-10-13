@@ -116,7 +116,7 @@ public class ProfileEditingSteps
         }
     }
 
-    @Then("An error occurs because the name is too short")
+    @Then("An error should occur because the name is too short")
     public void anErrorOccurs()
     {
         Assert.assertTrue(errorRaised);
