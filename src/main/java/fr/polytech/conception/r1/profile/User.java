@@ -76,7 +76,7 @@ public class User
         {
             if(password.length() < 8)
             {
-                throw new InvalidProfileDataException("Given username is too short, it must be at least 4 characters long !");
+                throw new InvalidProfileDataException("Given password is too short, it must be at least 8 characters long !");
             }
             else
             {

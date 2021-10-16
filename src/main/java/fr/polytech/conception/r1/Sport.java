@@ -7,4 +7,9 @@ public class Sport
     public Sport(String nom) {
         this.nom = nom;
     }
+
+    public String getNom()
+    {
+        return nom;
+    }
 }
