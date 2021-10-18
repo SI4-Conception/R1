@@ -21,8 +21,12 @@ public class User
     private String firstName;
     private String lastName;
     private Map<Sport, Level> favouriteSports;
-    private List<Session> listSessionsOrganisees = new ArrayList<>();
-    private final List<Session> listSessions = new ArrayList<>();
+    private List<Session> listSessionsOrganisees;
+    private List<Session> listSessions;
+
+    private List<User> friends;
+    private List<User> friendsRequested;
+    private List<User> friendsRequests;
 
     public User() { }
 
@@ -32,6 +36,11 @@ public class User
         this.setPassword(password);
         this.setEmail(email);
         this.favouriteSports = new HashMap<>();
+        this.listSessions = new ArrayList<>();
+        this.listSessionsOrganisees = new ArrayList<>();
+        this.friends = new ArrayList<>();
+        this.friendsRequested = new ArrayList<>();
+        this.friendsRequests = new ArrayList<>();
     }
 
     /*
@@ -189,6 +198,35 @@ public class User
         return true;
     }
 
+    /*
+    adds this to the targetted user's friends requests, and user to this' friends requested
+     */
+    public void sendFriendRequest(User user)
+    {
+        user.getFriendsRequests().add(this);
+        this.getFriendsRequested().add(user);
+    }
+
+    /*
+    removes user from the friends requests list, and removes this from user's friends requested, and add each other in friends list
+     */
+    public void acceptFriendRequest(User user)
+    {
+        this.friendsRequested.remove(user);
+        user.getFriendsRequests().remove(this);
+        this.getFriends().add(user);
+        user.getFriends().add(this);
+    }
+
+    /*
+    removes user from the friends requests list, and removes this from user's friends requested
+     */
+    public void denyFriendRequest(User user)
+    {
+        this.friendsRequested.remove(user);
+        user.getFriendsRequests().remove(this);
+    }
+
     public String getPseudo()
     {
         return pseudo;
@@ -237,5 +275,20 @@ public class User
     public List<Session> getListSessions()
     {
         return listSessions;
+    }
+
+    public List<User> getFriends()
+    {
+        return friends;
+    }
+
+    public List<User> getFriendsRequested()
+    {
+        return friendsRequested;
+    }
+
+    public List<User> getFriendsRequests()
+    {
+        return friendsRequests;
     }
 }
