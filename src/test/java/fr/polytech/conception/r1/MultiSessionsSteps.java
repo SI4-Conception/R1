@@ -60,11 +60,15 @@ public class MultiSessionsSteps
     @When("I search a {string} session")
     public void iSearchASession(String arg0)
     {
-        validSessionsList.forEach(session -> {
-            if(session.getSport().getNom().equals(arg0)) {
-                foundSessionsList.add(session);
-            }
-        });
+        User pika = usersList.get(0);
+
+        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, arg0, null, null, null));
+
+        //validSessionsList.forEach(session -> {
+        //    if(session.getSport().getNom().equals(arg0)) {
+        //        foundSessionsList.add(session);
+        //    }
+        //});
     }
 
     @When("I search a session created by {string}")
