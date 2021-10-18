@@ -177,8 +177,16 @@ public class Session
         this.sport = sport;
     }
 
-    public void participer(User participant)
+    public void participer(User participant) throws InvalidSessionDataException
     {
+        if(participants.contains(participant))
+        {
+            throw new InvalidSessionDataException("Vous participez deja a cette session.");
+        }
+        if(maxParticipants != 0 && participants.size() >= maxParticipants - 1) // maxParticipants = 0 -> infinite
+        {
+            throw new InvalidSessionDataException("Il y a deja trop de participants a cette session.");
+        }
         this.participants.add(participant);
     }
 }

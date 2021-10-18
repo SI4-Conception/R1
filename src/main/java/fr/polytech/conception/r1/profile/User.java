@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.polytech.conception.r1.InvalidSessionDataException;
 import fr.polytech.conception.r1.Level;
 import fr.polytech.conception.r1.Session;
 import fr.polytech.conception.r1.Sport;
@@ -184,8 +185,15 @@ public class User
 
     public boolean participer(Session session)
     {
+        try
+        {
+            session.participer(this);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            return false;
+        }
         listSessions.add(session);
-        session.participer(this);
         return true;
     }
 

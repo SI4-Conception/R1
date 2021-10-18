@@ -50,7 +50,17 @@ Feature: Features of my session
     When I try to set a invalid end subscription date
     Then I should have a session with old end subscription date
 
-  Scenario: participate in a session
-    Given Previously created a correct session
+  Scenario: Participate in a session
+    Given Previously created session
     When I try to participate in a session found
     Then the registration is taken into account by the session
+
+  Scenario: Trying to participate in a session with too many users
+    Given Previously created session with 3 users at max and already 3 participants
+    When I try to participate in a session found
+    Then The registration is not taken into account by the session
+
+  Scenario: Trying to participate twice in a session
+    Given Previously created session
+    When I try to participate in a session found
+    Then I cannot participate a second time to the session

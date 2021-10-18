@@ -22,7 +22,7 @@ public class SessionSteps
     private final String validAddress = "14 rue Bolchaia Loubianka";
     private final Sport validSport = new Sport("Tir aux pigeons");
     private final User julien = new User();
-    private User louis = null;
+    private User louis = new User();
 
     private Session session = null;
 
@@ -250,20 +250,6 @@ public class SessionSteps
         Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getDateLimiteInscription()));
     }
 
-    @Given("Previously created a correct session")
-    public void participateInASessionFound()
-    {
-        try {
-            louis = new User();
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, louis);
-        }
-        catch (InvalidSessionDataException e)
-        {
-            e.printStackTrace();
-            Assert.fail();
-        }
-    }
-
     @When("I try to participate in a session found")
     public void iTryToParticipateInASessionFound()
     {
@@ -273,6 +259,40 @@ public class SessionSteps
     @Then("the registration is taken into account by the session")
     public void theRegistrationIsTakenIntoAccountByTheSession()
     {
-        Assert.assertNotNull(louis.getListSessions().get(0));
+        Assert.assertTrue(session.getParticipants().contains(louis));
+        Assert.assertTrue(louis.getListSessions().contains(session));
+    }
+
+    @Given("Previously created session with {int} users at max and already {int} participants")
+    public void previouslyCreatedSessionWithUsersAtMaxAndAlreadyParticipants(int arg0, int arg1)
+    {
+        try
+        {
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session.setMaxParticipants(arg0);
+            for(int i=0; i<arg1; i++)
+            {
+                User u = new User();
+                u.participer(session);
+            }
+        }
+        catch (InvalidSessionDataException e)
+        {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Then("The registration is not taken into account by the session")
+    public void theRegistrationIsNotTakenIntoAccountByTheSession()
+    {
+        Assert.assertFalse(session.getParticipants().contains(louis));
+        Assert.assertFalse(louis.getListSessions().contains(session));
+    }
+
+    @Then("I cannot participate a second time to the session")
+    public void iCannotParticipateASecondTimeToTheSession()
+    {
+        Assert.assertFalse(louis.participer(session));
     }
 }
