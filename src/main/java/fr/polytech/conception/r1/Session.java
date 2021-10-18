@@ -183,7 +183,7 @@ public class Session
         {
             throw new InvalidSessionDataException("Vous participez deja a cette session.");
         }
-        if(maxParticipants != 0 && participants.size() >= maxParticipants - 1) // maxParticipants = 0 -> infinite
+        if(maxParticipants != 0 && participants.size() >= maxParticipants) // maxParticipants = 0 -> infinite
         {
             throw new InvalidSessionDataException("Il y a deja trop de participants a cette session.");
         }
