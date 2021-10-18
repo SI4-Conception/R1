@@ -44,11 +44,15 @@ public class MultiSessionsSteps
     {
         ZonedDateTime beginDate = ZonedDateTime.parse(arg0 + "T00:00:00.000+01:00[Europe/Paris]");
         ZonedDateTime endDate = ZonedDateTime.parse(arg1 + "T00:00:00.000+01:00[Europe/Paris]");
-        validSessionsList.forEach(session -> {
-            if(session.getDebut().isAfter(beginDate) && session.getFin().isBefore(endDate)) {
-                foundSessionsList.add(session);
-            }
-        });
+        User pika = usersList.get(0);
+
+        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, beginDate, endDate, null));
+
+        //validSessionsList.forEach(session -> {
+        //    if(session.getDebut().isAfter(beginDate) && session.getFin().isBefore(endDate)) {
+        //        foundSessionsList.add(session);
+        //    }
+        //});
     }
 
     @Then("I should have {int} sessions")
@@ -74,10 +78,14 @@ public class MultiSessionsSteps
     @When("I search a session created by {string}")
     public void iSearchASessionCreatedBy(String arg0)
     {
-        validSessionsList.forEach(session -> {
-            if(session.getOrganisateur().getPseudo().equals(arg0)) {
-                foundSessionsList.add(session);
-            }
-        });
+        User pika = usersList.get(0);
+
+        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, null, null, arg0));
+
+        //validSessionsList.forEach(session -> {
+        //    if(session.getOrganisateur().getPseudo().equals(arg0)) {
+        //        foundSessionsList.add(session);
+        //    }
+        //});
     }
 }

@@ -21,7 +21,7 @@ public class Session
      * Set maxParticipants to zero to specify infinite number of participants
      */
     private int maxParticipants = 0;
-    private Level difficulte = Level.INTERMEDIAIRE;
+    private Level difficulte = Level.DEBUTANT;
     private boolean estAnnulee = false;
     private Sport sport;
     private User organisateur;
