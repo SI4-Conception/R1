@@ -1,5 +1,6 @@
 package fr.polytech.conception.r1;
 
+@SuppressWarnings("unused")
 public enum Sports
 {
     ACCROBRANCHE("Accrobranche"),
