@@ -269,7 +269,7 @@ public class User
     public List<Session> chercherSessions(List<Session> sessions, String sport, String adresse, ZonedDateTime debut, ZonedDateTime fin)
     {
         return sessions.stream()
-                .filter(sport != null && !sport.equals("") ? s -> s.getSport().getNom().equals(sport) : s -> true)
+                .filter(sport != null && !sport.equals("") ? s -> s.getSport().getName().equals(sport) : s -> true)
                 .filter(adresse != null && !adresse.equals("") ? s -> s.getAdresse().contains(adresse) : s -> true)
                 .filter(debut != null ? s -> s.getDebut().isAfter(debut) : s -> true)
                 .filter(fin != null ? s -> s.getFin().isBefore(fin) : s -> true)

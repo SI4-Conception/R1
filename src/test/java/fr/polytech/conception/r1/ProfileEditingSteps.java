@@ -472,8 +472,8 @@ public class ProfileEditingSteps
 
     Sport favouriteSport;
 
-    @Given("an existing account and a sport {string}")
-    public void anExistingAccountAndASport(String sport)
+    @Given("an existing account and a sport {sport}")
+    public void anExistingAccountAndASport(Sport sport)
     {
         try
         {
@@ -485,7 +485,7 @@ public class ProfileEditingSteps
             Assert.fail();
         }
 
-        favouriteSport = new Sport(sport);
+        favouriteSport = sport;
     }
 
     @When("I add this sport to my favourites sports")
@@ -510,8 +510,8 @@ public class ProfileEditingSteps
 
     Sport favouriteSport2, favouriteSport3;
 
-    @Given("an existing account and some sports {string} {string} {string}")
-    public void anExistingAccountAndSomeSports(String sport, String sport2, String sport3)
+    @Given("an existing account and some sports {sport} {sport} {sport}")
+    public void anExistingAccountAndSomeSports(Sport sport, Sport sport2, Sport sport3)
     {
         try
         {
@@ -523,9 +523,9 @@ public class ProfileEditingSteps
             Assert.fail();
         }
 
-        favouriteSport = new Sport(sport);
-        favouriteSport2 = new Sport(sport2);
-        favouriteSport3 = new Sport(sport3);
+        favouriteSport = sport;
+        favouriteSport2 = sport2;
+        favouriteSport3 = sport3;
     }
 
     @When("I add these sports to my favourites sports")

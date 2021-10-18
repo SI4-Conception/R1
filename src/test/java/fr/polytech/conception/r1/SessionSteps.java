@@ -20,7 +20,7 @@ public class SessionSteps
     private final ZonedDateTime validDateTimeEndSubscription = ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeEndSubscription = ZonedDateTime.parse("2035-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final String validAddress = "14 rue Bolchaia Loubianka";
-    private final Sport validSport = new Sport("Tir aux pigeons");
+    private final Sport validSport = Sport.KAYAK;
     private final User julien = new User();
     private User louis = new User();
 
