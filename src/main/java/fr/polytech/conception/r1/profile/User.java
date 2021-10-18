@@ -252,8 +252,8 @@ public class User
                 .filter(debut != null ? s -> s.getDebut().isAfter(debut) : s -> true)
                 .filter(fin != null ? s -> s.getFin().isBefore(fin) : s -> true)
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                //.filter(organizer != null && !organizer.equals("") ? s -> s.getOrganisateur().getPseudo().equals(organizer) : s -> true)
-                //.filter(s -> (s.getDifficulte() == Level.DEBUTANT ? true : this.favouriteSports.containsKey(s.getSport()) ? s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0 : false))
+                .filter(organizer != null && !organizer.equals("") ? s -> s.getOrganisateur().getPseudo().equals(organizer) : s -> true)
+                .filter(s -> (s.getDifficulte() == Level.DEBUTANT ? true : this.favouriteSports.containsKey(s.getSport()) ? s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0 : false))
                 //todo rajouter pour les amis
                 .collect(Collectors.toList());
     }
