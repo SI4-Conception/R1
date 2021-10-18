@@ -256,7 +256,7 @@ public class SessionSteps
         louis.participer(session);
     }
 
-    @Then("the registration is taken into account by the session")
+    @Then("The registration is taken into account by the session")
     public void theRegistrationIsTakenIntoAccountByTheSession()
     {
         Assert.assertTrue(session.getParticipants().contains(louis));
