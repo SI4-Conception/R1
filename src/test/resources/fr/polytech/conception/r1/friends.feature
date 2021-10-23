@@ -36,3 +36,15 @@ Feature: Friendship handling
     Given A session created by user 1 for friends only
     When User 2 try to participate to the session
     Then User 2 registration should not be ok
+
+  Scenario: A friend tries to find a session friends only
+    Given 2 friends users
+    Given A session created by user 1 for friends only
+    When User 2 searches a session
+    Then I should find 1 sessions
+
+  Scenario: A non-friend tries to find a session friends only
+    Given 2 distincts users
+    Given A session created by user 1 for friends only
+    When User 2 searches a session
+    Then I should find 0 sessions

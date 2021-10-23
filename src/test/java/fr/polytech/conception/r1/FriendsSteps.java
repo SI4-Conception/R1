@@ -3,6 +3,7 @@ package fr.polytech.conception.r1;
 import org.junit.Assert;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class FriendsSteps
 {
     private List<User> userList=new LinkedList<>();
     private Session session;
+    private final List<Session> foundSessionsList = new ArrayList<>();
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
 
@@ -123,4 +125,21 @@ public class FriendsSteps
         Assert.assertFalse(u.getListSessions().contains(session));
         Assert.assertFalse(session.getParticipants().contains(u));
     }
+
+
+    @When("User {int} searches a session")
+    public void userSearchesASession(int arg0)
+    {
+        List<Session> sessions = new ArrayList<>();
+        sessions.add(session);
+        User u = userList.get(arg0 - 1);
+        foundSessionsList.addAll(u.chercherSessions(sessions, null, null, null, null, null));
+    }
+
+    @Then("I should find {int} sessions")
+    public void iShouldFindSessions(int arg0)
+    {
+        Assert.assertEquals(arg0, foundSessionsList.size());
+    }
+
 }

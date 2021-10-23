@@ -307,10 +307,10 @@ public class User
                 .filter(adresse != null && !adresse.equals("") ? s -> s.getAdresse().contains(adresse) : s -> true)
                 .filter(debut != null ? s -> s.getDebut().isAfter(debut) : s -> true)
                 .filter(fin != null ? s -> s.getFin().isBefore(fin) : s -> true)
-                .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
                 .filter(organizer != null && !organizer.equals("") ? s -> s.getOrganisateur().getPseudo().equals(organizer) : s -> true)
+                .filter(s -> (!s.isReserveAuxAmis() || this.friends.contains(s.getOrganisateur())))
                 .filter(s -> (s.getDifficulte() == Level.DEBUTANT || (this.favouriteSports.containsKey(s.getSport()) && s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0)))
-                //todo rajouter pour les amis
+                .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
                 .collect(Collectors.toList());
     }
 
