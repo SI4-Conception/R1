@@ -174,7 +174,7 @@ public class Session
 
     private void checkParticipantsBounds(int minParticipants, int maxParticipants) throws InvalidSessionDataException
     {
-        if (minParticipants > maxParticipants || minParticipants < 0 || maxParticipants < 0)
+        if (minParticipants > maxParticipants || minParticipants < 0 || maxParticipants <= 0)
         {
             System.out.println(maxParticipants);
             throw new InvalidSessionDataException("Le nombre min de participants doit etre <= au nombre max, et leur nombres doivent etre positifs");
@@ -190,6 +190,10 @@ public class Session
         if(maxParticipants != 0 && participants.size() >= maxParticipants) // maxParticipants = 0 -> infinite
         {
             throw new InvalidSessionDataException("Il y a deja trop de participants a cette session.");
+        }
+        if(reserveAuxAmis && !organisateur.getFriends().contains(participant))
+        {
+            throw new InvalidSessionDataException("Cette session est reservee aux amis de l'organisateur, vous n'en faites pas partie.");
         }
         this.participants.add(participant);
     }
