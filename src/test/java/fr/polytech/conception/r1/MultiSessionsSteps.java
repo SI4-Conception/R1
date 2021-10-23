@@ -46,12 +46,6 @@ public class MultiSessionsSteps
         User pika = usersList.get(0);
 
         foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, beginDate, endDate, null));
-
-        //validSessionsList.forEach(session -> {
-        //    if(session.getDebut().isAfter(beginDate) && session.getFin().isBefore(endDate)) {
-        //        foundSessionsList.add(session);
-        //    }
-        //});
     }
 
     @Then("I should have {int} sessions")
@@ -66,12 +60,6 @@ public class MultiSessionsSteps
         User pika = usersList.get(0);
 
         foundSessionsList.addAll(pika.chercherSessions(validSessionsList, sport, null, null, null, null));
-
-        //validSessionsList.forEach(session -> {
-        //    if(session.getSport().getNom().equals(arg0)) {
-        //        foundSessionsList.add(session);
-        //    }
-        //});
     }
 
     @When("I search a session created by {string}")
@@ -80,11 +68,5 @@ public class MultiSessionsSteps
         User pika = usersList.get(0);
 
         foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, null, null, arg0));
-
-        //validSessionsList.forEach(session -> {
-        //    if(session.getOrganisateur().getPseudo().equals(arg0)) {
-        //        foundSessionsList.add(session);
-        //    }
-        //});
     }
 }
