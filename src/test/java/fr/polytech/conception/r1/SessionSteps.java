@@ -20,9 +20,9 @@ public class SessionSteps
     private final ZonedDateTime validDateTimeEndSubscription = ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeEndSubscription = ZonedDateTime.parse("2035-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final String validAddress = "14 rue Bolchaia Loubianka";
-    private final Sport validSport = new Sport("Tir aux pigeons");
+    private final Sport validSport = Sport.KAYAK;
     private final User julien = new User();
-    private User louis = null;
+    private User louis = new User();
 
     private Session session = null;
 
@@ -250,12 +250,31 @@ public class SessionSteps
         Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getDateLimiteInscription()));
     }
 
-    @Given("Previously created a correct session")
-    public void participateInASessionFound()
+    @When("I try to participate in a session found")
+    public void iTryToParticipateInASessionFound()
     {
-        try {
-            louis = new User();
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, louis);
+        louis.participer(session);
+    }
+
+    @Then("The registration is taken into account by the session")
+    public void theRegistrationIsTakenIntoAccountByTheSession()
+    {
+        Assert.assertTrue(session.getParticipants().contains(louis));
+        Assert.assertTrue(louis.getListSessions().contains(session));
+    }
+
+    @Given("Previously created session with {int} users at max and already {int} participants")
+    public void previouslyCreatedSessionWithUsersAtMaxAndAlreadyParticipants(int arg0, int arg1)
+    {
+        try
+        {
+            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session.setMaxParticipants(arg0);
+            for(int i=0; i<arg1; i++)
+            {
+                User u = new User();
+                u.participer(session);
+            }
         }
         catch (InvalidSessionDataException e)
         {
@@ -264,15 +283,16 @@ public class SessionSteps
         }
     }
 
-    @When("I try to participate in a session found")
-    public void iTryToParticipateInASessionFound()
+    @Then("The registration is not taken into account by the session")
+    public void theRegistrationIsNotTakenIntoAccountByTheSession()
     {
-        louis.participer(session);
+        Assert.assertFalse(session.getParticipants().contains(louis));
+        Assert.assertFalse(louis.getListSessions().contains(session));
     }
 
-    @Then("the registration is taken into account by the session")
-    public void theRegistrationIsTakenIntoAccountByTheSession()
+    @Then("I cannot participate a second time to the session")
+    public void iCannotParticipateASecondTimeToTheSession()
     {
-        Assert.assertNotNull(louis.getListSessions().get(0));
+        Assert.assertFalse(louis.participer(session));
     }
 }

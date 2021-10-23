@@ -49,8 +49,3 @@ Feature: Features of my session
     Given Previously created session with valid end subscription date
     When I try to set a invalid end subscription date
     Then I should have a session with old end subscription date
-
-  Scenario: participate in a session
-    Given Previously created a correct session
-    When I try to participate in a session found
-    Then the registration is taken into account by the session

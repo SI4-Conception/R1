@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -27,10 +26,10 @@ public class MultiSessionsSteps
             User schtroumpfALunettes = new User("Schtroumpf a lunettes", "schtroumpf", "schtroumpfalunettes@mail.com");
             usersList.add(pikachu);
             usersList.add(schtroumpfALunettes);
-            validSessionsList.add(new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", new Sport("Beach volley"), pikachu));
-            validSessionsList.add(new Session(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", new Sport("Tennis"), pikachu));
-            validSessionsList.add(new Session(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", new Sport("Tennis"), schtroumpfALunettes));
-            validSessionsList.add(new Session(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", new Sport("Tennis"), schtroumpfALunettes));
+            validSessionsList.add(new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", Sport.VOLLEY_BALL, pikachu));
+            validSessionsList.add(new Session(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, pikachu));
+            validSessionsList.add(new Session(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
+            validSessionsList.add(new Session(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
         }
         catch (Exception e)
         {
@@ -44,11 +43,15 @@ public class MultiSessionsSteps
     {
         ZonedDateTime beginDate = ZonedDateTime.parse(arg0 + "T00:00:00.000+01:00[Europe/Paris]");
         ZonedDateTime endDate = ZonedDateTime.parse(arg1 + "T00:00:00.000+01:00[Europe/Paris]");
-        validSessionsList.forEach(session -> {
-            if(session.getDebut().isAfter(beginDate) && session.getFin().isBefore(endDate)) {
-                foundSessionsList.add(session);
-            }
-        });
+        User pika = usersList.get(0);
+
+        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, beginDate, endDate, null));
+
+        //validSessionsList.forEach(session -> {
+        //    if(session.getDebut().isAfter(beginDate) && session.getFin().isBefore(endDate)) {
+        //        foundSessionsList.add(session);
+        //    }
+        //});
     }
 
     @Then("I should have {int} sessions")
@@ -60,20 +63,28 @@ public class MultiSessionsSteps
     @When("I search a {string} session")
     public void iSearchASession(String arg0)
     {
-        validSessionsList.forEach(session -> {
-            if(session.getSport().getNom().equals(arg0)) {
-                foundSessionsList.add(session);
-            }
-        });
+        User pika = usersList.get(0);
+
+        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, arg0, null, null, null));
+
+        //validSessionsList.forEach(session -> {
+        //    if(session.getSport().getNom().equals(arg0)) {
+        //        foundSessionsList.add(session);
+        //    }
+        //});
     }
 
     @When("I search a session created by {string}")
     public void iSearchASessionCreatedBy(String arg0)
     {
-        validSessionsList.forEach(session -> {
-            if(session.getOrganisateur().getPseudo().equals(arg0)) {
-                foundSessionsList.add(session);
-            }
-        });
+        User pika = usersList.get(0);
+
+        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, null, null, arg0));
+
+        //validSessionsList.forEach(session -> {
+        //    if(session.getOrganisateur().getPseudo().equals(arg0)) {
+        //        foundSessionsList.add(session);
+        //    }
+        //});
     }
 }

@@ -61,11 +61,11 @@ Feature: profile editing features
     Then My last name should be updated
     
   Scenario: adding a valid sport to favourites
-    Given an existing account and a sport "tennis"
+    Given an existing account and a sport Tennis
     When I add this sport to my favourites sports
     Then The sport should appear as favourite in my profile
 
   Scenario: adding multiple valid sports to favourites
-    Given an existing account and some sports "tennis" "badminton" "ski"
+    Given an existing account and some sports Tennis Badminton Ski
     When I add these sports to my favourites sports
     Then The sports should appear as favourites in my profile
