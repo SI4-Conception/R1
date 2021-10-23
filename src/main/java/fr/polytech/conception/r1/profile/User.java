@@ -24,7 +24,7 @@ public class User
     private String firstName;
     private String lastName;
     private Map<Sport, Level> favouriteSports = new HashMap<>();
-    private List<Session> listSessionsOrganisees = new ArrayList<>();;
+    private List<Session> listSessionsOrganisees = new ArrayList<>();
     private List<Session> listSessions = new ArrayList<>();
 
     private List<User> friends = new ArrayList<>();
@@ -251,10 +251,14 @@ public class User
     /*
     removes user from the friends requests list, and removes this from user's friends requested, and add each other in friends list
      */
-    public void acceptFriendRequest(User user)
+    public void acceptFriendRequest(User user) throws InvalidFriendshipException
     {
-        this.friendsRequested.remove(user);
-        user.getFriendsRequests().remove(this);
+        if(!friendsRequests.contains(user))
+        {
+            throw new InvalidFriendshipException("This user didn't sent a friend request to you.");
+        }
+        this.friendsRequests.remove(user);
+        user.getFriendsRequested().remove(this);
         this.getFriends().add(user);
         user.getFriends().add(this);
     }
@@ -262,10 +266,14 @@ public class User
     /*
     removes user from the friends requests list, and removes this from user's friends requested
      */
-    public void denyFriendRequest(User user)
+    public void denyFriendRequest(User user) throws InvalidFriendshipException
     {
-        this.friendsRequested.remove(user);
-        user.getFriendsRequests().remove(this);
+        if(!friendsRequests.contains(user))
+        {
+            throw new InvalidFriendshipException("This user didn't sent a friend request to you.");
+        }
+        this.friendsRequests.remove(user);
+        user.getFriendsRequested().remove(this);
     }
 
     public Map<Sport, Level> getFavouriteSports()
@@ -293,7 +301,7 @@ public class User
                 .filter(fin != null ? s -> s.getFin().isBefore(fin) : s -> true)
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
                 .filter(organizer != null && !organizer.equals("") ? s -> s.getOrganisateur().getPseudo().equals(organizer) : s -> true)
-                .filter(s -> (s.getDifficulte() == Level.DEBUTANT ? true : this.favouriteSports.containsKey(s.getSport()) ? s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0 : false))
+                .filter(s -> (s.getDifficulte() == Level.DEBUTANT || (this.favouriteSports.containsKey(s.getSport()) && s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0)))
                 //todo rajouter pour les amis
                 .collect(Collectors.toList());
     }
@@ -306,7 +314,7 @@ public class User
                 .filter(debut != null ? s -> s.getDebut().isAfter(debut) : s -> true)
                 .filter(fin != null ? s -> s.getFin().isBefore(fin) : s -> true)
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .filter(s -> (s.getDifficulte() == Level.DEBUTANT ? true : this.favouriteSports.containsKey(s.getSport()) ? s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0 : false))
+                .filter(s -> (s.getDifficulte() == Level.DEBUTANT || (this.favouriteSports.containsKey(s.getSport()) && s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0)))
                 .collect(Collectors.toList());
     }
 
