@@ -242,8 +242,16 @@ public class User
     /*
     adds this to the targetted user's friends requests, and user to this' friends requested
      */
-    public void sendFriendRequest(User user)
+    public void sendFriendRequest(User user) throws InvalidFriendshipException
     {
+        if(friends.contains(user))
+        {
+            throw new InvalidFriendshipException("This user is already one of your friends.");
+        }
+        if(friendsRequested.contains(user))
+        {
+            throw new InvalidFriendshipException("You already sent a friend request to this user.");
+        }
         user.getFriendsRequests().add(this);
         this.getFriendsRequested().add(user);
     }

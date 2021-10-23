@@ -25,7 +25,7 @@ public class FriendsSteps
     }
 
     @When("User {int} sends a friend request to user {int}")
-    public void userSendsAFriendRequestToUser(int arg0, int arg1)
+    public void userSendsAFriendRequestToUser(int arg0, int arg1) throws InvalidFriendshipException
     {
         userList.get(arg0-1).sendFriendRequest(userList.get(arg1-1));
     }
@@ -60,5 +60,13 @@ public class FriendsSteps
         User u2 = userList.get(arg1-1);
         Assert.assertFalse(u1.getFriends().contains(u2));
         Assert.assertFalse(u2.getFriends().contains(u1));
+    }
+
+    @When("User {int} resends a friend request to user {int}")
+    public void userResendsAFriendRequestToUser(int arg0, int arg1)
+    {
+        User u1 = userList.get(arg0-1);
+        User u2 = userList.get(arg1-1);
+        Assert.assertThrows(InvalidFriendshipException.class, () -> u1.sendFriendRequest(u2));
     }
 }
