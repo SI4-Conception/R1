@@ -265,16 +265,4 @@ public class User
                 //todo rajouter pour les amis
                 .collect(Collectors.toList());
     }
-
-    public List<Session> chercherSessions(List<Session> sessions, String sport, String adresse, ZonedDateTime debut, ZonedDateTime fin)
-    {
-        return sessions.stream()
-                .filter(sport != null && !sport.equals("") ? s -> s.getSport().getName().equals(sport) : s -> true)
-                .filter(adresse != null && !adresse.equals("") ? s -> s.getAdresse().contains(adresse) : s -> true)
-                .filter(debut != null ? s -> s.getDebut().isAfter(debut) : s -> true)
-                .filter(fin != null ? s -> s.getFin().isBefore(fin) : s -> true)
-                .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .filter(s -> (s.getDifficulte() == Level.DEBUTANT ? true : this.favouriteSports.containsKey(s.getSport()) ? s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0 : false))
-                .collect(Collectors.toList());
-    }
 }

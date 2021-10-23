@@ -60,12 +60,12 @@ public class MultiSessionsSteps
         Assert.assertEquals(arg0, foundSessionsList.size());
     }
 
-    @When("I search a {string} session")
-    public void iSearchASession(String arg0)
+    @When("I search a {sport} session")
+    public void iSearchASession(Sport sport)
     {
         User pika = usersList.get(0);
 
-        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, arg0, null, null, null));
+        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, sport, null, null, null, null));
 
         //validSessionsList.forEach(session -> {
         //    if(session.getSport().getNom().equals(arg0)) {
