@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import fr.polytech.conception.r1.Conversation;
 import fr.polytech.conception.r1.InvalidSessionDataException;
 import fr.polytech.conception.r1.Level;
 import fr.polytech.conception.r1.Session;
@@ -244,11 +245,11 @@ public class User
      */
     public void sendFriendRequest(User user) throws InvalidFriendshipException
     {
-        if(friends.contains(user))
+        if (friends.contains(user))
         {
             throw new InvalidFriendshipException("This user is already one of your friends.");
         }
-        if(friendsRequested.contains(user))
+        if (friendsRequested.contains(user))
         {
             throw new InvalidFriendshipException("You already sent a friend request to this user.");
         }
@@ -261,7 +262,7 @@ public class User
      */
     public void acceptFriendRequest(User user) throws InvalidFriendshipException
     {
-        if(!friendsRequests.contains(user))
+        if (!friendsRequests.contains(user))
         {
             throw new InvalidFriendshipException("This user didn't sent a friend request to you.");
         }
@@ -276,7 +277,7 @@ public class User
      */
     public void denyFriendRequest(User user) throws InvalidFriendshipException
     {
-        if(!friendsRequests.contains(user))
+        if (!friendsRequests.contains(user))
         {
             throw new InvalidFriendshipException("This user didn't sent a friend request to you.");
         }
@@ -327,5 +328,10 @@ public class User
     public List<User> getFriendsRequests()
     {
         return friendsRequests;
+    }
+
+    public Conversation startConversation(User user2, String content)
+    {
+        return new Conversation(this, user2, content);
     }
 }

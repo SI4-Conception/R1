@@ -36,6 +36,11 @@ public class Conversation
         return this.messages;
     }
 
+    public int numberMessages()
+    {
+        return this.messages.size();
+    }
+
     public void send(User sender, String content) throws InvalidMessageException
     {
         if (!sender.equals(user1) && !sender.equals(user2))
