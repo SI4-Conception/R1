@@ -16,20 +16,23 @@ public class MultiSessionsSteps
     private final List<Session> validSessionsList = new ArrayList<>();
     private final List<Session> foundSessionsList = new ArrayList<>();
     private final List<User> usersList = new ArrayList<>();
+    private SessionsList sessionsList;
 
     @Given("Lists of valid sessions and users")
     public void listsOfValidSessionsAndUsers()
     {
+        sessionsList = SessionsList.getInstance();
+        sessionsList.cleanAllSessions();
         try
         {
             User pikachu = new User("Pikachu", "P1k4chu06", "pika.chu@mail.com");
             User schtroumpfALunettes = new User("Schtroumpf a lunettes", "schtroumpf", "schtroumpfalunettes@mail.com");
             usersList.add(pikachu);
             usersList.add(schtroumpfALunettes);
-            validSessionsList.add(new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", Sport.VOLLEY_BALL, pikachu));
-            validSessionsList.add(new Session(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, pikachu));
-            validSessionsList.add(new Session(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
-            validSessionsList.add(new Session(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
+            sessionsList.addSession(new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", Sport.VOLLEY_BALL, pikachu));
+            sessionsList.addSession(new Session(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, pikachu));
+            sessionsList.addSession(new Session(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
+            sessionsList.addSession(new Session(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
         }
         catch (Exception e)
         {
@@ -45,7 +48,7 @@ public class MultiSessionsSteps
         ZonedDateTime endDate = ZonedDateTime.parse(arg1 + "T00:00:00.000+01:00[Europe/Paris]");
         User pika = usersList.get(0);
 
-        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, beginDate, endDate, null));
+        foundSessionsList.addAll(sessionsList.chercherSession(pika, null, null, beginDate, endDate, null));
     }
 
     @Then("I should have {int} sessions")
@@ -59,7 +62,7 @@ public class MultiSessionsSteps
     {
         User pika = usersList.get(0);
 
-        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, sport, null, null, null, null));
+        foundSessionsList.addAll(sessionsList.chercherSession(pika, sport, null, null, null, null));
     }
 
     @When("I search a session created by {string}")
@@ -67,6 +70,6 @@ public class MultiSessionsSteps
     {
         User pika = usersList.get(0);
 
-        foundSessionsList.addAll(pika.chercherSessions(validSessionsList, null, null, null, null, arg0));
+        foundSessionsList.addAll(sessionsList.chercherSession(pika, null, null, null, null, arg0));
     }
 }
