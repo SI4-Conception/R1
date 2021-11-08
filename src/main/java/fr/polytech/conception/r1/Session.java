@@ -200,6 +200,14 @@ public class Session implements Comparable
         this.participants.add(participant);
     }
 
+    public boolean excludeUser(User user)
+    {
+        boolean r = participants.contains(user) && user.getListSessions().contains(this);
+        participants.remove(user);
+        user.getListSessions().remove(this);
+        return r;
+    }
+
     @Override
     public int compareTo(Object o)
     {
