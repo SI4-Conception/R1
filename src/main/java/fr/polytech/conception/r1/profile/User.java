@@ -300,21 +300,6 @@ public class User
         return listSessions;
     }
 
-
-    public List<Session> chercherSessions(List<Session> sessions, Sport sport, String adresse, ZonedDateTime debut, ZonedDateTime fin, String organizer)
-    {
-        return sessions.stream()
-                .filter(sport != null ? s -> s.getSport().equals(sport) : s -> true)
-                .filter(adresse != null && !adresse.equals("") ? s -> s.getAdresse().contains(adresse) : s -> true)
-                .filter(debut != null ? s -> s.getDebut().isAfter(debut) : s -> true)
-                .filter(fin != null ? s -> s.getFin().isBefore(fin) : s -> true)
-                .filter(organizer != null && !organizer.equals("") ? s -> s.getOrganisateur().getPseudo().equals(organizer) : s -> true)
-                .filter(s -> (!s.isReserveAuxAmis() || this.friends.contains(s.getOrganisateur())))
-                .filter(s -> (s.getDifficulte() == Level.DEBUTANT || (this.favouriteSports.containsKey(s.getSport()) && s.getDifficulte().compareTo(this.favouriteSports.get(s.getSport())) >= 0)))
-                .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .collect(Collectors.toList());
-    }
-
     public List<User> getFriends()
     {
         return friends;

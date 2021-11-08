@@ -130,10 +130,11 @@ public class FriendsSteps
     @When("User {int} searches a session")
     public void userSearchesASession(int arg0)
     {
-        List<Session> sessions = new ArrayList<>();
-        sessions.add(session);
+        SessionsList sessionsList = SessionsList.getInstance();
+        sessionsList.cleanAllSessions();
+        sessionsList.addSession(session);
         User u = userList.get(arg0 - 1);
-        foundSessionsList.addAll(u.chercherSessions(sessions, null, null, null, null, null));
+        foundSessionsList.addAll(sessionsList.chercherSession(u, null, null, null, null, null));
     }
 
     @Then("I should find {int} sessions")
