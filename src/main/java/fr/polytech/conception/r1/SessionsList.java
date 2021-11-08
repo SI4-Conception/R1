@@ -38,6 +38,7 @@ public class SessionsList
                 .filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur())))
                 .filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
+                .filter(s -> !s.getOrganisateur().isBlacklisted(user))
                 .collect(Collectors.toList());
     }
 

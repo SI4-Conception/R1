@@ -31,6 +31,7 @@ public class User
     private List<User> friends = new ArrayList<>();
     private List<User> friendsRequested = new ArrayList<>();
     private List<User> friendsRequests = new ArrayList<>();
+    private List<User> blacklistedUsers = new ArrayList<>();
 
     public User()
     {
@@ -318,5 +319,23 @@ public class User
     public Conversation startConversation(User user2, String content)
     {
         return new Conversation(this, user2, content);
+    }
+
+    public void blacklist(User user)
+    {
+        if(!this.blacklistedUsers.contains(user))
+        {
+            this.blacklistedUsers.add(user);
+        }
+    }
+
+    public void unblacklist(User user)
+    {
+        this.blacklistedUsers.remove(user);
+    }
+
+    public boolean isBlacklisted(User user)
+    {
+        return this.blacklistedUsers.contains(user);
     }
 }
