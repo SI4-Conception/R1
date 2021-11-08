@@ -3,8 +3,6 @@ package fr.polytech.conception.r1;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.profile.User;
 
@@ -194,6 +192,10 @@ public class Session
         if(reserveAuxAmis && !organisateur.getFriends().contains(participant))
         {
             throw new InvalidSessionDataException("Cette session est reservee aux amis de l'organisateur, vous n'en faites pas partie.");
+        }
+        if(organisateur.haveIBlacklistedUser(participant))
+        {
+            throw new InvalidSessionDataException("T'es blacklist bro");
         }
         this.participants.add(participant);
     }

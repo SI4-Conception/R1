@@ -334,7 +334,7 @@ public class User
         this.blacklistedUsers.remove(user);
     }
 
-    public boolean isBlacklisted(User user)
+    public boolean haveIBlacklistedUser(User user)
     {
         return this.blacklistedUsers.contains(user);
     }
