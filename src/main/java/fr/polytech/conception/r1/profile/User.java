@@ -2,12 +2,10 @@ package fr.polytech.conception.r1.profile;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.Conversation;
 import fr.polytech.conception.r1.InvalidSessionDataException;

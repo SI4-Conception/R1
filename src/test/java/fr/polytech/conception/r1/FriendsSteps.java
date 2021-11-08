@@ -142,5 +142,4 @@ public class FriendsSteps
     {
         Assert.assertEquals(arg0, foundSessionsList.size());
     }
-
 }

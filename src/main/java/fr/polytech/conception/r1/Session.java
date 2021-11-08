@@ -6,7 +6,7 @@ import java.util.List;
 
 import fr.polytech.conception.r1.profile.User;
 
-public class Session
+public class Session implements Comparable
 {
     private ZonedDateTime debut;
     private ZonedDateTime fin;
@@ -198,5 +198,13 @@ public class Session
             throw new InvalidSessionDataException("T'es blacklist bro");
         }
         this.participants.add(participant);
+    }
+
+    @Override
+    public int compareTo(Object o)
+    {
+        int thisValue = 0; // 1/(2x) + y/2
+        int otherValue = 0;
+        return 0;
     }
 }
