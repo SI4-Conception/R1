@@ -11,27 +11,58 @@ import java.time.ZonedDateTime;
 
 public class SessionSteps
 {
-    private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
-    private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
-    private final ZonedDateTime validDateTimeBegin2 = ZonedDateTime.parse("2031-02-01T12:00:00.000+01:00[Europe/Paris]");
-    private final ZonedDateTime validDateTimeEnd2 = ZonedDateTime.parse("2031-02-01T15:00:00.000+01:00[Europe/Paris]");
+    private ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
+    private ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
+    private int validMinParticipants = 4;
+    private int validMaxParticipants = 55;
     private final ZonedDateTime invalidDateTimeBegin = ZonedDateTime.parse("2030-02-02T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEndSubscription = ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeEndSubscription = ZonedDateTime.parse("2035-01-01T12:00:00.000+01:00[Europe/Paris]");
-    private final String validAddress = "14 rue Bolchaia Loubianka";
-    private final Sport validSport = Sport.KAYAK;
+    private String validAddress = "14 rue Bolchaia Loubianka";
+    private Sport validSport = Sport.KAYAK;
     private final User julien = new User();
     private User louis = new User();
 
     private Session session = null;
 
-    @Given("valid datas for the session")
-    public void validDatasForTheSession()
+    @Given("Valid begin time for the session: {string}")
+    public void validBeginTimeForTheSession(String arg0)
     {
+        validDateTimeBegin = ZonedDateTime.parse(arg0);
     }
 
-    @When("I create the session")
+    @Given("Valid end time for the session: {string}")
+    public void validEndTimeForTheSession(String arg0)
+    {
+        validDateTimeEnd = ZonedDateTime.parse(arg0);
+    }
+
+    @Given("Valid address for the session {string}")
+    public void validAddressForTheSession(String arg0)
+    {
+        validAddress = arg0;
+    }
+
+    @Given("Valid sport for the session {string}")
+    public void validSportForTheSession(String arg0)
+    {
+        validSport = Sport.getByName(arg0);
+    }
+
+    @Given("Valid number of min participants: {int}")
+    public void validNumberOfMinParticipants(int arg0)
+    {
+        validMinParticipants = arg0;
+    }
+
+    @Given("Valid number of max participants: {int}")
+    public void validNumberOfMaxParticipants(int arg0)
+    {
+        validMaxParticipants = arg0;
+    }
+
+    @When("I create the session with these valid data")
     public void iCreateTheSession()
     {
         try
@@ -52,7 +83,7 @@ public class SessionSteps
     }
 
 
-    @Given("Previously created session")
+    @Given("Previously created session without any condition for participants")
     public void previouslyCreatedSession()
     {
         try
@@ -67,31 +98,22 @@ public class SessionSteps
     }
 
     @When("I change the session settings with valid datas")
-    public void iChangeTheSessionSettingsWithValidDatas()
+    public void iChangeTheSessionSettingsWithValidDatas() throws InvalidSessionDataException
     {
-        // TODO: change session settings
-        try
-        {
-            session.setMaxParticipants(55);
-            session.setMinParticipants(4);
-            session.setFin(validDateTimeEnd2);
-            session.setDebut(validDateTimeBegin2);
-        }
-        catch (InvalidSessionDataException e)
-        {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        session.setMaxParticipants(validMaxParticipants);
+        session.setMinParticipants(validMinParticipants);
+        session.setFin(validDateTimeEnd);
+        session.setDebut(validDateTimeBegin);
     }
 
     @Then("I should have the changed valid session")
     public void iShouldHaveTheChangedValidSession()
     {
         Assert.assertNotNull(session);
-        Assert.assertEquals(4, session.getMinParticipants());
-        Assert.assertEquals(55, session.getMaxParticipants());
-        Assert.assertEquals(validDateTimeEnd2, session.getFin());
-        Assert.assertEquals(validDateTimeBegin2, session.getDebut());
+        Assert.assertEquals(validMinParticipants, session.getMinParticipants());
+        Assert.assertEquals(validMaxParticipants, session.getMaxParticipants());
+        Assert.assertEquals(validDateTimeEnd, session.getFin());
+        Assert.assertEquals(validDateTimeBegin, session.getDebut());
     }
 
     @Given("Invalid time data for the session")
@@ -294,5 +316,21 @@ public class SessionSteps
     public void iCannotParticipateASecondTimeToTheSession()
     {
         Assert.assertFalse(louis.participer(session));
+    }
+
+    @When("{int} users participate to the session")
+    public void usersParticipateToTheSession(int arg0)
+    {
+        for(int i = 0; i < arg0; i++)
+        {
+            User u = new User();
+            Assert.assertTrue(u.participer(session));
+        }
+    }
+
+    @Then("I cannot set the max number of participants to {int}")
+    public void iCannotSetTheMaxNumberOfParticipantsTo(int arg0)
+    {
+        Assert.assertThrows(InvalidSessionDataException.class, () -> session.setMaxParticipants(arg0));
     }
 }

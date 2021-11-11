@@ -1,12 +1,19 @@
 Feature: Features of my session
 
   Scenario: Creating a new session
-    Given valid datas for the session
-    When I create the session
+    Given Valid begin time for the session: "2030-02-01T12:00:00.000+01:00[Europe/Paris]"
+    Given Valid end time for the session: "2030-02-01T15:00:00.000+01:00[Europe/Paris]"
+    Given Valid address for the session "14 rue Bolchaia Loubianka"
+    Given Valid sport for the session "Kayak"
+    When I create the session with these valid data
     Then I should have a valid session
 
   Scenario: Changing settings of an existing session
-    Given Previously created session
+    Given Previously created session without any condition for participants
+    Given Valid begin time for the session: "2031-02-01T12:00:00.000+01:00[Europe/Paris]"
+    Given Valid end time for the session: "2031-02-01T15:00:00.000+01:00[Europe/Paris]"
+    Given Valid number of min participants: 4
+    Given Valid number of max participants: 55
     When I change the session settings with valid datas
     Then I should have the changed valid session
 
@@ -41,7 +48,7 @@ Feature: Features of my session
     Then I should have a session with 2 min and 3 max users
 
   Scenario: Trying to change session with correct limit subscription date
-    Given Previously created session
+    Given Previously created session without any condition for participants
     When I try to set a valid end subscription date
     Then I should have a session with this new end subscription date
 
@@ -49,3 +56,8 @@ Feature: Features of my session
     Given Previously created session with valid end subscription date
     When I try to set a invalid end subscription date
     Then I should have a session with old end subscription date
+
+  Scenario: Trying to set less max users than the current number of participants
+    Given Previously created session with valid end subscription date
+    When 5 users participate to the session
+    Then I cannot set the max number of participants to 4

@@ -37,7 +37,7 @@ Feature: profile editing features
 
   Scenario: valid email change
     Given an existing account and a valid email address "romainbaudet74@gmail.com"
-    When I change my password to the valid email address
+    When I change my email to the valid email address
     Then My email address should be updated
 
   Scenario: wrong email
@@ -52,7 +52,7 @@ Feature: profile editing features
 
   Scenario: valid first name change
     Given an existing account and a valid first name "Serge"
-    When I change my address to the valid first name
+    When I change my first name to the valid first name
     Then My first name should be updated
 
   Scenario: valid last name change

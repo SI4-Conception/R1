@@ -4,20 +4,23 @@ import org.junit.Assert;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import fr.polytech.conception.r1.profile.InvalidFriendshipException;
 import fr.polytech.conception.r1.profile.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.eo.Se;
 
 public class FriendsSteps
 {
     private List<User> userList=new LinkedList<>();
     private Session session;
-    private final List<Session> foundSessionsList = new ArrayList<>();
+    private final List<List<Session>> foundSessionsList = new ArrayList<>();
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
 
@@ -27,6 +30,7 @@ public class FriendsSteps
         for(int i=0; i<arg0; i++)
         {
             userList.add(new User());
+            foundSessionsList.add(new ArrayList<>());
         }
     }
 
@@ -68,7 +72,7 @@ public class FriendsSteps
         Assert.assertFalse(u2.getFriends().contains(u1));
     }
 
-    @When("User {int} resends a friend request to user {int}")
+    @When("User {int} cannot resends a friend request to user {int}")
     public void userResendsAFriendRequestToUser(int arg0, int arg1)
     {
         User u1 = userList.get(arg0-1);
@@ -81,6 +85,7 @@ public class FriendsSteps
     {
         for(int i=0; i<arg0; i++)
         {
+            foundSessionsList.add(new ArrayList<>());
             User u = new User();
             userList.add(u);
             if(i > 0)
@@ -134,12 +139,12 @@ public class FriendsSteps
         sessionsList.cleanAllSessions();
         sessionsList.addSession(session);
         User u = userList.get(arg0 - 1);
-        foundSessionsList.addAll(sessionsList.chercherSession(u, null, null, null, null, null));
+        foundSessionsList.get(arg0-1).addAll(sessionsList.chercherSession(u, null, null, null, null, null));
     }
 
-    @Then("I should find {int} sessions")
-    public void iShouldFindSessions(int arg0)
+    @Then("User {int} should find {int} sessions")
+    public void iShouldFindSessions(int arg0, int arg1)
     {
-        Assert.assertEquals(arg0, foundSessionsList.size());
+        Assert.assertEquals(arg1, foundSessionsList.get(arg0-1).size());
     }
 }

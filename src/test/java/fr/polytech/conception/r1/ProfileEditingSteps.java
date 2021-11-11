@@ -297,7 +297,7 @@ public class ProfileEditingSteps
         newEmail = email;
     }
 
-    @When("I change my password to the valid email address")
+    @When("I change my email to the valid email address")
     public void iChangeMyPasswordToTheValidEmailAddress()
     {
         try
@@ -412,7 +412,7 @@ public class ProfileEditingSteps
         newFirstName = firstName;
     }
 
-    @When("I change my address to the valid first name")
+    @When("I change my first name to the valid first name")
     public void iChangeMyAddressToTheValidFirstName()
     {
         try

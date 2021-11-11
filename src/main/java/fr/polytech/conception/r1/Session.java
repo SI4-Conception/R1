@@ -118,6 +118,10 @@ public class Session implements Comparable
 
     public void setMaxParticipants(int maxParticipants) throws InvalidSessionDataException
     {
+        if(participants.size() > maxParticipants)
+        {
+            throw new InvalidSessionDataException("There are already " + participants.size() + " participants for this session");
+        }
         checkParticipantsBounds(minParticipants, maxParticipants);
         this.maxParticipants = maxParticipants;
     }

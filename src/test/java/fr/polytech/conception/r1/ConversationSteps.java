@@ -15,7 +15,7 @@ public class ConversationSteps
     private List<User> userList=new LinkedList<>();
     private Conversation conv;
 
-    @Given("{int} Users who want to talk")
+    @Given("{int} Users who wants to talk")
     public void usersWhoWantToTalk(int arg0)
     {
         for(int i=0; i<arg0; i++)
@@ -24,15 +24,15 @@ public class ConversationSteps
         }
     }
 
-    @When("User {int} sends starts a conversation with user {int}")
+    @When("User {int} starts a conversation with user {int}")
     public void userSendsStartsAConversationWithUser(int arg0, int arg1)
     {
         conv = userList.get(arg0-1).startConversation(userList.get(arg1-1), "hey");
     }
 
-    @Then("I should find one message in the conversation")
-    public void iShouldFindOneMessageInTheConversation()
+    @Then("There is {int} message in the whole conversation")
+    public void iShouldFindOneMessageInTheConversation(int arg0)
     {
-        Assert.assertEquals(1, conv.numberMessages());
+        Assert.assertEquals(arg0, conv.numberMessages());
     }
 }
