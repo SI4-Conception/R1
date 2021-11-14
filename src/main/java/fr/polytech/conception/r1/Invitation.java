@@ -33,7 +33,7 @@ public class Invitation
     public enum Status {
         PENDING,
         //ACCEPTED,
-        DELINED,
+        DECLINED,
         ARCHIVED,
         BLACKLISTED
     }

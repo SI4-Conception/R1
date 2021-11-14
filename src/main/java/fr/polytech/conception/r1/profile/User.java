@@ -377,7 +377,7 @@ public class User
             throw new IllegalArgumentException("Given session not organized by inviting user");
         }
 
-        if (session.getDebut().isAfter(ZonedDateTime.now()))
+        if (session.getDebut().isBefore(ZonedDateTime.now()))
         {
             throw new IllegalArgumentException("The invitation must occur before the session starts");
         }
@@ -437,7 +437,7 @@ public class User
             throw new IllegalArgumentException("Invitation to decline is not pending");
         }
         invitationReceived.get(Invitation.Status.PENDING).remove(invitation);
-        invitationReceived.get(Invitation.Status.DELINED).add(invitation);
+        invitationReceived.get(Invitation.Status.DECLINED).add(invitation);
     }
 
     public boolean isInvitationPending(Invitation invitation)
@@ -447,24 +447,24 @@ public class User
 
     public boolean isInvitationSentPending(Invitation invitation)
     {
-        if (invitation.getSession().getDebut().isAfter(ZonedDateTime.now()))
+        if (invitation.getSession().getDebut().isBefore(ZonedDateTime.now()))
         {
             throw new IllegalArgumentException("Invitation can only be checked if it hasn't occured yet");
         }
         return invitation.getGuest().invitationReceived.get(Invitation.Status.PENDING).contains(invitation) || invitation.getGuest().invitationReceived.get(Invitation.Status.BLACKLISTED).contains(invitation);
     }
 
-    public boolean isInvitationDeclied(Invitation invitation)
+    public boolean isInvitationDeclined(Invitation invitation)
     {
-        return this.invitationReceived.get(Invitation.Status.DELINED).contains(invitation);
+        return this.invitationReceived.get(Invitation.Status.DECLINED).contains(invitation);
     }
 
     public boolean isInvitationSentDeclined(Invitation invitation)
     {
-        if (invitation.getSession().getDebut().isAfter(ZonedDateTime.now()))
+        if (invitation.getSession().getDebut().isBefore(ZonedDateTime.now()))
         {
             throw new IllegalArgumentException("Invitation can only be checked if it hasn't occured yet");
         }
-        return invitation.getGuest().invitationReceived.get(Invitation.Status.DELINED).contains(invitation);
+        return invitation.getGuest().invitationReceived.get(Invitation.Status.DECLINED).contains(invitation);
     }
 }
