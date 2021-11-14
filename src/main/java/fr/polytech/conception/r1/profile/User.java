@@ -2,13 +2,19 @@ package fr.polytech.conception.r1.profile;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.Conversation;
 import fr.polytech.conception.r1.InvalidSessionDataException;
+import fr.polytech.conception.r1.Invitation;
 import fr.polytech.conception.r1.Level;
 import fr.polytech.conception.r1.Session;
 import fr.polytech.conception.r1.Sport;
@@ -30,6 +36,11 @@ public class User
     private List<User> friendsRequested = new ArrayList<>();
     private List<User> friendsRequests = new ArrayList<>();
     private List<User> blacklistedUsers = new ArrayList<>();
+
+    private Set<Invitation> invitationSent = new HashSet<>();
+    private Map<Invitation.Status, Set<Invitation>> invitationReceived =
+            Arrays.stream(Invitation.Status.values())
+                    .collect(Collectors.toUnmodifiableMap(v -> v, v -> new HashSet<>()));
 
     public User()
     {
@@ -321,19 +332,139 @@ public class User
 
     public void blacklist(User user)
     {
-        if(!this.blacklistedUsers.contains(user))
+        if (!this.blacklistedUsers.contains(user))
         {
             this.blacklistedUsers.add(user);
+            Set<Invitation> inv = this.invitationReceived.get(Invitation.Status.PENDING).stream().filter(i -> i.getOrganizer().equals(user)).collect(Collectors.toSet());
+            if (!inv.isEmpty())
+            {
+                this.invitationReceived.get(Invitation.Status.PENDING).removeAll(inv);
+                this.invitationReceived.get(Invitation.Status.BLACKLISTED).addAll(inv);
+            }
         }
     }
 
     public void unblacklist(User user)
     {
         this.blacklistedUsers.remove(user);
+        Set<Invitation> inv = this.invitationReceived.get(Invitation.Status.BLACKLISTED).stream().filter(i -> i.getOrganizer().equals(user)).collect(Collectors.toSet());
+        if (!inv.isEmpty())
+        {
+            this.invitationReceived.get(Invitation.Status.BLACKLISTED).removeAll(inv);
+            this.invitationReceived.get(Invitation.Status.PENDING).addAll(inv);
+        }
     }
 
     public boolean haveIBlacklistedUser(User user)
     {
         return this.blacklistedUsers.contains(user);
+    }
+
+    //public boolean hasSentInvitationTo(Session session, User guest)
+    //{
+    //    return invitationSent.stream().anyMatch(i -> i.getGuest().equals(guest)&&i.getSession().equals(session));
+    //}
+
+    public boolean hasSentInvitation(Invitation invitation)
+    {
+        return this.invitationSent.contains(invitation);
+    }
+
+    public Invitation invite(Session session, User guest)
+    {
+        if (!this.getListSessionsOrganisees().contains(session))
+        {
+            throw new IllegalArgumentException("Given session not organized by inviting user");
+        }
+
+        if (session.getDebut().isAfter(ZonedDateTime.now()))
+        {
+            throw new IllegalArgumentException("The invitation must occur before the session starts");
+        }
+
+        if (this.invitationSent.stream().anyMatch(i -> i.getGuest().equals(guest) && i.getSession().equals(session)))
+        {
+            throw new IllegalArgumentException("Invitation already sent");
+        }
+
+        if (session.getParticipants().contains(guest))
+        {
+            throw new IllegalArgumentException("Guest already participating session");
+        }
+
+        Invitation inv = new Invitation(this, guest, session);
+
+        this.invitationSent.add(inv);
+        guest.receiveInvitation(inv);
+        return inv;
+    }
+
+    private void receiveInvitation(Invitation invitation)
+    {
+        if (this.haveIBlacklistedUser(invitation.getOrganizer()))
+        {
+            invitationReceived.get(Invitation.Status.BLACKLISTED).add(invitation);
+        }
+        else
+        {
+            invitationReceived.get(Invitation.Status.PENDING).add(invitation);
+        }
+    }
+
+    public void acceptInvitation(Invitation invitation) throws InvalidSessionDataException
+    {
+        if (!invitationReceived.get(Invitation.Status.PENDING).contains(invitation))
+        {
+            throw new IllegalArgumentException("Invitation to accept is not pending");
+        }
+        try
+        {
+            invitation.getSession().participer(this);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            throw new InvalidSessionDataException("User cannot participate to session");
+        }
+        invitationReceived.get(Invitation.Status.PENDING).remove(invitation);
+        //invitationReceived.get(Invitation.Status.ACCEPTED).add(invitation);
+        //todo trouver un moyen de signaler à user que l'invitation a été acceptée -> notifications (pattern observer sans doute)
+    }
+
+    public void declineInvitation(Invitation invitation)
+    {
+        if (!invitationReceived.get(Invitation.Status.PENDING).contains(invitation))
+        {
+            throw new IllegalArgumentException("Invitation to decline is not pending");
+        }
+        invitationReceived.get(Invitation.Status.PENDING).remove(invitation);
+        invitationReceived.get(Invitation.Status.DELINED).add(invitation);
+    }
+
+    public boolean isInvitationPending(Invitation invitation)
+    {
+        return this.invitationReceived.get(Invitation.Status.PENDING).contains(invitation);
+    }
+
+    public boolean isInvitationSentPending(Invitation invitation)
+    {
+        if (invitation.getSession().getDebut().isAfter(ZonedDateTime.now()))
+        {
+            throw new IllegalArgumentException("Invitation can only be checked if it hasn't occured yet");
+        }
+        return invitation.getGuest().invitationReceived.get(Invitation.Status.PENDING).contains(invitation) || invitation.getGuest().invitationReceived.get(Invitation.Status.BLACKLISTED).contains(invitation);
+    }
+
+    public boolean isInvitationDeclied(Invitation invitation)
+    {
+        return this.invitationReceived.get(Invitation.Status.DELINED).contains(invitation);
+    }
+
+    public boolean isInvitationSentDeclined(Invitation invitation)
+    {
+        if (invitation.getSession().getDebut().isAfter(ZonedDateTime.now()))
+        {
+            throw new IllegalArgumentException("Invitation can only be checked if it hasn't occured yet");
+        }
+        return invitation.getGuest().invitationReceived.get(Invitation.Status.DELINED).contains(invitation);
     }
 }
