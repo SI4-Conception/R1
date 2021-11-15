@@ -17,6 +17,7 @@ import fr.polytech.conception.r1.InvalidSessionDataException;
 import fr.polytech.conception.r1.Invitation;
 import fr.polytech.conception.r1.Level;
 import fr.polytech.conception.r1.Session;
+import fr.polytech.conception.r1.SessionOneshot;
 import fr.polytech.conception.r1.Sport;
 
 public class User
@@ -68,7 +69,7 @@ public class User
         }
     }
 
-    public boolean participer(Session session)
+    public boolean participer(SessionOneshot session)
     {
         try
         {
@@ -365,7 +366,7 @@ public class User
         return this.invitationSent.contains(invitation);
     }
 
-    public Invitation invite(Session session, User guest)
+    public Invitation invite(SessionOneshot session, User guest)
     {
         if (!this.getListSessionsOrganisees().contains(session))
         {

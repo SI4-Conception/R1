@@ -29,10 +29,10 @@ public class MultiSessionsSteps
             User schtroumpfALunettes = new User("Schtroumpf a lunettes", "schtroumpf", "schtroumpfalunettes@mail.com");
             usersList.add(pikachu);
             usersList.add(schtroumpfALunettes);
-            sessionsList.addSession(new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", Sport.VOLLEY_BALL, pikachu));
-            sessionsList.addSession(new Session(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, pikachu));
-            sessionsList.addSession(new Session(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
-            sessionsList.addSession(new Session(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes));
+            sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", Sport.VOLLEY_BALL, pikachu, false));
+            sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, pikachu, false));
+            sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes, false));
+            sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes, false));
         }
         catch (Exception e)
         {

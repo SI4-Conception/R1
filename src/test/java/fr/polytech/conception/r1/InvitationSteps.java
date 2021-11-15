@@ -17,7 +17,7 @@ public class InvitationSteps
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
     private final List<User> userList = new LinkedList<>();
-    private Session session;
+    private SessionOneshot session;
     private Invitation invitation;
 
     @Given("{int} distinct users")
@@ -158,7 +158,7 @@ public class InvitationSteps
     public void aSessionOrganizedByUser(int arg0) throws InvalidSessionDataException
     {
         User u = userList.get(arg0 - 1);
-        session = new Session(validDateTimeBegin, validDateTimeEnd, "75° 06′ 00″ S, 123° 19′ 58″ E", Sport.SKI, u);
+        session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, "75° 06′ 00″ S, 123° 19′ 58″ E", Sport.SKI, u, false);
     }
 
     @Then("user {int} doesn't see a pending invitation")

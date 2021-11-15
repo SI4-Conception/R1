@@ -2,10 +2,10 @@ Feature: multi-sessions operations
   We begin with the following configuration:
   User pikachu = new User("Pikachu", "P1k4chu06", "pika.chu@mail.com");
   User schtroumpfALunettes = new User("Schtroumpf a lunettes", "schtroumpf", "schtroumpfalunettes@mail.com");
-  new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", Sport.VOLLEY_BALL, pikachu);
-  new Session(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, pikachu);
-  new Session(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes);
-  new Session(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes);
+  new SessionOneshot(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T15:00:00.000+01:00[Europe/Paris]"), "", Sport.VOLLEY_BALL, pikachu);
+  new SessionOneshot(ZonedDateTime.parse("2030-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, pikachu);
+  new SessionOneshot(ZonedDateTime.parse("2031-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes);
+  new SessionOneshot(ZonedDateTime.parse("2032-01-02T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-02T15:00:00.000+01:00[Europe/Paris]"), "", Sport.TENNIS, schtroumpfALunettes);
 
   Scenario: Search session between dates
     Given Lists of valid sessions and users

@@ -6,9 +6,9 @@ public class Invitation
 {
     private final User organizer;
     private final User guest;
-    private final Session session;
+    private final SessionOneshot session;
 
-    public Invitation(User organizer, User guest, Session session)
+    public Invitation(User organizer, User guest, SessionOneshot session)
     {
         this.organizer = organizer;
         this.guest = guest;
@@ -25,7 +25,7 @@ public class Invitation
         return guest;
     }
 
-    public Session getSession()
+    public SessionOneshot getSession()
     {
         return session;
     }

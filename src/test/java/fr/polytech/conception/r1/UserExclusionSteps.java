@@ -14,7 +14,7 @@ import io.cucumber.java.en.When;
 public class UserExclusionSteps
 {
     private SessionsList sessionsList;
-    private Session session;
+    private SessionOneshot session;
     private final User helene = new User("Helene", "helene06", "helene@mail.com");
     private final User zhang = new User("Zhang", "zhangFromBolivia", "zhang@mail.com");
 
@@ -26,7 +26,7 @@ public class UserExclusionSteps
     public void aSessionCreatedByHelene() throws InvalidSessionDataException
     {
         sessionsList = SessionsList.getInstance();
-        session = new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.ACROSPORT, helene);
+        session = new SessionOneshot(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.ACROSPORT, helene, false);
         sessionsList.addSession(session);
     }
 

@@ -4,85 +4,30 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.profile.User;
 
-public class Session implements Comparable<Session>
+public abstract class Session
 {
-    private ZonedDateTime debut;
-    private ZonedDateTime fin;
-    private ZonedDateTime dateLimiteInscription;
     private String adresse;
 
-    private boolean reserveAuxAmis = false;
+    protected boolean reserveAuxAmis = false;
     private int minParticipants = 1;
     /**
      * Set maxParticipants to zero to specify infinite number of participants
      */
-    private int maxParticipants = 0;
+    protected int maxParticipants = 0;
     private Level difficulte = Level.DEBUTANT;
-    private boolean estAnnulee = false;
     private Sport sport;
-    private User organisateur;
-    private List<User> participants = new LinkedList<>();
-    private boolean isSponsored = false;
-    private double sponsoredSessionPrice = 0d;
+    protected User organisateur;
 
-    public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
+    public Session(String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {
         this.organisateur = organisateur;
-        if (organisateur.getListSessionsOrganisees().stream().anyMatch(session ->
-                Util.intersect(debut, fin, session)))
-            throw new InvalidSessionDataException("Création de 2 sessions se déroulant au même moment");
-        checkDatesOrder(fin, debut);
-        this.debut = debut;
-        this.fin = fin;
         this.adresse = adresse;
         this.sport = sport;
-        this.dateLimiteInscription = debut;
         this.organisateur.getListSessionsOrganisees().add(this);
-    }
-
-    public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, User organisateur, boolean sponsored) throws InvalidSessionDataException
-    {
-        this(debut, fin, adresse, sport, organisateur);
-        isSponsored = sponsored;
-    }
-
-    public ZonedDateTime getDebut()
-    {
-        return debut;
-    }
-
-    public void setDebut(ZonedDateTime debut) throws InvalidSessionDataException
-    {
-        checkDatesOrder(fin, debut);
-        this.debut = debut;
-    }
-
-    public ZonedDateTime getFin()
-    {
-        return fin;
-    }
-
-    public void setFin(ZonedDateTime fin) throws InvalidSessionDataException
-    {
-        checkDatesOrder(fin, debut);
-        this.fin = fin;
-    }
-
-    public ZonedDateTime getDateLimiteInscription()
-    {
-        return dateLimiteInscription;
-    }
-
-    public void setDateLimiteInscription(ZonedDateTime dateLimiteInscription) throws InvalidSessionDataException
-    {
-        if (dateLimiteInscription.isAfter(debut))
-        {
-            throw new InvalidSessionDataException("La date limite d'inscription doit etre avant le debut de la seance");
-        }
-        this.dateLimiteInscription = dateLimiteInscription;
     }
 
     public String getAdresse()
@@ -123,10 +68,6 @@ public class Session implements Comparable<Session>
 
     public void setMaxParticipants(int maxParticipants) throws InvalidSessionDataException
     {
-        if(participants.size() > maxParticipants)
-        {
-            throw new InvalidSessionDataException("There are already " + participants.size() + " participants for this session");
-        }
         checkParticipantsBounds(minParticipants, maxParticipants);
         this.maxParticipants = maxParticipants;
     }
@@ -139,16 +80,6 @@ public class Session implements Comparable<Session>
     public void setDifficulte(Level difficulte)
     {
         this.difficulte = difficulte;
-    }
-
-    public boolean isEstAnnulee()
-    {
-        return estAnnulee;
-    }
-
-    public void setEstAnnulee(boolean estAnnulee)
-    {
-        this.estAnnulee = estAnnulee;
     }
 
     public Sport getSport()
@@ -166,12 +97,7 @@ public class Session implements Comparable<Session>
         return organisateur;
     }
 
-    public List<User> getParticipants()
-    {
-        return participants;
-    }
-
-    private void checkDatesOrder(ZonedDateTime fin, ZonedDateTime debut) throws InvalidSessionDataException
+    void checkDatesOrder(ZonedDateTime fin, ZonedDateTime debut) throws InvalidSessionDataException
     {
         if (fin.isBefore(debut))
         {
@@ -188,67 +114,5 @@ public class Session implements Comparable<Session>
         }
     }
 
-    public void participer(User participant) throws InvalidSessionDataException
-    {
-        if(participants.contains(participant))
-        {
-            throw new InvalidSessionDataException("Vous participez deja a cette session.");
-        }
-        if(maxParticipants != 0 && participants.size() >= maxParticipants) // maxParticipants = 0 -> infinite
-        {
-            throw new InvalidSessionDataException("Il y a deja trop de participants a cette session.");
-        }
-        if(reserveAuxAmis && !organisateur.getFriends().contains(participant))
-        {
-            throw new InvalidSessionDataException("Cette session est reservee aux amis de l'organisateur, vous n'en faites pas partie.");
-        }
-        if(organisateur.haveIBlacklistedUser(participant))
-        {
-            throw new InvalidSessionDataException("T'es blacklist bro");
-        }
-        this.participants.add(participant);
-    }
-
-    public boolean excludeUser(User user)
-    {
-        boolean r = participants.contains(user) && user.getListSessions().contains(this);
-        participants.remove(user);
-        user.getListSessions().remove(this);
-        return r;
-    }
-
-    public void setSponsored(boolean sponsored)
-    {
-        isSponsored = sponsored;
-    }
-
-    public boolean isSponsored()
-    {
-        return isSponsored;
-    }
-
-    public double getPrice()
-    {
-        return sponsoredSessionPrice;
-    }
-
-    public void setPrice(double price) throws InvalidSessionDataException
-    {
-        if(!isSponsored)
-        {
-            throw new InvalidSessionDataException("Cannot set price of unsponsored session");
-        }
-        sponsoredSessionPrice = price;
-    }
-
-    @Override
-    public int compareTo(Session other)
-    {
-        ZonedDateTime now = ZonedDateTime.now();
-        double daysBeforeThisSession = (Duration.between(this.debut, now).getSeconds() / 86400d) + 1;
-        double daysBeforeOtherSession = (Duration.between(other.getDebut(), now).getSeconds() / 86400d) + 1;
-        double thisValue = 1/(2 * daysBeforeThisSession) + (isSponsored ? 0.5 : 0);
-        double otherValue = 1/(2 * daysBeforeOtherSession) + (other.isSponsored() ? 0.5 : 0);
-        return (int) ((thisValue - otherValue) * 1000);
-    }
+    public abstract Stream<? extends SessionOneshot> getOneshots(ZonedDateTime fin);
 }

@@ -15,7 +15,7 @@ public class BlacklistingSteps
     private User theo;
     private User enzo;
     private SessionsList sessionsList;
-    private Session session;
+    private SessionOneshot session;
 
     @Given("No session initially")
     public void noSessionInitially()
@@ -34,10 +34,10 @@ public class BlacklistingSteps
     @When("Theo creates some sessions")
     public void enzoCreatesSomeSessions() throws InvalidSessionDataException
     {
-        sessionsList.addSession(new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.ACROSPORT, theo));
-        sessionsList.addSession(new Session(ZonedDateTime.parse("2031-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.TENNIS, theo));
-        sessionsList.addSession(new Session(ZonedDateTime.parse("2032-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.KAYAK, theo));
-        sessionsList.addSession(new Session(ZonedDateTime.parse("2033-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2033-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.SKI, theo));
+        sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.ACROSPORT, theo, false));
+        sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2031-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2031-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.TENNIS, theo, false));
+        sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2032-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2032-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.KAYAK, theo, false));
+        sessionsList.addSession(new SessionOneshot(ZonedDateTime.parse("2033-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2033-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.SKI, theo, false));
     }
 
     @When("Theo blacklists Enzo")
@@ -61,7 +61,7 @@ public class BlacklistingSteps
     @When("Theo creates one sessions")
     public void theoCreatesOneSessions() throws InvalidSessionDataException
     {
-        session = new Session(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.ACROSPORT, theo);
+        session = new SessionOneshot(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.ACROSPORT, theo, false);
     }
 
     @Then("Enzo cannot participate to the session created by Theo")

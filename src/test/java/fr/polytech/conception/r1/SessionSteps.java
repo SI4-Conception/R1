@@ -24,7 +24,7 @@ public class SessionSteps
     private final User julien = new User();
     private final User louis = new User();
 
-    private Session session = null;
+    private SessionOneshot session = null;
 
     @Given("Valid begin time for the session: {string}")
     public void validBeginTimeForTheSession(String arg0)
@@ -67,7 +67,7 @@ public class SessionSteps
     {
         try
         {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
         }
         catch (InvalidSessionDataException e)
         {
@@ -88,7 +88,7 @@ public class SessionSteps
     {
         try
         {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
         }
         catch (InvalidSessionDataException e)
         {
@@ -126,7 +126,7 @@ public class SessionSteps
     {
         try
         {
-            session = new Session(invalidDateTimeBegin, invalidDateTimeEnd, validAddress, validSport, julien);
+            session = new SessionOneshot(invalidDateTimeBegin, invalidDateTimeEnd, validAddress, validSport, julien, false);
             Assert.fail();
         }
         catch (InvalidSessionDataException e)
@@ -145,7 +145,7 @@ public class SessionSteps
     public void wantsToCreateASessionAtTheSameTimeAsAnotherSessionHeHasAlreadyCreated(String arg0)
     {
         try {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
         }
         catch (InvalidSessionDataException e)
         {
@@ -158,7 +158,7 @@ public class SessionSteps
     public void iTryToCreateASessionAtTheSameTimeAsAnotherSessionIHaveAlreadyCreated()
     {
         try {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
             Assert.fail();
         }
         catch (InvalidSessionDataException e)
@@ -177,7 +177,7 @@ public class SessionSteps
     {
         try
         {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
             session.setMaxParticipants(arg1);
             session.setMinParticipants(arg0);
         }
@@ -244,7 +244,7 @@ public class SessionSteps
     {
         try
         {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport,julien);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport,julien, false);
             session.setDateLimiteInscription(validDateTimeEndSubscription);
         }
         catch (InvalidSessionDataException e)
@@ -290,7 +290,7 @@ public class SessionSteps
     {
         try
         {
-            session = new Session(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
             session.setMaxParticipants(arg0);
             for(int i=0; i<arg1; i++)
             {

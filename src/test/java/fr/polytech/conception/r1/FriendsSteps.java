@@ -4,22 +4,19 @@ import org.junit.Assert;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import fr.polytech.conception.r1.profile.InvalidFriendshipException;
 import fr.polytech.conception.r1.profile.User;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.eo.Se;
 
 public class FriendsSteps
 {
     private final List<User> userList=new LinkedList<>();
-    private Session session;
+    private SessionOneshot session;
     private final List<List<Session>> foundSessionsList = new ArrayList<>();
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
@@ -104,7 +101,7 @@ public class FriendsSteps
     public void aSessionCreatedByUserForFriendsOnly(int arg0) throws InvalidSessionDataException
     {
         User u = userList.get(arg0-1);
-        session = new Session(validDateTimeBegin, validDateTimeEnd, "75° 06′ 00″ S, 123° 19′ 58″ E", Sport.SKI, u);
+        session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, "75° 06′ 00″ S, 123° 19′ 58″ E", Sport.SKI, u, false);
         session.setReserveAuxAmis(true);
     }
 
