@@ -51,4 +51,11 @@ public class SessionsList
     {
         sessions.clear();
     }
+
+    public List<Session> defaultSessionSearch(User user)
+    {
+        return sessions.stream().filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur()))).filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
+                .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
+                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user)).sorted().collect(Collectors.toList());
+    }
 }

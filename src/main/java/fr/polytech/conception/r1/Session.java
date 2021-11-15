@@ -1,12 +1,13 @@
 package fr.polytech.conception.r1;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
 import fr.polytech.conception.r1.profile.User;
 
-public class Session implements Comparable
+public class Session implements Comparable<Session>
 {
     private ZonedDateTime debut;
     private ZonedDateTime fin;
@@ -22,13 +23,13 @@ public class Session implements Comparable
     private Level difficulte = Level.DEBUTANT;
     private boolean estAnnulee = false;
     private Sport sport;
-    private final User organisateur;
-    private final List<User> participants = new LinkedList<>();
+    private User organisateur;
+    private List<User> participants = new LinkedList<>();
+    private boolean isSponsored = false;
+    private double sponsoredSessionPrice = 0d;
 
     public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {
-        // TODO: verify here than passed params are corrects
-
         this.organisateur = organisateur;
         if (organisateur.getListSessionsOrganisees().stream().anyMatch(session ->
                 Util.intersect(debut, fin, session)))
@@ -42,7 +43,11 @@ public class Session implements Comparable
         this.organisateur.getListSessionsOrganisees().add(this);
     }
 
-
+    public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, User organisateur, boolean sponsored) throws InvalidSessionDataException
+    {
+        this(debut, fin, adresse, sport, organisateur);
+        isSponsored = sponsored;
+    }
 
     public ZonedDateTime getDebut()
     {
@@ -212,11 +217,38 @@ public class Session implements Comparable
         return r;
     }
 
-    @Override
-    public int compareTo(Object o)
+    public void setSponsored(boolean sponsored)
     {
-        int thisValue = 0; // 1/(2x) + y/2
-        int otherValue = 0;
-        return 0;
+        isSponsored = sponsored;
+    }
+
+    public boolean isSponsored()
+    {
+        return isSponsored;
+    }
+
+    public double getPrice()
+    {
+        return sponsoredSessionPrice;
+    }
+
+    public void setPrice(double price) throws InvalidSessionDataException
+    {
+        if(!isSponsored)
+        {
+            throw new InvalidSessionDataException("Cannot set price of unsponsored session");
+        }
+        sponsoredSessionPrice = price;
+    }
+
+    @Override
+    public int compareTo(Session other)
+    {
+        ZonedDateTime now = ZonedDateTime.now();
+        double daysBeforeThisSession = (Duration.between(this.debut, now).getSeconds() / 86400d) + 1;
+        double daysBeforeOtherSession = (Duration.between(other.getDebut(), now).getSeconds() / 86400d) + 1;
+        double thisValue = 1/(2 * daysBeforeThisSession) + (isSponsored ? 0.5 : 0);
+        double otherValue = 1/(2 * daysBeforeOtherSession) + (other.isSponsored() ? 0.5 : 0);
+        return (int) ((thisValue - otherValue) * 1000);
     }
 }
