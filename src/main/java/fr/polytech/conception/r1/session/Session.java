@@ -109,7 +109,6 @@ public abstract class Session
     {
         if (minParticipants > maxParticipants || minParticipants < 0 || maxParticipants <= 0)
         {
-            System.out.println(maxParticipants);
             throw new InvalidSessionDataException("Le nombre min de participants doit etre <= au nombre max, et leur nombres doivent etre positifs");
         }
     }
