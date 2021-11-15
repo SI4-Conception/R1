@@ -28,17 +28,17 @@ public class User
     private String address;
     private String firstName;
     private String lastName;
-    private Map<Sport, Level> favouriteSports = new HashMap<>();
-    private List<Session> listSessionsOrganisees = new ArrayList<>();
-    private List<Session> listSessions = new ArrayList<>();
+    private final Map<Sport, Level> favouriteSports = new HashMap<>();
+    private final List<Session> listSessionsOrganisees = new ArrayList<>();
+    private final List<Session> listSessions = new ArrayList<>();
 
-    private List<User> friends = new ArrayList<>();
-    private List<User> friendsRequested = new ArrayList<>();
-    private List<User> friendsRequests = new ArrayList<>();
-    private List<User> blacklistedUsers = new ArrayList<>();
+    private final List<User> friends = new ArrayList<>();
+    private final List<User> friendsRequested = new ArrayList<>();
+    private final List<User> friendsRequests = new ArrayList<>();
+    private final List<User> blacklistedUsers = new ArrayList<>();
 
-    private Set<Invitation> invitationSent = new HashSet<>();
-    private Map<Invitation.Status, Set<Invitation>> invitationReceived =
+    private final Set<Invitation> invitationSent = new HashSet<>();
+    private final Map<Invitation.Status, Set<Invitation>> invitationReceived =
             Arrays.stream(Invitation.Status.values())
                     .collect(Collectors.toUnmodifiableMap(v -> v, v -> new HashSet<>()));
 

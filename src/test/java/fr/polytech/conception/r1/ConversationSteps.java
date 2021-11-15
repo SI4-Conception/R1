@@ -12,7 +12,7 @@ import io.cucumber.java.en.When;
 
 public class ConversationSteps
 {
-    private List<User> userList=new LinkedList<>();
+    private final List<User> userList=new LinkedList<>();
     private Conversation conv;
 
     @Given("{int} Users who wants to talk")

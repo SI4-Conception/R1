@@ -22,8 +22,8 @@ public class Session implements Comparable
     private Level difficulte = Level.DEBUTANT;
     private boolean estAnnulee = false;
     private Sport sport;
-    private User organisateur;
-    private List<User> participants = new LinkedList<>();
+    private final User organisateur;
+    private final List<User> participants = new LinkedList<>();
 
     public Session(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {

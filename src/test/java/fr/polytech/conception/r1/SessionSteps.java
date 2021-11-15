@@ -22,7 +22,7 @@ public class SessionSteps
     private String validAddress = "14 rue Bolchaia Loubianka";
     private Sport validSport = Sport.KAYAK;
     private final User julien = new User();
-    private User louis = new User();
+    private final User louis = new User();
 
     private Session session = null;
 

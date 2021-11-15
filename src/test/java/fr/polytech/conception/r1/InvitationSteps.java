@@ -16,7 +16,7 @@ public class InvitationSteps
 {
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
-    private List<User> userList = new LinkedList<>();
+    private final List<User> userList = new LinkedList<>();
     private Session session;
     private Invitation invitation;
 

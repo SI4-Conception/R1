@@ -20,7 +20,7 @@ public class SessionsList
         return SESSIONSLIST;
     }
 
-    private List<Session> sessions = new ArrayList<>();
+    private final List<Session> sessions = new ArrayList<>();
 
     private SessionsList()
     {

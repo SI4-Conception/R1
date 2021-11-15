@@ -15,8 +15,8 @@ public class UserExclusionSteps
 {
     private SessionsList sessionsList;
     private Session session;
-    private User helene = new User("Helene", "helene06", "helene@mail.com");
-    private User zhang = new User("Zhang", "zhangFromBolivia", "zhang@mail.com");
+    private final User helene = new User("Helene", "helene06", "helene@mail.com");
+    private final User zhang = new User("Zhang", "zhangFromBolivia", "zhang@mail.com");
 
     public UserExclusionSteps() throws InvalidProfileDataException
     {

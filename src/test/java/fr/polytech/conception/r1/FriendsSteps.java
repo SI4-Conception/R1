@@ -18,7 +18,7 @@ import io.cucumber.java.eo.Se;
 
 public class FriendsSteps
 {
-    private List<User> userList=new LinkedList<>();
+    private final List<User> userList=new LinkedList<>();
     private Session session;
     private final List<List<Session>> foundSessionsList = new ArrayList<>();
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
