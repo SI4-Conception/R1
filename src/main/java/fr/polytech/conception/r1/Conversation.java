@@ -12,9 +12,11 @@ public class Conversation
     private final User user2;
     private final LinkedList<Message> messages;
 
-    //todo rajouter une exception pour pas qu'il se parle tout seul
     public Conversation(User user1, User user2, String content)
     {
+        if (user1 == user2)
+            throw new IllegalArgumentException("Cannot create a conversation between two identical user instances");
+
         this.user1 = user1;
         this.user2 = user2;
         messages = new LinkedList<>();
