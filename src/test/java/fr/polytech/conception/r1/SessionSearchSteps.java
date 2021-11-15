@@ -19,27 +19,38 @@ import io.cucumber.java.en.When;
 public class SessionSearchSteps
 {
     private SessionsList sessionsList;
-    private final User theo = new User("theo", "Mdp2Theo", "theo@mail.com");
-    private final User karl = new User("karl", "1L0v3C4p1t4l", "karl@mail.com");
+    private User theo;
+    private User karl;
     private Stream<SessionOneshot> resultSessionSearch;
 
-    public SessionSearchSteps() throws InvalidProfileDataException
+    @Given("Users Karl and Theo")
+    public void usersKarlAndTheo() throws InvalidProfileDataException
     {
+        theo = new User("theo", "Mdp2Theo", "theo@mail.com");
+        karl = new User("karl", "1L0v3C4p1t4l", "karl@mail.com");
     }
 
     @Given("A list of sessions for searching")
     public void aListOfSessionsForSearching()
     {
         sessionsList = SessionsList.getInstance();
+        sessionsList.cleanAllSessions();
     }
 
-
-    @And("An unsposored session created by Theo of {string} at {string} with granted access")
-    public void anUnsposoredSessionOfAtWithGrantedAccess(String arg0, String arg1) throws InvalidSessionDataException
+    @And("An unsponsored session created by Theo of {string} at {string} with granted access")
+    public void anUnsponsoredSessionOfAtWithGrantedAccess(String arg0, String arg1) throws InvalidSessionDataException
     {
         ZonedDateTime sessionBegin = ZonedDateTime.parse(arg1);
         Sport sport = Sport.getByName(arg0);
         sessionsList.addSession(new SessionOneshot(sessionBegin, sessionBegin.plusDays(1), "", sport, theo, false));
+    }
+
+    @And("A sponsored session created by Theo of {string} at {string} with granted access")
+    public void aSponsoredSessionOfAtWithGrantedAccess(String arg0, String arg1) throws InvalidSessionDataException
+    {
+        ZonedDateTime sessionBegin = ZonedDateTime.parse(arg1);
+        Sport sport = Sport.getByName(arg0);
+        sessionsList.addSession(new SessionOneshot(sessionBegin, sessionBegin.plusDays(1), "", sport, theo, true));
     }
 
     @When("Karl do a default search on the sessions")
