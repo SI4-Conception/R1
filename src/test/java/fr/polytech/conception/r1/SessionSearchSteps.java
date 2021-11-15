@@ -8,6 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import fr.polytech.conception.r1.profile.InvalidFriendshipException;
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
 import fr.polytech.conception.r1.session.SessionOneshot;
@@ -67,5 +68,22 @@ public class SessionSearchSteps
         Assert.assertTrue(Streams.zip(expectedSessionList, resultSessionSearch,
                         (exp, rec) -> exp.equals(rec.getSport().getName()))
                 .allMatch(x -> x));
+    }
+
+    @And("An unsponsored session created by Theo of {string} at {string} for friends only")
+    public void anUnsponsoredSessionCreatedByTheoOfAtForFriendsOnly(String arg0, String arg1) throws InvalidSessionDataException
+    {
+        ZonedDateTime sessionBegin = ZonedDateTime.parse(arg1);
+        Sport sport = Sport.getByName(arg0);
+        SessionOneshot sessionOneshot = new SessionOneshot(sessionBegin, sessionBegin.plusDays(1), "", sport, theo, true);
+        sessionOneshot.setReserveAuxAmis(true);
+        sessionsList.addSession(sessionOneshot);
+    }
+
+    @And("Karl and Theo friends")
+    public void karlAndTheoFriends() throws InvalidFriendshipException
+    {
+        karl.sendFriendRequest(theo);
+        theo.acceptFriendRequest(karl);
     }
 }
