@@ -6,6 +6,8 @@ import java.time.ZonedDateTime;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
+import fr.polytech.conception.r1.session.SessionOneshot;
+import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

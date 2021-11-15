@@ -1,4 +1,4 @@
-package fr.polytech.conception.r1;
+package fr.polytech.conception.r1.session;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import fr.polytech.conception.r1.InvalidSessionDataException;
+import fr.polytech.conception.r1.Sport;
+import fr.polytech.conception.r1.Util;
 import fr.polytech.conception.r1.profile.User;
 
 public class SessionOneshot extends Session implements Comparable<SessionOneshot>

@@ -3,6 +3,8 @@ package fr.polytech.conception.r1;
 import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
+import fr.polytech.conception.r1.session.SessionOneshot;
+
 public class Util
 {
     public static boolean intersect(ZonedDateTime debut, ZonedDateTime fin, SessionOneshot session)

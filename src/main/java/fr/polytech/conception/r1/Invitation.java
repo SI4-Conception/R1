@@ -1,6 +1,7 @@
 package fr.polytech.conception.r1;
 
 import fr.polytech.conception.r1.profile.User;
+import fr.polytech.conception.r1.session.SessionOneshot;
 
 public class Invitation
 {

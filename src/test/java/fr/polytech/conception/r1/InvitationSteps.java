@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import fr.polytech.conception.r1.profile.User;
+import fr.polytech.conception.r1.session.SessionOneshot;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

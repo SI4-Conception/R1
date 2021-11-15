@@ -6,11 +6,12 @@ import org.junit.Assert;
 
 import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
+import fr.polytech.conception.r1.session.SessionOneshot;
+import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

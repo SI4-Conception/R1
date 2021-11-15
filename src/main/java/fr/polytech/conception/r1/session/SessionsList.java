@@ -1,4 +1,4 @@
-package fr.polytech.conception.r1;
+package fr.polytech.conception.r1.session;
 
 import java.time.Period;
 import java.time.ZonedDateTime;
@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import fr.polytech.conception.r1.Level;
+import fr.polytech.conception.r1.Sport;
 import fr.polytech.conception.r1.profile.User;
 
 public class SessionsList
@@ -32,7 +34,6 @@ public class SessionsList
     private Stream<SessionOneshot> getOneshots(ZonedDateTime fin)
     {
         return sessions.stream().flatMap(s -> s.getOneshots(fin));
-        //return Util.filterType(sessions.stream(), SessionOneshot.class);
     }
 
     public List<Session> chercherSession(User user, Sport sport, String adresse, ZonedDateTime debut, ZonedDateTime fin, String organizer)
@@ -65,8 +66,7 @@ public class SessionsList
     {
         sessions.clear();
     }
-
-    // TODO: unused?
+    
     public Stream<SessionOneshot> defaultSessionSearch(User user)
     {
         return getOneshots(ZonedDateTime.now().plus(Period.ofYears(1))).filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur()))).filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))

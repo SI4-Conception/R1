@@ -16,8 +16,8 @@ import fr.polytech.conception.r1.Conversation;
 import fr.polytech.conception.r1.InvalidSessionDataException;
 import fr.polytech.conception.r1.Invitation;
 import fr.polytech.conception.r1.Level;
-import fr.polytech.conception.r1.Session;
-import fr.polytech.conception.r1.SessionOneshot;
+import fr.polytech.conception.r1.session.Session;
+import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.Sport;
 
 public class User

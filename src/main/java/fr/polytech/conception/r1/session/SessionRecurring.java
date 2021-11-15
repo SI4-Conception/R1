@@ -1,4 +1,4 @@
-package fr.polytech.conception.r1;
+package fr.polytech.conception.r1.session;
 
 import java.time.Duration;
 import java.time.Period;
@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import fr.polytech.conception.r1.InvalidSessionDataException;
+import fr.polytech.conception.r1.Sport;
 import fr.polytech.conception.r1.profile.User;
 
 public class SessionRecurring extends Session
