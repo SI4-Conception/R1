@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.profile.User;
 
@@ -52,10 +53,10 @@ public class SessionsList
         sessions.clear();
     }
 
-    public List<Session> defaultSessionSearch(User user)
+    public Stream<Session> defaultSessionSearch(User user)
     {
         return sessions.stream().filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur()))).filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user)).sorted().collect(Collectors.toList());
+                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user)).sorted();
     }
 }
