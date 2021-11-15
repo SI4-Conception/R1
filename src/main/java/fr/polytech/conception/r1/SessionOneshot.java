@@ -117,11 +117,20 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     public int compareTo(SessionOneshot other)
     {
         ZonedDateTime now = ZonedDateTime.now();
-        double daysBeforeThisSession = (Duration.between(this.debut, now).getSeconds() / 86400d) + 1;
-        double daysBeforeOtherSession = (Duration.between(other.getDebut(), now).getSeconds() / 86400d) + 1;
-        double thisValue = 1/(2 * daysBeforeThisSession) + (isSponsored ? 0.5 : 0);
-        double otherValue = 1/(2 * daysBeforeOtherSession) + (other.isSponsored() ? 0.5 : 0);
-        return (int) ((thisValue - otherValue) * 1000);
+        if(now.isAfter(this.debut) || now.isAfter(other.getDebut()))
+        {
+            return 0;
+        }
+        double daysBeforeThisSession = (Duration.between(now, this.debut).getSeconds() / 86400d) + 1d;
+        double daysBeforeOtherSession = (Duration.between(now, other.getDebut()).getSeconds() / 86400d) + 1d;
+        double thisValue = 1d/(2d * daysBeforeThisSession) + (isSponsored ? 0.5 : 0);
+        double otherValue = 1d/(2d * daysBeforeOtherSession) + (other.isSponsored() ? 0.5 : 0);
+        double difference = otherValue - thisValue;
+        while(difference < 10d && difference > -10d)
+        {
+            difference = difference * 10d;
+        }
+        return (int) difference;
     }
 
     public boolean excludeUser(User user)

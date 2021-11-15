@@ -1,5 +1,6 @@
 package fr.polytech.conception.r1;
 
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +67,10 @@ public class SessionsList
     }
 
     // TODO: unused?
-   /* public List<Session> defaultSessionSearch(User user)
+    public Stream<SessionOneshot> defaultSessionSearch(User user)
     {
-        return getOneshots().filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur()))).filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
+        return getOneshots(ZonedDateTime.now().plus(Period.ofYears(1))).filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur()))).filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user)).sorted().collect(Collectors.toList());
-    }*/
+                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user)).sorted();
+    }
 }
