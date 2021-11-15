@@ -360,11 +360,6 @@ public class User
         return this.blacklistedUsers.contains(user);
     }
 
-    //public boolean hasSentInvitationTo(Session session, User guest)
-    //{
-    //    return invitationSent.stream().anyMatch(i -> i.getGuest().equals(guest)&&i.getSession().equals(session));
-    //}
-
     public boolean hasSentInvitation(Invitation invitation)
     {
         return this.invitationSent.contains(invitation);

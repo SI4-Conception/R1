@@ -29,13 +29,6 @@ public class InvitationSteps
         }
     }
 
-    //@Given("a session organized by user {int} and where user {int} is not participating and has not received any invitation previously")
-    //public void aSessionOrganizedByUserAndWhereUserIsNotParticipatingAndHasNotReceivedAnyInvitationPreviously(int arg0, int arg1) throws InvalidSessionDataException
-    //{
-    //    User u = userList.get(arg0 - 1);
-    //    session = new Session(validDateTimeBegin, validDateTimeEnd, "75° 06′ 00″ S, 123° 19′ 58″ E", Sport.SKI, u);
-    //}
-
     @When("user {int} invites user {int} to the session")
     public void userInvitesUserToTheSession(int arg0, int arg1)
     {
@@ -49,13 +42,6 @@ public class InvitationSteps
         User u = userList.get(arg0 - 1);
         Assert.assertTrue(u.hasSentInvitation(invitation));
     }
-
-    //@Then("user {int} can see the invitaion he has sent to user {int}")
-    //public void userCanSeeTheInvitaionHeHasSentToUser(int arg0, int arg1)
-    //{
-    //    User u = userList.get(arg0-1);
-    //    Assert.assertTrue(u.hasSentInvitationTo(session, userList.get(arg1-1)));
-    //}
 
     @And("user {int} can see that the invitation is pending")
     public void userCanSeeThatTheInvitationIsPending(int arg0)
@@ -146,12 +132,6 @@ public class InvitationSteps
         }
     }
 
-    //@Given("an invitation to the session from user {int} to user {int}")
-    //public void anInvitationToTheSessionFromUserToUser(int arg0, int arg1)
-    //{
-    //
-    //}
-
     @When("user {int} declines the invitation")
     public void userDeclinesTheInvitation(int arg0)
     {
@@ -210,13 +190,4 @@ public class InvitationSteps
         User u2 = userList.get(arg1 - 1);
         u.unblacklist(u2);
     }
-
-
-
-    //@Then("user {int} sees a pending invitation")
-    //public void userSeesAPendingInvitation(int arg0)
-    //{
-    //}
-
-
 }
