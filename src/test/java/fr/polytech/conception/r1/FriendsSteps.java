@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.profile.InvalidFriendshipException;
 import fr.polytech.conception.r1.profile.User;
@@ -139,7 +140,7 @@ public class FriendsSteps
         sessionsList.cleanAllSessions();
         sessionsList.addSession(session);
         User u = userList.get(arg0 - 1);
-        foundSessionsList.get(arg0-1).addAll(sessionsList.chercherSession(u, null, null, null, null, null));
+        foundSessionsList.get(arg0-1).addAll(sessionsList.chercherSession(u, null, null, null, null, null).collect(Collectors.toList()));
     }
 
     @Then("User {int} should find {int} sessions")

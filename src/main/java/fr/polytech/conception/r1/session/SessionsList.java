@@ -36,7 +36,7 @@ public class SessionsList
         return sessions.stream().flatMap(s -> s.getOneshots(fin));
     }
 
-    public List<Session> chercherSession(User user, Sport sport, String adresse, ZonedDateTime debut, ZonedDateTime fin, String organizer)
+    public Stream<SessionOneshot> chercherSession(User user, Sport sport, String adresse, ZonedDateTime debut, ZonedDateTime fin, String organizer)
     {
         var res = getOneshots(fin);
         if (sport != null)
@@ -53,8 +53,7 @@ public class SessionsList
                 .filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur())))
                 .filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user))
-                .collect(Collectors.toList());
+                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user));
     }
 
     public void addSession(Session session)

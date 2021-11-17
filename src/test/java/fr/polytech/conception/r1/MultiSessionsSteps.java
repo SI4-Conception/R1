@@ -5,6 +5,7 @@ import org.junit.Assert;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.profile.User;
 import fr.polytech.conception.r1.session.Session;
@@ -17,7 +18,7 @@ import io.cucumber.java.en.When;
 public class MultiSessionsSteps
 {
     private final List<Session> validSessionsList = new ArrayList<>();
-    private final List<Session> foundSessionsList = new ArrayList<>();
+    private final List<SessionOneshot> foundSessionsList = new ArrayList<>();
     private final List<User> usersList = new ArrayList<>();
     private SessionsList sessionsList;
 
@@ -51,7 +52,7 @@ public class MultiSessionsSteps
         ZonedDateTime endDate = ZonedDateTime.parse(arg1 + "T00:00:00.000+01:00[Europe/Paris]");
         User pika = usersList.get(0);
 
-        foundSessionsList.addAll(sessionsList.chercherSession(pika, null, null, beginDate, endDate, null));
+        foundSessionsList.addAll(sessionsList.chercherSession(pika, null, null, beginDate, endDate, null).collect(Collectors.toList()));
     }
 
     @Then("I should have {int} sessions")
@@ -65,7 +66,7 @@ public class MultiSessionsSteps
     {
         User pika = usersList.get(0);
 
-        foundSessionsList.addAll(sessionsList.chercherSession(pika, sport, null, null, null, null));
+        foundSessionsList.addAll(sessionsList.chercherSession(pika, sport, null, null, null, null).collect(Collectors.toList()));
     }
 
     @When("I search a session created by {string}")
@@ -73,6 +74,6 @@ public class MultiSessionsSteps
     {
         User pika = usersList.get(0);
 
-        foundSessionsList.addAll(sessionsList.chercherSession(pika, null, null, null, null, arg0));
+        foundSessionsList.addAll(sessionsList.chercherSession(pika, null, null, null, null, arg0).collect(Collectors.toList()));
     }
 }

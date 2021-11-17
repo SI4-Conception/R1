@@ -51,13 +51,13 @@ public class BlacklistingSteps
     @Then("Enzo cannot see sessions created by Theo")
     public void enzoCannotSeeSessionsCreatedByEnzo()
     {
-        Assert.assertEquals(0, sessionsList.chercherSession(enzo, null, null, null, null, "Theo").size());
+        Assert.assertEquals(0, sessionsList.chercherSession(enzo, null, null, null, null, "Theo").count());
     }
 
     @Then("Enzo can see sessions created by Theo")
     public void enzoCanSeeSessionsCreatedByTheo()
     {
-        Assert.assertEquals(4, sessionsList.chercherSession(enzo, null, null, null, null, "Theo").size());
+        Assert.assertEquals(4, sessionsList.chercherSession(enzo, null, null, null, null, "Theo").count());
     }
 
     @When("Theo creates one sessions")
