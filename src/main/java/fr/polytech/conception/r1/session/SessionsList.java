@@ -72,4 +72,9 @@ public class SessionsList
                 .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
                 .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user)).sorted();
     }
+
+    public Stream<SessionOneshot> friendsParticipatingSessionSearch(User user)
+    {
+        return defaultSessionSearch(user).filter(sessionOneshot -> sessionOneshot.getParticipants().stream().anyMatch(partcipant -> user.getFriends().contains(partcipant)));
+    }
 }

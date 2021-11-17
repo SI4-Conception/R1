@@ -7,7 +7,9 @@ import org.junit.Assert;
 import java.time.Duration;
 import java.time.Period;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.profile.InvalidFriendshipException;
@@ -27,6 +29,7 @@ public class SessionSearchSteps
     private User theo;
     private User karl;
     private Stream<SessionOneshot> resultSessionSearch;
+    private final List<User> otherUsers = new ArrayList<>();
 
     @Given("Users Karl and Theo special user")
     public void usersKarlAndTheoSpecialUser() throws InvalidProfileDataException
@@ -34,6 +37,7 @@ public class SessionSearchSteps
         theo = new User("theo", "Mdp2Theo", "theo@mail.com");
         theo.setSpecialUser(true);
         karl = new User("karl", "1L0v3C4p1t4l", "karl@mail.com");
+        otherUsers.clear();
     }
 
     @Given("An empty list of sessions for searching")
@@ -106,5 +110,39 @@ public class SessionSearchSteps
     public void karlLooksOnlyForTheFirstResultsOfTheSearch(int arg0)
     {
         resultSessionSearch = resultSessionSearch.limit(arg0);
+    }
+
+    @Given("Users {string} friends with Karl")
+    public void usersFriendsWithKarl(String arg0)
+    {
+        Stream<String> otherUsersStream = Arrays.stream(arg0.split(", "));
+        otherUsersStream.forEach(username -> {
+            try
+            {
+                User user = new User(username, "p455w04d", username + "@mail.com");
+                otherUsers.add(user);
+                user.sendFriendRequest(karl);
+                karl.acceptFriendRequest(user);
+            }
+            catch (InvalidProfileDataException | InvalidFriendshipException e)
+            {
+                e.printStackTrace();
+                Assert.fail();
+            }
+        });
+    }
+
+    @And("User {string} participates to the session of {string}")
+    public void userParticipatesToTheSessionOf(String arg0, String arg1)
+    {
+        final User user = otherUsers.stream().filter(u -> u.getPseudo().equals(arg0)).findFirst().orElse(null);
+        Assert.assertNotNull(user);
+        sessionsList.defaultSessionSearch(user).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg1)).forEach(user::participer);
+    }
+
+    @When("Karl does a friends-participating search on the sessions")
+    public void karlDoesAFriendsParticipatingSearchOnTheSessions()
+    {
+        resultSessionSearch = sessionsList.friendsParticipatingSessionSearch(karl);
     }
 }
