@@ -58,15 +58,15 @@ public class SessionSearchSteps
         sessionsList.addSession(new SessionOneshot(sessionBegin, sessionBegin.plusHours(1), "", sport, theo, true));
     }
 
-    @When("Karl do a default search on the sessions")
-    public void iDoADefaultSearchOnTheSessions()
+    @When("Karl does a default search on the sessions")
+    public void karlDoesADefaultSearchOnTheSessions()
     {
         resultSessionSearch = sessionsList.defaultSessionSearch(karl);
     }
 
     @Then("Karl should find the sessions with the following order: {string}")
     @SuppressWarnings("UnstableApiUsage")
-    public void iShouldFindTheSessionsWithTheFollowingOrder(String arg0)
+    public void karlShouldFindTheSessionsWithTheFollowingOrder(String arg0)
     {
         var expectedSessionList = Arrays.stream(arg0.split(", "));
         Assert.assertTrue(Streams.zip(expectedSessionList, resultSessionSearch,
@@ -101,8 +101,8 @@ public class SessionSearchSteps
         sessionsList.addSession(sessionRecurring);
     }
 
-    @And("Karl look only for the {int} first results of the search")
-    public void karlLookOnlyForTheFirstResultsOfTheSearch(int arg0)
+    @And("Karl looks only for the {int} first results of the search")
+    public void karlLooksOnlyForTheFirstResultsOfTheSearch(int arg0)
     {
         resultSessionSearch = resultSessionSearch.limit(arg0);
     }
