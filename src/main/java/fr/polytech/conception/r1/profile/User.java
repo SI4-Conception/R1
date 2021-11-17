@@ -29,6 +29,7 @@ public class User
     private String address;
     private String firstName;
     private String lastName;
+    private boolean isSpecialUser = false;
     private final Map<Sport, Level> favouriteSports = new HashMap<>();
     private final List<Session> listSessionsOrganisees = new ArrayList<>();
     private final List<Session> listSessions = new ArrayList<>();
@@ -462,5 +463,15 @@ public class User
             throw new IllegalArgumentException("Invitation can only be checked if it hasn't occured yet");
         }
         return invitation.getGuest().invitationReceived.get(Invitation.Status.DECLINED).contains(invitation);
+    }
+
+    public boolean isSpecialUser()
+    {
+        return isSpecialUser;
+    }
+
+    public void setSpecialUser(boolean specialUser)
+    {
+        isSpecialUser = specialUser;
     }
 }

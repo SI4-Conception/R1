@@ -1,5 +1,7 @@
 package fr.polytech.conception.r1.session;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
@@ -31,7 +33,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         if (Util.filterType(organisateur.getListSessionsOrganisees().stream(), SessionOneshot.class).anyMatch(session ->
                 session != this && Util.intersect(debut, fin, session)))
             throw new InvalidSessionDataException("Création de 2 sessions se déroulant au même moment");
-        this.isSponsored = isSponsored;
+        setSponsored(isSponsored);
     }
 
     public ZonedDateTime getDebut()
@@ -117,7 +119,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     }
 
     @Override
-    public int compareTo(SessionOneshot other)
+    public int compareTo(@NonNull SessionOneshot other)
     {
         ZonedDateTime now = ZonedDateTime.now();
         if(now.isAfter(this.debut) || now.isAfter(other.getDebut()))
@@ -150,8 +152,12 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         return Stream.of(this);
     }
 
-    public void setSponsored(boolean sponsored)
+    public void setSponsored(boolean sponsored) throws InvalidSessionDataException
     {
+        if(sponsored && !organisateur.isSpecialUser())
+        {
+            throw new InvalidSessionDataException("Only special users can organise sponsored session");
+        }
         isSponsored = sponsored;
     }
 

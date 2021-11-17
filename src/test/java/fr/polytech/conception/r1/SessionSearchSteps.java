@@ -28,10 +28,11 @@ public class SessionSearchSteps
     private User karl;
     private Stream<SessionOneshot> resultSessionSearch;
 
-    @Given("Users Karl and Theo")
-    public void usersKarlAndTheo() throws InvalidProfileDataException
+    @Given("Users Karl and Theo special user")
+    public void usersKarlAndTheoSpecialUser() throws InvalidProfileDataException
     {
         theo = new User("theo", "Mdp2Theo", "theo@mail.com");
+        theo.setSpecialUser(true);
         karl = new User("karl", "1L0v3C4p1t4l", "karl@mail.com");
     }
 
