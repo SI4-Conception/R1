@@ -105,6 +105,9 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         {
             throw new InvalidSessionDataException("T'es blacklist bro");
         }
+        if(this.getDebut().isBefore(ZonedDateTime.now())){
+            throw new InvalidSessionDataException("Cannot participate a passed session");
+        }
         this.participants.add(participant);
     }
 

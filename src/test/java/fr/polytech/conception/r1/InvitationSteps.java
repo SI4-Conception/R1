@@ -20,6 +20,7 @@ public class InvitationSteps
     private final List<User> userList = new LinkedList<>();
     private SessionOneshot session;
     private Invitation invitation;
+    private int numberInvitationSent;
 
     @Given("{int} distinct users")
     public void distinctUsers(int arg0)
@@ -90,7 +91,7 @@ public class InvitationSteps
             u.acceptInvitation(invitation);
             Assert.fail();
         }
-        catch (InvalidSessionDataException e)
+        catch (InvalidSessionDataException | IllegalArgumentException e)
         {
             //success
         }
@@ -190,5 +191,62 @@ public class InvitationSteps
         User u = userList.get(arg0 - 1);
         User u2 = userList.get(arg1 - 1);
         u.unblacklist(u2);
+    }
+
+    @Given("a session passed its subscription date")
+    public void aSessionPassedItsSubscriptionDate() throws InvalidSessionDataException
+    {
+        session.setDateLimiteInscription(ZonedDateTime.now().minusDays(2));
+    }
+
+    @Given("a passed session")
+    public void aPassedSession() throws InvalidSessionDataException
+    {
+        session.setDebut(ZonedDateTime.now().minusDays(2));
+    }
+
+    @Then("user {int} is denied sending the invitation")
+    public void userIsDeniedSendingTheInvitation(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        Assert.assertEquals(numberInvitationSent, u.numberInvitationSent());
+    }
+
+    @When("user {int} sends the invalid invitation to user {int}")
+    public void userSendTheInvalidInvitationToUser(int arg0, int arg1)
+    {
+        User u = userList.get(arg0 - 1);
+        try
+        {
+            invitation = u.invite(session, userList.get(arg1 - 1));
+            Assert.fail();
+        }
+        catch (IllegalArgumentException e)
+        {
+            //success
+        }
+    }
+
+    @Given("user {int} participating session")
+    public void userParticipatingSession(int arg0) throws InvalidSessionDataException
+    {
+        User u = userList.get(arg0 - 1);
+        session.participer(u);
+    }
+
+    @When("user {int} invites user {int} again")
+    public void userInvitesUserAgain(int arg0, int arg1)
+    {
+        User u = userList.get(arg0 - 1);
+        numberInvitationSent = u.numberInvitationSent();
+        try
+        {
+            invitation = u.invite(session, userList.get(arg1 - 1));
+            Assert.fail();
+        }
+        catch (IllegalArgumentException e)
+        {
+            //success
+        }
     }
 }

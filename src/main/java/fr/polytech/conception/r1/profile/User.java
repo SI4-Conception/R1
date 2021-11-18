@@ -367,6 +367,11 @@ public class User
         return this.invitationSent.contains(invitation);
     }
 
+    public int numberInvitationSent()
+    {
+        return this.invitationSent.size();
+    }
+
     public Invitation invite(SessionOneshot session, User guest)
     {
         if (!this.getListSessionsOrganisees().contains(session))
@@ -389,8 +394,8 @@ public class User
             throw new IllegalArgumentException("Guest already participating session");
         }
 
-        Invitation inv = new Invitation(this, guest, session);
 
+        Invitation inv = new Invitation(this, guest, session);
         this.invitationSent.add(inv);
         guest.receiveInvitation(inv);
         return inv;
