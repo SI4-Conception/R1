@@ -37,7 +37,8 @@ public class SessionRecurring extends Session
         {
             try
             {
-                return new SessionOneshot(d, d.plus(duration), getAdresse(), getSport(), getOrganisateur(), false);
+                // return new SessionOneshot(d, d.plus(duration), getAdresse(), getSport(), getOrganisateur(), false);
+                return new SessionOneShotBuilder(d, d.plus(duration), getAdresse(), getSport(), getOrganisateur()).withIsSponsored(false).build();
             }
             catch (InvalidSessionDataException e)
             {
