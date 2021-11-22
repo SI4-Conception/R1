@@ -97,4 +97,28 @@ public class RecurringSessionSteps
     {
         Assert.assertFalse(paul.getInvitationsList().map(Invitation::getSession).anyMatch(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1)) && sessionOneshot.getSport().getName().equals(arg0)));
     }
+
+    @When("Theo cancels the recurring session of {string} at {string}")
+    public void theoCancelsTheRecurringSessionOfAt(String arg0, String arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1))).findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        foundSession.get().setCancelled(true);
+    }
+
+    @Then("The session of {string} at {string} sould be canceled")
+    public void theSessionOfAtSouldBeCanceled(String arg0, String arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1))).findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertTrue(foundSession.get().isCancelled());
+    }
+
+    @And("The session of {string} at {string} sould be not canceled")
+    public void theSessionOfAtSouldBeNotCanceled(String arg0, String arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1))).findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertFalse(foundSession.get().isCancelled());
+    }
 }
