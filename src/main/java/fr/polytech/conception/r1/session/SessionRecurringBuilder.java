@@ -10,27 +10,51 @@ import fr.polytech.conception.r1.profile.User;
 
 public class SessionRecurringBuilder
 {
-    private final String adresse;
+    private ZonedDateTime first;
+    private Period period;
+    private Duration duration;
+    private String adresse;
+    private Sport sport;
+    private User organisateur;
 
-    private final Sport sport;
-    private final User organisateur;
-
-    private final Period period;
-    private final Duration duration;
-    private final ZonedDateTime premiere;
-
-    SessionRecurringBuilder(ZonedDateTime premiere, Period period, Duration duration, String adresse, Sport sport, User organisateur)
+    public SessionRecurringBuilder setFirst(ZonedDateTime first)
     {
-        this.organisateur = organisateur;
-        this.adresse = adresse;
-        this.sport = sport;
-        this.premiere = premiere;
-        this.period = period;
-        this.duration = duration;
+        this.first = first;
+        return this;
     }
 
-    SessionRecurring build() throws InvalidSessionDataException
+    public SessionRecurringBuilder setPeriod(Period period)
     {
-        return new SessionRecurring(premiere, period, duration, adresse, sport, organisateur);
+        this.period = period;
+        return this;
+    }
+
+    public SessionRecurringBuilder setDuration(Duration duration)
+    {
+        this.duration = duration;
+        return this;
+    }
+
+    public SessionRecurringBuilder setAdresse(String adresse)
+    {
+        this.adresse = adresse;
+        return this;
+    }
+
+    public SessionRecurringBuilder setSport(Sport sport)
+    {
+        this.sport = sport;
+        return this;
+    }
+
+    public SessionRecurringBuilder setOrganisateur(User organisateur)
+    {
+        this.organisateur = organisateur;
+        return this;
+    }
+
+    public SessionRecurring createSessionRecurring() throws InvalidSessionDataException
+    {
+        return new SessionRecurring(first, period, duration, adresse, sport, organisateur);
     }
 }
