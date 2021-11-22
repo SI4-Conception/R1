@@ -92,7 +92,6 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         return participants;
     }
 
-    //todo add notif
     public void participer(User participant) throws InvalidSessionDataException
     {
         if (participants.contains(participant))
@@ -116,6 +115,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
             throw new InvalidSessionDataException("Cannot participate a passed session");
         }
         this.participants.add(participant);
+        notifyCancelParticipation(participant);
     }
 
     @Override
@@ -191,6 +191,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
             throw new InvalidSessionDataException("Cannot set price of unsponsored session");
         }
         sponsoredSessionPrice = price;
+        notifyEdit();
     }
 
     private void notifyParticipants(Notification notification)
@@ -267,6 +268,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     {
         private final SessionOneshot sessionOneshot;
         private final User user;
+
         public SessionCancelParticipationNotification(SessionOneshot sessionOneshot, User user)
         {
             super();
@@ -277,6 +279,11 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         public SessionOneshot getSessionOneshot()
         {
             return sessionOneshot;
+        }
+
+        public User getUser()
+        {
+            return user;
         }
 
         @Override

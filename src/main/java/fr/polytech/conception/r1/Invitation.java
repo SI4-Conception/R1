@@ -44,4 +44,91 @@ public class Invitation
         ARCHIVED,
         BLACKLISTED
     }
+
+    public void notifyAccepted()
+    {
+        notifyOrganizer(new InvitationAcceptedNotification(this));
+    }
+
+    public void notifyDeclined()
+    {
+        notifyOrganizer(new InvitationDeclinedNotification(this));
+    }
+
+    public void notifyReceived()
+    {
+        notifyGuest(new InvitationReceivedNotification(this));
+    }
+
+    public void notifyOrganizer(Notification notification)
+    {
+        organizer.notify(notification);
+    }
+
+    public void notifyGuest(Notification notification)
+    {
+        guest.notify(notification);
+    }
+
+    private class InvitationReceivedNotification extends Notification
+    {
+        private final Invitation invitation;
+        public InvitationReceivedNotification(Invitation invitation)
+        {
+            super();
+            this.invitation = invitation;
+        }
+
+        public Invitation getInvitation()
+        {
+            return invitation;
+        }
+
+        @Override
+        public String getMessage()
+        {
+            return "invitation received";
+        }
+    }
+
+    private class InvitationAcceptedNotification extends Notification
+    {
+        private final Invitation invitation;
+        public InvitationAcceptedNotification(Invitation invitation)
+        {
+            super();
+            this.invitation = invitation;
+        }
+
+        public Invitation getInvitation()
+        {
+            return invitation;
+        }
+
+        @Override
+        public String getMessage()
+        {
+            return "invitation accepted";
+        }
+    }
+
+    private class InvitationDeclinedNotification extends Notification
+    {
+        private final Invitation invitation;
+        public InvitationDeclinedNotification(Invitation invitation)
+        {
+            super();
+            this.invitation = invitation;
+        }
+        public Invitation getInvitation()
+        {
+            return invitation;
+        }
+
+        @Override
+        public String getMessage()
+        {
+            return "invitation declined";
+        }
+    }
 }
