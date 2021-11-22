@@ -9,10 +9,12 @@ import java.util.Optional;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
+import fr.polytech.conception.r1.session.Session;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.session.SessionRecurring;
 import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class RecurringSessionSteps
@@ -29,6 +31,7 @@ public class RecurringSessionSteps
     public void anEmptyListOfSessionsForSearchingRecurringSessions()
     {
         sessionsList=SessionsList.getInstance();
+        sessionsList.cleanAllSessions();
     }
 
     @Given("A recurring session of {string} at {string} created by theo")
@@ -43,5 +46,20 @@ public class RecurringSessionSteps
     {
         Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1))).findFirst();
         Assert.assertTrue(foundSession.isPresent());
+        paul.participer(foundSession.get());
+    }
+
+    @Then("Paul should participate to the recurring session of {string} at {string}")
+    public void paulShouldParticipateToTheRecurringSessionOfAt(String arg0, String arg1)
+    {
+        for(int i = 0; i < paul.getAttendedSessions().size(); i++)
+        {
+            Session session = paul.getAttendedSessions().get(i);
+            if(session.getOneshots(ZonedDateTime.parse(arg1).plusDays(1)).anyMatch(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1)) && sessionOneshot.getSport().getName().equals(arg0)))
+            {
+                return;
+            }
+        }
+        Assert.fail();
     }
 }

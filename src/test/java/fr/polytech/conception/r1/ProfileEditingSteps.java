@@ -450,7 +450,7 @@ public class ProfileEditingSteps
         newLastName = lastName;
     }
 
-    @When("I change my address to the valid last name")
+    @When("I change my last name to the valid last name")
     public void iChangeMyAddressToTheValidLastName()
     {
         try
