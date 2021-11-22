@@ -106,7 +106,7 @@ public class FriendsSteps
     {
         User u = userList.get(arg0-1);
         session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, "75° 06′ 00″ S, 123° 19′ 58″ E", Sport.SKI, u, false);
-        session.setReserveAuxAmis(true);
+        session.setFriendsOnly(true);
     }
 
     @When("User {int} try to participate to the session")
@@ -120,7 +120,7 @@ public class FriendsSteps
     public void userRegistrationShouldBeOk(int arg0)
     {
         User u = userList.get(arg0 - 1);
-        Assert.assertTrue(u.getListSessions().contains(session));
+        Assert.assertTrue(u.getAttendedSessions().contains(session));
         Assert.assertTrue(session.getParticipants().contains(u));
     }
 
@@ -128,7 +128,7 @@ public class FriendsSteps
     public void userRegistrationShouldNotBeOk(int arg0)
     {
         User u = userList.get(arg0 - 1);
-        Assert.assertFalse(u.getListSessions().contains(session));
+        Assert.assertFalse(u.getAttendedSessions().contains(session));
         Assert.assertFalse(session.getParticipants().contains(u));
     }
 
@@ -140,7 +140,7 @@ public class FriendsSteps
         sessionsList.cleanAllSessions();
         sessionsList.addSession(session);
         User u = userList.get(arg0 - 1);
-        foundSessionsList.get(arg0-1).addAll(sessionsList.chercherSession(u, null, null, null, null, null).collect(Collectors.toList()));
+        foundSessionsList.get(arg0-1).addAll(sessionsList.searchSession(u, null, null, null, null, null).collect(Collectors.toList()));
     }
 
     @Then("User {int} should find {int} sessions")

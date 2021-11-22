@@ -4,7 +4,6 @@ import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.Level;
@@ -36,24 +35,24 @@ public class SessionsList
         return sessions.stream().flatMap(s -> s.getOneshots(fin));
     }
 
-    public Stream<SessionOneshot> chercherSession(User user, Sport sport, String adresse, ZonedDateTime debut, ZonedDateTime fin, String organizer)
+    public Stream<SessionOneshot> searchSession(User user, Sport sport, String adresse, ZonedDateTime debut, ZonedDateTime fin, String organizer)
     {
         var res = getOneshots(fin);
         if (sport != null)
             res = res.filter(s -> s.getSport() == sport);
         if (adresse != null && !adresse.isEmpty())
-            res = res.filter(s -> s.getAdresse().contains(adresse));
+            res = res.filter(s -> s.getAddress().contains(adresse));
         if (debut != null)
-            res = res.filter(s -> s.getDebut().isAfter(debut));
+            res = res.filter(s -> s.getStart().isAfter(debut));
         if (fin != null)
-            res = res.filter(s -> s.getFin().isBefore(fin));
+            res = res.filter(s -> s.getEnd().isBefore(fin));
         if (organizer != null && !organizer.isEmpty())
-            res = res.filter(s -> s.getOrganisateur().getPseudo().contains(organizer));
+            res = res.filter(s -> s.getOrganizer().getNickname().contains(organizer));
         return res
-                .filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur())))
-                .filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
-                .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user));
+                .filter(s -> (!s.isFriendsOnly() || user.getFriends().contains(s.getOrganizer())))
+                .filter(s -> (s.getDifficulty() == Level.BEGINNER || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulty().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
+                .filter(s -> s.getEntryDeadline().isAfter(ZonedDateTime.now()))
+                .filter(s -> !s.getOrganizer().haveIBlacklistedUser(user));
     }
 
     public void addSession(Session session)
@@ -68,9 +67,9 @@ public class SessionsList
     
     public Stream<SessionOneshot> defaultSessionSearch(User user)
     {
-        return getOneshots(ZonedDateTime.now().plus(Period.ofYears(1))).filter(s -> (!s.isReserveAuxAmis() || user.getFriends().contains(s.getOrganisateur()))).filter(s -> (s.getDifficulte() == Level.DEBUTANT || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulte().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
-                .filter(s -> s.getDateLimiteInscription().isAfter(ZonedDateTime.now()))
-                .filter(s -> !s.getOrganisateur().haveIBlacklistedUser(user)).sorted();
+        return getOneshots(ZonedDateTime.now().plus(Period.ofYears(1))).filter(s -> (!s.isFriendsOnly() || user.getFriends().contains(s.getOrganizer()))).filter(s -> (s.getDifficulty() == Level.BEGINNER || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulty().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))
+                .filter(s -> s.getEntryDeadline().isAfter(ZonedDateTime.now()))
+                .filter(s -> !s.getOrganizer().haveIBlacklistedUser(user)).sorted();
     }
 
     public Stream<SessionOneshot> friendsParticipatingSessionSearch(User user)

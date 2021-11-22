@@ -9,8 +9,8 @@ public class Util
 {
     public static boolean intersect(ZonedDateTime debut, ZonedDateTime fin, SessionOneshot session)
     {
-        return isBetween(debut, fin, session.getDebut())
-                || isBetween(debut, fin, session.getFin());
+        return isBetween(debut, fin, session.getStart())
+                || isBetween(debut, fin, session.getEnd());
     }
 
     private static boolean isBetween(ZonedDateTime debut, ZonedDateTime fin, ZonedDateTime date)

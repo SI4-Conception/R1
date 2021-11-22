@@ -43,7 +43,7 @@ public class ProfileEditingSteps
     public void theAccountShouldBeCreated()
     {
         Assert.assertNotNull(validUser);
-        Assert.assertNotNull(validUser.getPseudo());
+        Assert.assertNotNull(validUser.getNickname());
         Assert.assertNotNull(validUser.getPassword());
         Assert.assertNotNull(validUser.getEmail());
     }
@@ -71,7 +71,7 @@ public class ProfileEditingSteps
     {
         try
         {
-            validUser.setPseudo(newUsername);
+            validUser.setNickname(newUsername);
         }
         catch (InvalidProfileDataException e)
         {
@@ -83,7 +83,7 @@ public class ProfileEditingSteps
     @Then("My username should be updated")
     public void myUsernameShouldBeUpdated()
     {
-        Assert.assertEquals(validUser.getPseudo(), newUsername);
+        Assert.assertEquals(validUser.getNickname(), newUsername);
     }
 
     String tooShortUsername;
@@ -110,7 +110,7 @@ public class ProfileEditingSteps
     {
         try
         {
-            validUser.setPseudo(tooShortUsername);
+            validUser.setNickname(tooShortUsername);
         }
         catch (InvalidProfileDataException e)
         {
@@ -122,7 +122,7 @@ public class ProfileEditingSteps
     public void anErrorOccurs()
     {
         Assert.assertTrue(errorRaised);
-        Assert.assertNotEquals(validUser.getPseudo(), tooShortUsername);
+        Assert.assertNotEquals(validUser.getNickname(), tooShortUsername);
     }
 
     String tooLongUsername;
@@ -149,7 +149,7 @@ public class ProfileEditingSteps
     {
         try
         {
-            validUser.setPseudo(tooLongUsername);
+            validUser.setNickname(tooLongUsername);
         }
         catch (InvalidProfileDataException e)
         {
@@ -161,7 +161,7 @@ public class ProfileEditingSteps
     public void anErrorOccursBecauseTheNameIsTooLong()
     {
         Assert.assertTrue(errorRaised);
-        Assert.assertNotEquals(validUser.getPseudo(), tooLongUsername);
+        Assert.assertNotEquals(validUser.getNickname(), tooLongUsername);
     }
 
     String newPassword;
@@ -493,7 +493,7 @@ public class ProfileEditingSteps
     {
         try
         {
-            validUser.addSportToFavourites(favouriteSport, Level.AVANCE);
+            validUser.addSportToFavourites(favouriteSport, Level.ADVANCED);
         }
         catch (InvalidProfileDataException e)
         {
@@ -533,9 +533,9 @@ public class ProfileEditingSteps
     {
         try
         {
-            validUser.addSportToFavourites(favouriteSport, Level.INTERMEDIAIRE);
-            validUser.addSportToFavourites(favouriteSport2, Level.AVANCE);
-            validUser.addSportToFavourites(favouriteSport3, Level.INTERMEDIAIRE);
+            validUser.addSportToFavourites(favouriteSport, Level.INTERMEDIATE);
+            validUser.addSportToFavourites(favouriteSport2, Level.ADVANCED);
+            validUser.addSportToFavourites(favouriteSport3, Level.INTERMEDIATE);
         }
         catch (InvalidProfileDataException e)
         {

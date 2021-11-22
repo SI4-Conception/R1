@@ -6,25 +6,25 @@ import fr.polytech.conception.r1.InvalidSessionDataException;
 import fr.polytech.conception.r1.Sport;
 import fr.polytech.conception.r1.profile.User;
 
-public class SessionOneShotBuilder
+public class SessionOneshotBuilder
 {
     private final String adresse;
     private final Sport sport;
     private final User organisateur;
 
     private boolean isSponsored = false;
-    private final ZonedDateTime debut;
+    private final ZonedDateTime start;
     private final ZonedDateTime fin;
 
-    public SessionOneShotBuilder(ZonedDateTime debut, ZonedDateTime fin, String adresse, Sport sport, User organisateur) {
+    public SessionOneshotBuilder(ZonedDateTime start, ZonedDateTime fin, String adresse, Sport sport, User organisateur) {
         this.organisateur = organisateur;
         this.adresse = adresse;
         this.sport = sport;
-        this.debut = debut;
+        this.start = start;
         this.fin = fin;
     }
 
-    public SessionOneShotBuilder withIsSponsored(boolean isSponsored)
+    public SessionOneshotBuilder withIsSponsored(boolean isSponsored)
     {
         this.isSponsored = isSponsored;
         return this;
@@ -32,6 +32,6 @@ public class SessionOneShotBuilder
 
     SessionOneshot build() throws InvalidSessionDataException
     {
-        return new SessionOneshot(debut, fin, adresse, sport, organisateur, isSponsored);
+        return new SessionOneshot(start, fin, adresse, sport, organisateur, isSponsored);
     }
 }

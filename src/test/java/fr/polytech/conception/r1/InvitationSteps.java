@@ -196,13 +196,13 @@ public class InvitationSteps
     @Given("a session passed its subscription date")
     public void aSessionPassedItsSubscriptionDate() throws InvalidSessionDataException
     {
-        session.setDateLimiteInscription(ZonedDateTime.now().minusDays(2));
+        session.setEntryDeadline(ZonedDateTime.now().minusDays(2));
     }
 
     @Given("a passed session")
     public void aPassedSession() throws InvalidSessionDataException
     {
-        session.setDebut(ZonedDateTime.now().minusDays(2));
+        session.setStart(ZonedDateTime.now().minusDays(2));
     }
 
     @Then("user {int} is denied sending the invitation")

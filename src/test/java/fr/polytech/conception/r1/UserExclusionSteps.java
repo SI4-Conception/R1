@@ -47,14 +47,14 @@ public class UserExclusionSteps
     @Then("Zhang doesn't participate to the session anymore")
     public void zhangDoesnTParticipateToTheSessionAnymore()
     {
-        Assert.assertFalse(zhang.getListSessions().contains(session));
+        Assert.assertFalse(zhang.getAttendedSessions().contains(session));
         Assert.assertFalse(session.getParticipants().contains(zhang));
     }
 
     @Then("Zhang can participate to the session again")
     public void zhangCanParticipateToTheSessionAgain()
     {
-        Assert.assertTrue(zhang.getListSessions().contains(session));
+        Assert.assertTrue(zhang.getAttendedSessions().contains(session));
         Assert.assertTrue(session.getParticipants().contains(zhang));
     }
 }

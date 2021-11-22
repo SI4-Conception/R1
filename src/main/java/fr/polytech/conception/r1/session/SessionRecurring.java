@@ -16,19 +16,19 @@ public class SessionRecurring extends Session
     private final Map<ZonedDateTime, SessionOneshot> cachedInstances = new HashMap<>();
     private final Period period;
     private final Duration duration;
-    private final ZonedDateTime premiere;
+    private final ZonedDateTime first;
 
-    public SessionRecurring(ZonedDateTime premiere, Period period, Duration duration, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
+    public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {
         super(adresse, sport, organisateur);
-        this.premiere = premiere;
+        this.first = first;
         this.period = period;
         this.duration = duration;
     }
 
     private Stream<ZonedDateTime> getInstanceDates()
     {
-        return Stream.iterate(premiere, date -> date.plus(period));
+        return Stream.iterate(first, date -> date.plus(period));
     }
 
     private SessionOneshot getOneshotInstance(ZonedDateTime date)
@@ -38,7 +38,7 @@ public class SessionRecurring extends Session
             try
             {
                 // return new SessionOneshot(d, d.plus(duration), getAdresse(), getSport(), getOrganisateur(), false);
-                return new SessionOneShotBuilder(d, d.plus(duration), getAdresse(), getSport(), getOrganisateur()).withIsSponsored(false).build();
+                return new SessionOneshotBuilder(d, d.plus(duration), getAddress(), getSport(), getOrganizer()).withIsSponsored(false).build();
             }
             catch (InvalidSessionDataException e)
             {
@@ -49,12 +49,12 @@ public class SessionRecurring extends Session
 
     private SessionOneshot getNthInstance(int n)
     {
-        return getOneshotInstance(premiere.plus(period.multipliedBy(n)));
+        return getOneshotInstance(first.plus(period.multipliedBy(n)));
     }
 
     @Override
-    public Stream<? extends SessionOneshot> getOneshots(ZonedDateTime fin)
+    public Stream<? extends SessionOneshot> getOneshots(ZonedDateTime end)
     {
-        return getInstanceDates().takeWhile(date -> date.isBefore(fin)).map(this::getOneshotInstance);
+        return getInstanceDates().takeWhile(date -> date.isBefore(end)).map(this::getOneshotInstance);
     }
 }

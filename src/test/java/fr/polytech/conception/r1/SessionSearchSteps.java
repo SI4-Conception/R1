@@ -85,7 +85,7 @@ public class SessionSearchSteps
         ZonedDateTime sessionBegin = ZonedDateTime.parse(arg1);
         Sport sport = Sport.getByName(arg0);
         SessionOneshot sessionOneshot = new SessionOneshot(sessionBegin, sessionBegin.plusDays(1), "", sport, theo, true);
-        sessionOneshot.setReserveAuxAmis(true);
+        sessionOneshot.setFriendsOnly(true);
         sessionsList.addSession(sessionOneshot);
     }
 
@@ -135,7 +135,7 @@ public class SessionSearchSteps
     @And("User {string} participates to the session of {string}")
     public void userParticipatesToTheSessionOf(String arg0, String arg1)
     {
-        final User user = otherUsers.stream().filter(u -> u.getPseudo().equals(arg0)).findFirst().orElse(null);
+        final User user = otherUsers.stream().filter(u -> u.getNickname().equals(arg0)).findFirst().orElse(null);
         Assert.assertNotNull(user);
         sessionsList.defaultSessionSearch(user).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg1)).forEach(user::participer);
     }

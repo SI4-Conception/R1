@@ -10,44 +10,44 @@ import fr.polytech.conception.r1.profile.User;
 
 public abstract class Session
 {
-    private String adresse;
+    private String address;
 
-    protected boolean reserveAuxAmis = false;
+    protected boolean friendsOnly = false;
     private int minParticipants = 1;
     /**
      * Set maxParticipants to zero to specify infinite number of participants
      */
     protected int maxParticipants = 0;
-    private Level difficulte = Level.DEBUTANT;
+    private Level difficulty = Level.BEGINNER;
     private Sport sport;
-    protected User organisateur;
+    protected User organizer;
 
-    public Session(String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
+    public Session(String address, Sport sport, User organizer) throws InvalidSessionDataException
     {
-        this.organisateur = organisateur;
-        this.adresse = adresse;
+        this.organizer = organizer;
+        this.address = address;
         this.sport = sport;
-        this.organisateur.getListSessionsOrganisees().add(this);
+        this.organizer.getOrganizedSessions().add(this);
     }
 
-    public String getAdresse()
+    public String getAddress()
     {
-        return adresse;
+        return address;
     }
 
-    public void setAdresse(String adresse)
+    public void setAddress(String address)
     {
-        this.adresse = adresse;
+        this.address = address;
     }
 
-    public boolean isReserveAuxAmis()
+    public boolean isFriendsOnly()
     {
-        return reserveAuxAmis;
+        return friendsOnly;
     }
 
-    public void setReserveAuxAmis(boolean reserveAuxAmis)
+    public void setFriendsOnly(boolean friendsOnly)
     {
-        this.reserveAuxAmis = reserveAuxAmis;
+        this.friendsOnly = friendsOnly;
     }
 
     public int getMinParticipants()
@@ -72,14 +72,14 @@ public abstract class Session
         this.maxParticipants = maxParticipants;
     }
 
-    public Level getDifficulte()
+    public Level getDifficulty()
     {
-        return difficulte;
+        return difficulty;
     }
 
-    public void setDifficulte(Level difficulte)
+    public void setDifficulty(Level difficulty)
     {
-        this.difficulte = difficulte;
+        this.difficulty = difficulty;
     }
 
     public Sport getSport()
@@ -92,14 +92,14 @@ public abstract class Session
         this.sport = sport;
     }
 
-    public User getOrganisateur()
+    public User getOrganizer()
     {
-        return organisateur;
+        return organizer;
     }
 
-    void checkDatesOrder(ZonedDateTime fin, ZonedDateTime debut) throws InvalidSessionDataException
+    void checkDatesOrder(ZonedDateTime end, ZonedDateTime start) throws InvalidSessionDataException
     {
-        if (fin.isBefore(debut))
+        if (end.isBefore(start))
         {
             throw new InvalidSessionDataException("La date de fin est avant le debut.");
         }
@@ -113,5 +113,5 @@ public abstract class Session
         }
     }
 
-    public abstract Stream<? extends SessionOneshot> getOneshots(ZonedDateTime fin);
+    public abstract Stream<? extends SessionOneshot> getOneshots(ZonedDateTime end);
 }

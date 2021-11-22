@@ -103,8 +103,8 @@ public class SessionSteps
     {
         session.setMaxParticipants(validMaxParticipants);
         session.setMinParticipants(validMinParticipants);
-        session.setFin(validDateTimeEnd);
-        session.setDebut(validDateTimeBegin);
+        session.setEnd(validDateTimeEnd);
+        session.setStart(validDateTimeBegin);
     }
 
     @Then("I should have the changed valid session")
@@ -113,8 +113,8 @@ public class SessionSteps
         Assert.assertNotNull(session);
         Assert.assertEquals(validMinParticipants, session.getMinParticipants());
         Assert.assertEquals(validMaxParticipants, session.getMaxParticipants());
-        Assert.assertEquals(validDateTimeEnd, session.getFin());
-        Assert.assertEquals(validDateTimeBegin, session.getDebut());
+        Assert.assertEquals(validDateTimeEnd, session.getEnd());
+        Assert.assertEquals(validDateTimeBegin, session.getStart());
     }
 
     @Given("Invalid time data for the session")
@@ -226,7 +226,7 @@ public class SessionSteps
     {
         try
         {
-            session.setDateLimiteInscription(validDateTimeEndSubscription);
+            session.setEntryDeadline(validDateTimeEndSubscription);
         }
         catch (InvalidSessionDataException ignored)
         {
@@ -237,7 +237,7 @@ public class SessionSteps
     @Then("I should have a session with this new end subscription date")
     public void iShouldHaveASessionWithThisNewEndSubscriptionDate()
     {
-        Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getDateLimiteInscription()));
+        Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getEntryDeadline()));
     }
 
     @Given("Previously created session with valid end subscription date")
@@ -246,7 +246,7 @@ public class SessionSteps
         try
         {
             session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport,julien, false);
-            session.setDateLimiteInscription(validDateTimeEndSubscription);
+            session.setEntryDeadline(validDateTimeEndSubscription);
         }
         catch (InvalidSessionDataException e)
         {
@@ -260,7 +260,7 @@ public class SessionSteps
     {
         try
         {
-            session.setDateLimiteInscription(invalidDateTimeEndSubscription);
+            session.setEntryDeadline(invalidDateTimeEndSubscription);
         }
         catch (InvalidSessionDataException ignored)
         {
@@ -270,7 +270,7 @@ public class SessionSteps
     @Then("I should have a session with old end subscription date")
     public void iShouldHaveASessionWithOldEndSubscriptionDate()
     {
-        Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getDateLimiteInscription()));
+        Assert.assertTrue(validDateTimeEndSubscription.isEqual(session.getEntryDeadline()));
     }
 
     @When("I try to participate in a session found")
@@ -283,7 +283,7 @@ public class SessionSteps
     public void theRegistrationIsTakenIntoAccountByTheSession()
     {
         Assert.assertTrue(session.getParticipants().contains(louis));
-        Assert.assertTrue(louis.getListSessions().contains(session));
+        Assert.assertTrue(louis.getAttendedSessions().contains(session));
     }
 
     @Given("Previously created session with {int} users at max and already {int} participants")
@@ -310,7 +310,7 @@ public class SessionSteps
     public void theRegistrationIsNotTakenIntoAccountByTheSession()
     {
         Assert.assertFalse(session.getParticipants().contains(louis));
-        Assert.assertFalse(louis.getListSessions().contains(session));
+        Assert.assertFalse(louis.getAttendedSessions().contains(session));
     }
 
     @Then("I cannot participate a second time to the session")

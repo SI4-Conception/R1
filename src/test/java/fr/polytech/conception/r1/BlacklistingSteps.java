@@ -51,13 +51,13 @@ public class BlacklistingSteps
     @Then("Enzo cannot see sessions created by Theo")
     public void enzoCannotSeeSessionsCreatedByEnzo()
     {
-        Assert.assertEquals(0, sessionsList.chercherSession(enzo, null, null, null, null, "Theo").count());
+        Assert.assertEquals(0, sessionsList.searchSession(enzo, null, null, null, null, "Theo").count());
     }
 
     @Then("Enzo can see sessions created by Theo")
     public void enzoCanSeeSessionsCreatedByTheo()
     {
-        Assert.assertEquals(4, sessionsList.chercherSession(enzo, null, null, null, null, "Theo").count());
+        Assert.assertEquals(4, sessionsList.searchSession(enzo, null, null, null, null, "Theo").count());
     }
 
     @When("Theo creates one sessions")
@@ -76,7 +76,7 @@ public class BlacklistingSteps
     public void theoDoesnTParticipateToTheSession()
     {
         Assert.assertFalse(session.getParticipants().contains(theo));
-        Assert.assertFalse(theo.getListSessions().contains(session));
+        Assert.assertFalse(theo.getAttendedSessions().contains(session));
     }
 
     @Then("Enzo can participate to the session created by Theo")
@@ -89,6 +89,6 @@ public class BlacklistingSteps
     public void theoParticipatesToTheSession()
     {
         Assert.assertTrue(session.getParticipants().contains(enzo));
-        Assert.assertTrue(enzo.getListSessions().contains(session));
+        Assert.assertTrue(enzo.getAttendedSessions().contains(session));
     }
 }

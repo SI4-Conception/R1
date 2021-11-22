@@ -22,7 +22,7 @@ import fr.polytech.conception.r1.Sport;
 
 public class User
 {
-    private String pseudo;
+    private String nickname;
     private String password;
     private String pathToProfilePicture;
     private String email;
@@ -31,8 +31,8 @@ public class User
     private String lastName;
     private boolean isSpecialUser = false;
     private final Map<Sport, Level> favouriteSports = new HashMap<>();
-    private final List<Session> listSessionsOrganisees = new ArrayList<>();
-    private final List<Session> listSessions = new ArrayList<>();
+    private final List<Session> organizedSessions = new ArrayList<>();
+    private final List<Session> attendedSessions = new ArrayList<>();
 
     private final List<User> friends = new ArrayList<>();
     private final List<User> friendsRequested = new ArrayList<>();
@@ -48,9 +48,9 @@ public class User
     {
     }
 
-    public User(String pseudo, String password, String email) throws InvalidProfileDataException
+    public User(String nickname, String password, String email) throws InvalidProfileDataException
     {
-        this.setPseudo(pseudo);
+        this.setNickname(nickname);
         this.setPassword(password);
         this.setEmail(email);
     }
@@ -80,13 +80,13 @@ public class User
         {
             return false;
         }
-        listSessions.add(session);
+        attendedSessions.add(session);
         return true;
     }
 
-    public String getPseudo()
+    public String getNickname()
     {
-        return pseudo;
+        return nickname;
     }
 
     /*
@@ -94,25 +94,25 @@ public class User
         - must be at least 4 characters long
         - must be at maximum 32 characters long
      */
-    public void setPseudo(String pseudo) throws InvalidProfileDataException
+    public void setNickname(String nickname) throws InvalidProfileDataException
     {
-        if (pseudo == null)
+        if (nickname == null)
         {
             throw new InvalidProfileDataException("Given username is null !");
         }
         else
         {
-            if (pseudo.length() < 4)
+            if (nickname.length() < 4)
             {
                 throw new InvalidProfileDataException("Given username is too short, it must be at least 4 characters long !");
             }
-            else if (pseudo.length() > 32)
+            else if (nickname.length() > 32)
             {
                 throw new InvalidProfileDataException("Given username is too long, the max allowed length is 32 characters !");
             }
             else
             {
-                this.pseudo = pseudo;
+                this.nickname = nickname;
             }
         }
     }
@@ -302,14 +302,14 @@ public class User
         return favouriteSports;
     }
 
-    public List<Session> getListSessionsOrganisees()
+    public List<Session> getOrganizedSessions()
     {
-        return listSessionsOrganisees;
+        return organizedSessions;
     }
 
-    public List<Session> getListSessions()
+    public List<Session> getAttendedSessions()
     {
-        return listSessions;
+        return attendedSessions;
     }
 
     public List<User> getFriends()
@@ -374,12 +374,12 @@ public class User
 
     public Invitation invite(SessionOneshot session, User guest)
     {
-        if (!this.getListSessionsOrganisees().contains(session))
+        if (!this.getOrganizedSessions().contains(session))
         {
             throw new IllegalArgumentException("Given session not organized by inviting user");
         }
 
-        if (session.getDebut().isBefore(ZonedDateTime.now()))
+        if (session.getStart().isBefore(ZonedDateTime.now()))
         {
             throw new IllegalArgumentException("The invitation must occur before the session starts");
         }
@@ -449,7 +449,7 @@ public class User
 
     public boolean isInvitationSentPending(Invitation invitation)
     {
-        if (invitation.getSession().getDebut().isBefore(ZonedDateTime.now()))
+        if (invitation.getSession().getStart().isBefore(ZonedDateTime.now()))
         {
             throw new IllegalArgumentException("Invitation can only be checked if it hasn't occured yet");
         }
@@ -463,7 +463,7 @@ public class User
 
     public boolean isInvitationSentDeclined(Invitation invitation)
     {
-        if (invitation.getSession().getDebut().isBefore(ZonedDateTime.now()))
+        if (invitation.getSession().getStart().isBefore(ZonedDateTime.now()))
         {
             throw new IllegalArgumentException("Invitation can only be checked if it hasn't occured yet");
         }

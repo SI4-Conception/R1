@@ -13,7 +13,7 @@ public class Invitation
 
     public Invitation(User organizer, User guest, SessionOneshot session)
     {
-        if (session.getDebut().isBefore(ZonedDateTime.now()))
+        if (session.getStart().isBefore(ZonedDateTime.now()))
         {
             throw new IllegalArgumentException("Cannot create an invitation of a passed session");
         }
