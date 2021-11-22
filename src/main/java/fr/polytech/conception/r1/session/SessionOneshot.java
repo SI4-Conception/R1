@@ -263,7 +263,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         }
     }
 
-    private class SessionCancelParticipationNotification extends Notification
+    private static class SessionCancelParticipationNotification extends Notification
     {
         private final SessionOneshot sessionOneshot;
         private final User user;
