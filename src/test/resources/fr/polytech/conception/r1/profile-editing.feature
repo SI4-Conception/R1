@@ -57,7 +57,7 @@ Feature: profile editing features
 
   Scenario: valid last name change
     Given an existing account and a valid last name "Mongne"
-    When I change my address to the valid last name
+    When I change my last name to the valid last name
     Then My last name should be updated
     
   Scenario: adding a valid sport to favourites

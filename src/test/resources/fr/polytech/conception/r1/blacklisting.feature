@@ -75,3 +75,11 @@ Feature: A user can blacklist another user
     When Theo unblacklists Enzo
     Then Enzo can participate to the session created by Theo
     And Enzo participates to the session
+
+  Scenario: Cannot participate in a session if I'm blacklisted
+    Given No session initially
+    Given Users,Theo and Enzo
+    When Theo creates one sessions
+    When Enzo blacklists Theo
+    Then Enzo can participate to the session created by Theo
+    And Enzo participates to the session
