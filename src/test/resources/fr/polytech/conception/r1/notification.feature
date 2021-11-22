@@ -20,3 +20,9 @@ Feature: A user receives notifications
     When user 2 declines the invitation in notify
     Then user 1 can see the invitaion has been declined through a notification
 
+  Scenario: Sends invitation to blacklister
+    Given 2 distinct users to notify
+    Given user 2 has previoulsy blacklisted user 1
+    Given a session organized by user 1 in notify
+    When user 1 invites user 2 to the session in notify
+    Then user 2 cannot see the invitation has been received through a notification

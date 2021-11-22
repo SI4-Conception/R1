@@ -89,7 +89,21 @@ public class NotificationSteps
         Assert.assertEquals(1, u.getNotifications().size());
         Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof Invitation.InvitationDeclinedNotification);
     }
+
+    @Given("user {int} has previoulsy blacklisted user {int}")
+    public void userHasPrevioulsyBlacklistedUser(int arg0, int arg1)
+    {
+        User u = userList.get(arg0 - 1);
+        User u2 = userList.get(arg1 - 1);
+        u.blacklist(u2);
+    }
+
+    @Then("user {int} cannot see the invitation has been received through a notification")
+    public void userCannotSeeTheInvitationHasBeenReceivedThroughANotification(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        Assert.assertEquals(0, u.getNotifications().size());
+    }
 }
 
-//todo add blacklist  notif
 //Todo add session notif
