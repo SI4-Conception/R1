@@ -64,9 +64,14 @@ public class User
         this.setEmail(email);
     }
 
+    public ArrayList<Notification> getNotifications()
+    {
+        return notifications;
+    }
+
     /*
-    once again no real constraint other than not null
-     */
+        once again no real constraint other than not null
+         */
     public void addSportToFavourites(Sport sport, Level level) throws InvalidProfileDataException
     {
         if (sport == null || level == null)
@@ -419,6 +424,7 @@ public class User
         else
         {
             invitationReceived.get(Invitation.Status.PENDING).add(invitation);
+            invitation.notifyReceived();
         }
     }
 
@@ -437,8 +443,7 @@ public class User
             throw new InvalidSessionDataException("User cannot participate to session");
         }
         invitationReceived.get(Invitation.Status.PENDING).remove(invitation);
-        //invitationReceived.get(Invitation.Status.ACCEPTED).add(invitation);
-        //todo trouver un moyen de signaler à user que l'invitation a été acceptée -> notifications (pattern observer sans doute)
+        invitation.notifyAccepted();
     }
 
     public void declineInvitation(Invitation invitation)
@@ -449,6 +454,7 @@ public class User
         }
         invitationReceived.get(Invitation.Status.PENDING).remove(invitation);
         invitationReceived.get(Invitation.Status.DECLINED).add(invitation);
+        invitation.notifyDeclined();
     }
 
     public boolean isInvitationPending(Invitation invitation)

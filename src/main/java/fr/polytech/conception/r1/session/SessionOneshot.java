@@ -115,7 +115,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
             throw new InvalidSessionDataException("Cannot participate a passed session");
         }
         this.participants.add(participant);
-        notifyCancelParticipation(participant);
+        //todo add notification (but not when accepting invitation?)
     }
 
     @Override
@@ -242,7 +242,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         }
     }
 
-    private static class SessionCancelNotification extends Notification
+    public static class SessionCancelNotification extends Notification
     {
         private final SessionOneshot sessionOneshot;
 
@@ -264,7 +264,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         }
     }
 
-    private static class SessionCancelParticipationNotification extends Notification
+    public static class SessionCancelParticipationNotification extends Notification
     {
         private final SessionOneshot sessionOneshot;
         private final User user;

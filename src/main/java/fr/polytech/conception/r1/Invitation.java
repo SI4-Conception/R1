@@ -60,17 +60,17 @@ public class Invitation
         notifyGuest(new InvitationReceivedNotification(this));
     }
 
-    public void notifyOrganizer(Notification notification)
+    private void notifyOrganizer(Notification notification)
     {
         organizer.notify(notification);
     }
 
-    public void notifyGuest(Notification notification)
+    private void notifyGuest(Notification notification)
     {
         guest.notify(notification);
     }
 
-    private class InvitationReceivedNotification extends Notification
+    public static class InvitationReceivedNotification extends Notification
     {
         private final Invitation invitation;
         public InvitationReceivedNotification(Invitation invitation)
@@ -91,7 +91,7 @@ public class Invitation
         }
     }
 
-    private class InvitationAcceptedNotification extends Notification
+    public static class InvitationAcceptedNotification extends Notification
     {
         private final Invitation invitation;
         public InvitationAcceptedNotification(Invitation invitation)
@@ -112,7 +112,7 @@ public class Invitation
         }
     }
 
-    private class InvitationDeclinedNotification extends Notification
+    public static class InvitationDeclinedNotification extends Notification
     {
         private final Invitation invitation;
         public InvitationDeclinedNotification(Invitation invitation)
