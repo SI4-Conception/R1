@@ -91,4 +91,10 @@ public class BlacklistingSteps
         Assert.assertTrue(session.getParticipants().contains(enzo));
         Assert.assertTrue(enzo.getAttendedSessions().contains(session));
     }
+
+    @When("Enzo blacklists Theo")
+    public void enzoBlacklistsTheo()
+    {
+        enzo.blacklist(theo);
+    }
 }
