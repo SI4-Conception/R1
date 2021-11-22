@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.Conversation;
 import fr.polytech.conception.r1.InvalidSessionDataException;
@@ -478,5 +479,12 @@ public class User
     public void setSpecialUser(boolean specialUser)
     {
         isSpecialUser = specialUser;
+    }
+
+    public Stream<Invitation> getInvitationsList()
+    {
+        final List<Invitation> invitations = new ArrayList<>();
+        invitationReceived.values().forEach(invitations::addAll);
+        return invitations.stream();
     }
 }

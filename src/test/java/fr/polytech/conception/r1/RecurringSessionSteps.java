@@ -13,6 +13,7 @@ import fr.polytech.conception.r1.session.Session;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.session.SessionRecurring;
 import fr.polytech.conception.r1.session.SessionsList;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -61,5 +62,39 @@ public class RecurringSessionSteps
             }
         }
         Assert.fail();
+    }
+
+    @Then("Paul should not participate to the recurring session of {string} at {string}")
+    public void paulShouldNotParticipateToTheRecurringSessionOfAt(String arg0, String arg1)
+    {
+        for(int i = 0; i < paul.getAttendedSessions().size(); i++)
+        {
+            Session session = paul.getAttendedSessions().get(i);
+            if(session.getOneshots(ZonedDateTime.parse(arg1).plusDays(1)).anyMatch(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1)) && sessionOneshot.getSport().getName().equals(arg0)))
+            {
+                Assert.fail();
+            }
+        }
+    }
+
+    @When("Theo invites Paul to the recurring session of {string} at {string}")
+    public void theoInvitesPaulToTheRecurringSessionOfAt(String arg0, String arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1))).findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        theo.invite(foundSession.get(), paul);
+    }
+
+    @Then("Paul should be invited to the session of {string} at {string}")
+    public void paulShouldBeInvitedToTheSessionOfAt(String arg0, String arg1)
+    {
+        Assert.assertTrue(paul.getInvitationsList().map(Invitation::getSession).anyMatch(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1)) && sessionOneshot.getSport().getName().equals(arg0)));
+
+    }
+
+    @And("Paul should not be invited to the session of {string} at {string}")
+    public void paulShouldNotBeInvitedToTheSessionOfAt(String arg0, String arg1)
+    {
+        Assert.assertFalse(paul.getInvitationsList().map(Invitation::getSession).anyMatch(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1)) && sessionOneshot.getSport().getName().equals(arg0)));
     }
 }
