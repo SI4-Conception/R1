@@ -23,9 +23,9 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     private final List<User> participants = new LinkedList<>();
     private double sponsoredSessionPrice = 0d;
 
-    public SessionOneshot(ZonedDateTime start, ZonedDateTime end, String adresse, Sport sport, User organizer, boolean isSponsored) throws InvalidSessionDataException
+    public SessionOneshot(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored) throws InvalidSessionDataException
     {
-        super(adresse, sport, organizer);
+        super(address, sport, organizer);
         checkDatesOrder(end, start);
         this.start = start;
         this.end = end;
