@@ -60,7 +60,7 @@ public class BlacklistingSteps
         Assert.assertEquals(4, sessionsList.searchSession(enzo, null, null, null, null, "Theo").count());
     }
 
-    @When("Theo creates one sessions")
+    @When("Theo creates one session")
     public void theoCreatesOneSessions() throws InvalidSessionDataException
     {
         session = new SessionOneshot(ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]"), ZonedDateTime.parse("2030-01-01T13:00:00.000+01:00[Europe/Paris]"), null, Sport.ACROSPORT, theo, false);
@@ -90,5 +90,17 @@ public class BlacklistingSteps
     {
         Assert.assertTrue(session.getParticipants().contains(enzo));
         Assert.assertTrue(enzo.getAttendedSessions().contains(session));
+    }
+
+    @When("Theo blacklists Enzo once more")
+    public void theoBlacklistsEnzoOnceMore()
+    {
+        theo.blacklist(enzo);
+    }
+
+    @When("Theo unblacklists Enzo")
+    public void theoUnblacklistsEnzo()
+    {
+       theo.unblacklist(enzo);
     }
 }
