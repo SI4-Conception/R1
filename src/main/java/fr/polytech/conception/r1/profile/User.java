@@ -17,6 +17,7 @@ import fr.polytech.conception.r1.Conversation;
 import fr.polytech.conception.r1.InvalidSessionDataException;
 import fr.polytech.conception.r1.Invitation;
 import fr.polytech.conception.r1.Level;
+import fr.polytech.conception.r1.Notification;
 import fr.polytech.conception.r1.session.Session;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.Sport;
@@ -44,6 +45,13 @@ public class User
     private final Map<Invitation.Status, Set<Invitation>> invitationReceived =
             Arrays.stream(Invitation.Status.values())
                     .collect(Collectors.toUnmodifiableMap(v -> v, v -> new HashSet<>()));
+
+    private final ArrayList<Notification> notifications = new ArrayList<>();
+
+    public void notify(Notification notification)
+    {
+        notifications.add(notification);
+    }
 
     public User()
     {
