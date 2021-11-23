@@ -25,3 +25,10 @@ Feature: Recurring sessions
     When Theo cancels the recurring session of "Snorkeling" at "2022-05-07T12:00:00.000+01:00[Europe/Paris]"
     Then The session of "Snorkeling" at "2022-05-07T12:00:00.000+01:00[Europe/Paris]" sould be canceled
     And The session of "Snorkeling" at "2022-05-09T12:00:00.000+01:00[Europe/Paris]" sould be not canceled
+
+  Scenario: Changing difficulty for a recurring session changes difficulty only for futures sessions
+    Given An empty list of sessions for searching recurring sessions
+    Given A recurring session of "Snorkeling" beginning today - 7 days created by theo
+    When Theo sets the difficulty of the session of "Snorkeling" at today + 8 days to "ADVANCED"
+    Then All the sessions of "Snorkeling" from now should be set to "ADVANCED" level
+    And We cannot see sessions that already occured

@@ -5,6 +5,7 @@ import org.junit.Assert;
 import java.time.Duration;
 import java.time.Period;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
@@ -120,5 +121,32 @@ public class RecurringSessionSteps
         Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1))).findFirst();
         Assert.assertTrue(foundSession.isPresent());
         Assert.assertFalse(foundSession.get().isCancelled());
+    }
+
+    @Then("All the sessions of {string} from now should be set to {string} level")
+    public void allTheSessionsOfFromNowShouldBeSetToLevel(String arg0, String arg1)
+    {
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).allMatch(sessionOneshot -> sessionOneshot.getDifficulty().equals(Level.getByString(arg1))));
+    }
+
+    @Given("A recurring session of {string} beginning today - {int} days created by theo")
+    public void aRecurringSessionOfBeginningTodayMinCreatedByTheo(String arg0, int arg1) throws InvalidSessionDataException
+    {
+        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().minusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
+        sessionsList.addSession(sessionRecurring);
+    }
+
+    @When("Theo sets the difficulty of the session of {string} at today + {int} days to {string}")
+    public void theoSetsTheDifficultyOfTheSessionOfAtTodayDaysTo(String arg0, int arg1, String arg2)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1).minusMinutes(1)) && sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1).plusMinutes(1))).findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        foundSession.get().setDifficulty(Level.getByString(arg2));
+    }
+
+    @And("We cannot see sessions that already occured")
+    public void weCannotSeeSessionsThatAlreadyOccured()
+    {
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).allMatch(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now())));
     }
 }
