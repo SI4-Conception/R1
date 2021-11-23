@@ -32,3 +32,10 @@ Feature: Recurring sessions
     When Theo sets the difficulty of the session of "Snorkeling" at today + 8 days to "ADVANCED"
     Then All the sessions of "Snorkeling" from now should be set to "ADVANCED" level
     And We cannot see sessions that already occured
+
+  Scenario: Changing min users for a recurring session changes difficulty only for futures sessions
+    Given An empty list of sessions for searching recurring sessions
+    Given A recurring session of "Snorkeling" beginning today - 7 days created by theo
+    When Theo sets min participants of the session of "Snorkeling" at today + 8 days to 5
+    Then All the sessions of "Snorkeling" from now should have 5 min participants
+    And We cannot see sessions that already occured

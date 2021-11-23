@@ -107,7 +107,7 @@ public abstract class Session
 
     private void checkParticipantsBounds(int minParticipants, int maxParticipants) throws InvalidSessionDataException
     {
-        if (minParticipants > maxParticipants || minParticipants < 0 || maxParticipants <= 0)
+        if ((minParticipants > maxParticipants && maxParticipants != 0) || minParticipants < 0 || maxParticipants < 0)
         {
             throw new InvalidSessionDataException("Le nombre min de participants doit etre <= au nombre max, et leur nombres doivent etre positifs");
         }

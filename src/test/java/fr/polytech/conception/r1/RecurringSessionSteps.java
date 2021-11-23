@@ -5,7 +5,6 @@ import org.junit.Assert;
 import java.time.Duration;
 import java.time.Period;
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
@@ -148,5 +147,19 @@ public class RecurringSessionSteps
     public void weCannotSeeSessionsThatAlreadyOccured()
     {
         Assert.assertTrue(sessionsList.defaultSessionSearch(theo).allMatch(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now())));
+    }
+
+    @When("Theo sets min participants of the session of {string} at today + {int} days to {int}")
+    public void theoSetsMinParticipantsOfTheSessionOfAtTodayDaysTo(String arg0, int arg1, int arg2) throws InvalidSessionDataException
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1).minusMinutes(1)) && sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1).plusMinutes(1))).findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        foundSession.get().setMinParticipants(arg2);
+    }
+
+    @Then("All the sessions of {string} from now should have {int} min participants")
+    public void allTheSessionsOfFromNowShouldHaveMinParticipants(String arg0, int arg1)
+    {
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg1));
     }
 }
