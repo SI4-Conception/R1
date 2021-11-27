@@ -122,11 +122,11 @@ public class RecurringSessionSteps
         Assert.assertFalse(foundSession.get().isCancelled());
     }
 
-    @Then("All the sessions of {string} from now should be set to {string} level")
+    /*@Then("All the sessions of {string} from now should be set to {string} level")
     public void allTheSessionsOfFromNowShouldBeSetToLevel(String arg0, String arg1)
     {
         Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).allMatch(sessionOneshot -> sessionOneshot.getDifficulty().equals(Level.getByString(arg1))));
-    }
+    }*/
 
     @Given("A recurring session of {string} beginning today - {int} days created by theo")
     public void aRecurringSessionOfBeginningTodayMinCreatedByTheo(String arg0, int arg1) throws InvalidSessionDataException
@@ -157,9 +157,39 @@ public class RecurringSessionSteps
         foundSession.get().setMinParticipants(arg2);
     }
 
-    @Then("All the sessions of {string} from now should have {int} min participants")
+    /*@Then("All the sessions of {string} from now should have {int} min participants")
     public void allTheSessionsOfFromNowShouldHaveMinParticipants(String arg0, int arg1)
     {
         Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg1));
+    }*/
+
+    @Then("All the sessions of {string} from today + {int} should be set to {string} level")
+    public void allTheSessionsOfFromTodayShouldBeSetToLevel(String arg0, int arg1, String arg2)
+    {
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).allMatch(sessionOneshot -> sessionOneshot.getDifficulty().equals(Level.getByString(arg2))));
+    }
+
+    @Then("All the sessions of {string} before today + {int} should be set to {string} level")
+    public void allTheSessionsOfBeforeTodayShouldBeSetToLevel(String arg0, int arg1, String arg2)
+    {
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1-1))).allMatch(sessionOneshot -> sessionOneshot.getDifficulty().equals(Level.getByString(arg2))));
+    }
+
+    @Given("Theo level for {string} set to {string}")
+    public void theoLevelForSetTo(String arg0, String arg1) throws InvalidProfileDataException
+    {
+        theo.addSportToFavourites(Sport.getByName(arg0), Level.getByString(arg1));
+    }
+
+    @Then("All the sessions of {string} from today + {int} should have {int} min participants")
+    public void allTheSessionsOfFromTodayShouldHaveMinParticipants(String arg0, int arg1, int arg2)
+    {
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
+    }
+
+    @Then("All the sessions of {string} before today + {int} should have {int} min participants")
+    public void allTheSessionsOfBeforeTodayShouldHaveMinParticipants(String arg0, int arg1, int arg2)
+    {
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1-1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
     }
 }
