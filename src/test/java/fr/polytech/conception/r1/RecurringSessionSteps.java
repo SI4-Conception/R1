@@ -5,9 +5,7 @@ import org.junit.Assert;
 import java.time.Duration;
 import java.time.Period;
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
