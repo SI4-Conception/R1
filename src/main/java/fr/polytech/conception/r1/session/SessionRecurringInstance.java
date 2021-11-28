@@ -1,7 +1,9 @@
 package fr.polytech.conception.r1.session;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.InvalidSessionDataException;
@@ -13,9 +15,17 @@ public class SessionRecurringInstance extends SessionOneshot
 {
     private final SessionRecurring parent;
 
-    public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, SessionRecurring parent) throws InvalidSessionDataException
+    public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, Duration minInscriptionTime, SessionRecurring parent) throws InvalidSessionDataException
     {
         super(start, end, address, sport, organizer, isSponsored);
+        try
+        {
+            setMinInscriptionTime(minInscriptionTime);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            // Ignore exception here
+        }
         this.parent = parent;
     }
 
@@ -101,5 +111,29 @@ public class SessionRecurringInstance extends SessionOneshot
     {
         super.setSport(sport);
         applyToRemainingSessions(s -> s.setSport(sport));
+    }
+
+    protected SessionRecurringInstance cloneWithTimeOffset(Duration timeOffset)
+    {
+        SessionRecurringInstance clonedSession;
+        try
+        {
+            clonedSession = new SessionRecurringInstance(this.getStart().plus(timeOffset), this.getEnd().plus(timeOffset), this.getAddress(), this.getSport(), this.getOrganizer(), this.isSponsored, this.getMinInscriptionTime(), this.getParent());
+            clonedSession.setMinParticipants(this.getMinParticipants());
+            clonedSession.setMaxParticipants(this.getMaxParticipants());
+            clonedSession.setDifficulty(this.getDifficulty());
+            clonedSession.setFriendsOnly(this.friendsOnly);
+            clonedSession.setEntryDeadline(this.getEntryDeadline().plus(timeOffset));
+            clonedSession.setSponsored(this.isSponsored);
+            if(this.isSponsored)
+            {
+                clonedSession.setPrice(this.getPrice());
+            }
+        }
+        catch (InvalidSessionDataException e)
+        {
+            throw new RuntimeException("Internal error during cloning session", e);
+        }
+        return clonedSession;
     }
 }

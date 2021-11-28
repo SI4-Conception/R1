@@ -5,6 +5,7 @@ import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -19,6 +20,7 @@ public class SessionRecurring extends Session
     private final Period period;
     private final Duration duration;
     private final ZonedDateTime first;
+    private SessionRecurringInstance savedParamsForSessionRecurring = null;
 
     public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {
@@ -26,6 +28,30 @@ public class SessionRecurring extends Session
         this.first = first;
         this.period = period;
         this.duration = duration;
+        initiateSavedParamsForSessionRecurring(duration, adresse, sport, minInscriptionTime, organisateur);
+    }
+
+    public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur) throws InvalidSessionDataException
+    {
+        super(adresse, sport, organisateur);
+        this.first = first;
+        this.period = period;
+        this.duration = duration;
+        this.minInscriptionTime = minInscriptionTime;
+        initiateSavedParamsForSessionRecurring(duration, adresse, sport, minInscriptionTime, organisateur);
+    }
+
+    private void initiateSavedParamsForSessionRecurring(Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur)
+    {
+        ZonedDateTime beginDate = ZonedDateTime.parse("3000-01-01T12:00:00.000+01:00[Europe/Paris]");
+        try
+        {
+            savedParamsForSessionRecurring = new SessionRecurringInstance(beginDate, beginDate.plus(duration), adresse, sport, organisateur, false, minInscriptionTime, this);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            throw new RuntimeException("Internal error during saving session creating", e);
+        }
     }
 
     private Stream<ZonedDateTime> getInstanceDates()
@@ -35,17 +61,26 @@ public class SessionRecurring extends Session
 
     private SessionRecurringInstance getOneshotInstance(ZonedDateTime date)
     {
-        return cachedInstances.computeIfAbsent(date, d ->
+        if(!cachedInstances.containsKey(date))
         {
             try
             {
-                return new SessionRecurringInstance(d, d.plus(duration), getAddress(), getSport(), getOrganizer(), false, this);
+                SessionRecurringInstance sessionRecurringInstance = new SessionRecurringInstance(date, date.plus(duration), getAddress(), getSport(), getOrganizer(), false, minInscriptionTime, this);
+                sessionRecurringInstance.setMinParticipants(savedParamsForSessionRecurring.getMinParticipants());
+                sessionRecurringInstance.setMaxParticipants(savedParamsForSessionRecurring.getMaxParticipants());
+                sessionRecurringInstance.setAddress(savedParamsForSessionRecurring.getAddress());
+                sessionRecurringInstance.setFriendsOnly(savedParamsForSessionRecurring.friendsOnly);
+                sessionRecurringInstance.setDifficulty(savedParamsForSessionRecurring.getDifficulty());
+                sessionRecurringInstance.setSport(savedParamsForSessionRecurring.getSport());
+                cachedInstances.put(date, sessionRecurringInstance);
+                return sessionRecurringInstance;
             }
             catch (InvalidSessionDataException e)
             {
                 throw new RuntimeException("Internal error during session creating", e);
             }
-        });
+        }
+        return cachedInstances.get(date);
     }
 
     private SessionRecurringInstance getNthInstance(int n)
@@ -87,6 +122,14 @@ public class SessionRecurring extends Session
                 throw new RuntimeException("Internal error during session modifying", e);
             }
         });
+        try
+        {
+            modification.apply(savedParamsForSessionRecurring);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Internal error during saving session modifying", e);
+        }
     }
 
     @Override
@@ -102,13 +145,13 @@ public class SessionRecurring extends Session
     }
 
     @Override
-    public void setMinParticipants(int minParticipants) throws InvalidSessionDataException
+    public void setMinParticipants(int minParticipants)
     {
         applyToRemainingSessions(s -> s.setMinParticipants(minParticipants));
     }
 
     @Override
-    public void setMaxParticipants(int maxParticipants) throws InvalidSessionDataException
+    public void setMaxParticipants(int maxParticipants)
     {
         applyToRemainingSessions(s -> s.setMaxParticipants(maxParticipants));
     }
@@ -123,5 +166,11 @@ public class SessionRecurring extends Session
     public void setSport(Sport sport)
     {
         applyToRemainingSessions(s -> s.setSport(sport));
+    }
+
+    @Override
+    public void setMinInscriptionTime(Duration d)
+    {
+        applyToRemainingSessions(s -> s.setMinInscriptionTime(d));
     }
 }
