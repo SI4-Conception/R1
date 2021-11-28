@@ -61,6 +61,13 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         notifyEdit();
     }
 
+    @Override
+    public void setAddress(String address)
+    {
+        super.setAddress(address);
+        notifyEdit();
+    }
+
     public ZonedDateTime getEntryDeadline()
     {
         return entryDeadline;
@@ -84,7 +91,8 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     public void setCancelled(boolean cancelled)
     {
         this.isCancelled = cancelled;
-        notifyCancel();
+        if(cancelled)
+            notifyCancel();
     }
 
     public List<User> getParticipants()
@@ -115,7 +123,16 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
             throw new InvalidSessionDataException("Cannot participate a passed session");
         }
         this.participants.add(participant);
-        //todo add notification (but not when accepting invitation?)
+    }
+
+    public void unparticipate(User participant) throws InvalidSessionDataException
+    {
+        if (!participants.contains(participant))
+        {
+            throw new InvalidSessionDataException("User is not participating session");
+        }
+        this.participants.remove(participant);
+        notifyCancelParticipation(participant);
     }
 
     @Override
@@ -149,12 +166,12 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         return (int) difference;
     }
 
-    //todo notif
     public boolean excludeUser(User user)
     {
         boolean r = participants.contains(user) && user.getAttendedSessions().contains(this);
         participants.remove(user);
         user.getAttendedSessions().remove(this);
+        notifyExcluded(user);
         return r;
     }
 
@@ -214,11 +231,12 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         organizer.notify(notification);
     }
 
-    //todo call with unsubscribe
     private void notifyCancelParticipation(User user)
     {
         notifyOrganizer(new SessionCancelParticipationNotification(this, user));
     }
+
+    private void notifyExcluded(User user) { user.notify(new SessionExcludedNotification(this));}
 
     public static class SessionEditedNotification extends Notification
     {
@@ -290,6 +308,28 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         public String getMessage()
         {
             return "user canceled their participation";
+        }
+    }
+
+    public static class SessionExcludedNotification extends Notification
+    {
+        private final SessionOneshot sessionOneshot;
+
+        public SessionExcludedNotification(SessionOneshot sessionOneshot)
+        {
+            super();
+            this.sessionOneshot = sessionOneshot;
+        }
+
+        public SessionOneshot getSessionOneshot()
+        {
+            return sessionOneshot;
+        }
+
+        @Override
+        public String getMessage()
+        {
+            return "You have been excluded from the session";
         }
     }
 }

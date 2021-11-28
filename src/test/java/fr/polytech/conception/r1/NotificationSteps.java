@@ -104,6 +104,90 @@ public class NotificationSteps
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(0, u.getNotifications().size());
     }
-}
 
-//Todo add session notif
+    @Given("user {int} participating the session")
+    public void userParticipatingTheSession(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        u.participer(session);
+    }
+
+    @When("user {int} unparticipates the session")
+    public void userUnparticipatesTheSession(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        u.unparticipate(session);
+    }
+
+    @Then("user {int} can see the participation has been undone")
+    public void userCanSeeTheParticipationHasBeenUndone(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        Assert.assertEquals(1, u.getNotifications().size());
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof SessionOneshot.SessionCancelParticipationNotification);
+    }
+
+    @When("user {int} excludes user {int} from the session")
+    public void userExcludesUserFromTheSession(int arg0, int arg1)
+    {
+        User u = userList.get(arg0 - 1);
+        User u2 = userList.get(arg1 - 1);
+        session.excludeUser(u2);
+    }
+
+    @Then("user {int} can see they have been excluded")
+    public void userCanSeeTheyHaveBeenExcluded(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        Assert.assertEquals(1, u.getNotifications().size());
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof
+        SessionOneshot.SessionExcludedNotification);
+    }
+
+    @When("user {int} changes the location of the session")
+    public void userChangesTheLocationOfTheSession(int arg0)
+    {
+        session.setAddress("30° 06′ 00″ S, 123° 19′ 58″ E");
+    }
+
+    @Then("user {int} can see a modification has occurred")
+    public void userCanSeeAModificationHasOccurred(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        Assert.assertEquals(1, u.getNotifications().size());
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof
+                SessionOneshot.SessionEditedNotification);
+    }
+
+    @When("user {int} cancels the session")
+    public void userCancelsTheSession(int arg0)
+    {
+        session.setCancelled(true);
+    }
+
+    @Then("user {int} can see the session has been canceled")
+    public void userCanSeeTheSessionHasBeenCanceled(int arg0)
+    {
+        User u = userList.get(arg0 - 1);
+        Assert.assertEquals(1, u.getNotifications().size());
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof SessionOneshot.SessionCancelNotification);
+    }
+
+    @When("user {int} changes the start time of the session")
+    public void userChangesTheStartTimeOfTheSession(int arg0) throws InvalidSessionDataException
+    {
+        session.setStart(ZonedDateTime.now().plusDays(3));
+    }
+
+    @When("user {int} changes the end time of the session")
+    public void userChangesTheEndTimeOfTheSession(int arg0) throws InvalidSessionDataException
+    {
+        session.setEnd(ZonedDateTime.parse("2031-02-01T15:00:00.000+01:00[Europe/Paris]"));
+    }
+
+    @When("user {int} changes the maximum number of participants of the session")
+    public void userChangesTheMaximumNumberOfParticipantsOfTheSession(int arg0) throws InvalidSessionDataException
+    {
+        session.setMaxParticipants(5);
+    }
+}

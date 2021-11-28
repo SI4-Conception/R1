@@ -98,6 +98,20 @@ public class User
         return true;
     }
 
+    public boolean unparticipate(SessionOneshot session)
+    {
+        try
+        {
+            session.unparticipate(this);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            return false;
+        }
+        attendedSessions.remove(session);
+        return true;
+    }
+
     public String getNickname()
     {
         return nickname;
