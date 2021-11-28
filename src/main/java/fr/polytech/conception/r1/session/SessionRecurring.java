@@ -136,7 +136,7 @@ public class SessionRecurring extends Session
             }
             catch (Exception e)
             {
-                throw new RuntimeException("Internal error during session modifying", e);
+                // Ignore this exception
             }
         });
     }

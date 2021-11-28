@@ -17,6 +17,7 @@ public class SessionRecurringInstance extends SessionOneshot
     public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, Duration minRegistrationTime, SessionRecurring parent) throws InvalidSessionDataException
     {
         super(start, end, address, sport, organizer, isSponsored);
+        this.parent = parent;
         try
         {
             setMinRegistrationTime(minRegistrationTime);
@@ -25,7 +26,6 @@ public class SessionRecurringInstance extends SessionOneshot
         {
             // Ignore exception here
         }
-        this.parent = parent;
     }
 
     public SessionRecurring getParent()
@@ -110,6 +110,26 @@ public class SessionRecurringInstance extends SessionOneshot
     {
         super.setSport(sport);
         applyToRemainingSessions(s -> s.setSport(sport));
+    }
+
+    /**
+     * Tries to change the limit regsitration time for this session and all others in the recuring session
+     * @param d Limit registration time
+     * @return true if this particular session has been modified, false otherwise. Note that it doesn't impact the whole recurring session modification
+     */
+    public boolean setMinRegistrationTimeForSiblingSessions(Duration d)
+    {
+        boolean thisSessionHasBeenModified = true;
+        try
+        {
+            super.setMinRegistrationTime(d);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            thisSessionHasBeenModified = false;
+        }
+        parent.setMinRegistrationTime(d);
+        return thisSessionHasBeenModified;
     }
 
     protected SessionRecurringInstance cloneWithTimeOffset(Duration timeOffset)

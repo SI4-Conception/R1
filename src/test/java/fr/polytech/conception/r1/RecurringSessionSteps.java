@@ -12,6 +12,7 @@ import fr.polytech.conception.r1.profile.User;
 import fr.polytech.conception.r1.session.Session;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.session.SessionRecurring;
+import fr.polytech.conception.r1.session.SessionRecurringInstance;
 import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -23,6 +24,7 @@ public class RecurringSessionSteps
     private SessionsList sessionsList;
     private final User theo = new User("Theo", "The0Pa55w0rd", "theo@mail.com");
     private final User paul = new User("Paul", "PaulPa55w0rd", "paul@mail.com");
+    private final User jacques = new User("Jacques", "JacquesAD1t", "jacques@mail.com");
 
     public RecurringSessionSteps() throws InvalidProfileDataException
     {
@@ -223,5 +225,56 @@ public class RecurringSessionSteps
     public void theRecurringSessionOfDoesnTExist(String arg0)
     {
         Assert.assertFalse(sessionsList.defaultSessionSearch(theo).anyMatch(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)));
+    }
+
+    @When("Theo sets the limit registration time for the recurring session of {string} to {int} days")
+    public void theoSetsTheLimitRegistrationTimeForTheRecurringSessionOfToDays(String arg0, int arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(theo)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertTrue(foundSession.get() instanceof SessionRecurringInstance);
+        Assert.assertTrue(((SessionRecurringInstance)foundSession.get()).setMinRegistrationTimeForSiblingSessions(Duration.ofDays(arg1)));
+    }
+
+    @When("Theo tries to set the limit registration time for the recurring session of {string} to {int} days")
+    public void theoTriesToSetTheLimitRegistrationTimeForTheRecurringSessionOfToDays(String arg0, int arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(theo)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertTrue(foundSession.get() instanceof SessionRecurringInstance);
+        Assert.assertFalse(((SessionRecurringInstance)foundSession.get()).setMinRegistrationTimeForSiblingSessions(Duration.ofDays(arg1)));
+    }
+
+    @Then("Paul cannot participate to the session of {string} of today + {int} days")
+    public void paulCannotParticipateToTheSessionOfOfTodayDays(String arg0, int arg1)
+    {
+        ZonedDateTime timeToCheck = ZonedDateTime.now().plusDays(arg1);
+        Assert.assertFalse(paul.getAttendedSessions()
+                .stream()
+                .map(session -> (SessionOneshot)session)
+                .anyMatch(session -> session.getSport().getName().equals(arg0) && session.getStart().isAfter(timeToCheck.minusDays(1)) && session.getStart().isBefore(timeToCheck.plusDays(1))));
+        Assert.assertFalse(sessionsList.defaultSessionSearch(theo)
+                .filter(session -> session.getSport().getName().equals(arg0))
+                .filter(session -> session.getStart().isAfter(timeToCheck.minusDays(1)) && session.getStart().isBefore(timeToCheck.plusDays(1)))
+                .anyMatch(sessionOneshot -> sessionOneshot.getParticipants().contains(paul)));
+    }
+
+    @And("Jacques can participate to the session of {string} of today + {int} days")
+    public void jacquesCanParticipateToTheSessionOfOfTodayDays(String arg0, int arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(jacques)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1-1)))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertTrue(jacques.participer(foundSession.get()));
+        Assert.assertTrue(jacques.getAttendedSessions().stream().anyMatch(session -> session.getSport().getName().equals(arg0)));
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo)
+                .filter(session -> session.getSport().getName().equals(arg0))
+                .anyMatch(sessionOneshot -> sessionOneshot.getParticipants().contains(paul)));
     }
 }
