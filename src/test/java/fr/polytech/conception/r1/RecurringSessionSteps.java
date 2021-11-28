@@ -5,7 +5,9 @@ import org.junit.Assert;
 import java.time.Duration;
 import java.time.Period;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
@@ -125,7 +127,7 @@ public class RecurringSessionSteps
     @Given("A recurring session of {string} beginning today - {int} days created by theo")
     public void aRecurringSessionOfBeginningTodayMinCreatedByTheo(String arg0, int arg1) throws InvalidSessionDataException
     {
-        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().minusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
+        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().minusDays(arg1).plusMinutes(1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
         sessionsList.addSession(sessionRecurring);
     }
 
@@ -172,7 +174,17 @@ public class RecurringSessionSteps
     @Then("All the sessions of {string} from today + {int} should have {int} min participants")
     public void allTheSessionsOfFromTodayShouldHaveMinParticipants(String arg0, int arg1, int arg2)
     {
-        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
+        List<SessionOneshot> foundList = sessionsList.defaultSessionSearch(theo)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).collect(Collectors.toList());
+        foundList.forEach(session -> {
+            if(session.getMinParticipants() != arg2)
+            {
+                System.out.println(session.getStart() + " " + session.getMinParticipants());
+                Assert.fail();
+            }
+        });
+        //Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
     }
 
     @Then("All the sessions of {string} before today + {int} should have {int} min participants")

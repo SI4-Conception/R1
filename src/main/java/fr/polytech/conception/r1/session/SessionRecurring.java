@@ -101,7 +101,8 @@ public class SessionRecurring extends Session
 
     private Stream<? extends Session> getSessionsToChange()
     {
-        return Stream.concat(Stream.of(this), getOneshotsAfter(ZonedDateTime.now()).map(Map.Entry::getValue));
+        return getOneshotsAfter(ZonedDateTime.now()).map(Map.Entry::getValue);
+        //return Stream.concat(Stream.of(this), getOneshotsAfter(ZonedDateTime.now()).map(Map.Entry::getValue));
     }
 
     public interface SessionModification
@@ -111,6 +112,14 @@ public class SessionRecurring extends Session
 
     private void applyToRemainingSessions(SessionModification modification)
     {
+        try
+        {
+            modification.apply(savedParamsForSessionRecurring);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Internal error during saving session modifying", e);
+        }
         getSessionsToChange().forEach(s ->
         {
             try
@@ -122,14 +131,6 @@ public class SessionRecurring extends Session
                 throw new RuntimeException("Internal error during session modifying", e);
             }
         });
-        try
-        {
-            modification.apply(savedParamsForSessionRecurring);
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException("Internal error during saving session modifying", e);
-        }
     }
 
     @Override
