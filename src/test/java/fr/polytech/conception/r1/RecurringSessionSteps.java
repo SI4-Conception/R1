@@ -174,17 +174,7 @@ public class RecurringSessionSteps
     @Then("All the sessions of {string} from today + {int} should have {int} min participants")
     public void allTheSessionsOfFromTodayShouldHaveMinParticipants(String arg0, int arg1, int arg2)
     {
-        List<SessionOneshot> foundList = sessionsList.defaultSessionSearch(theo)
-                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
-                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).collect(Collectors.toList());
-        foundList.forEach(session -> {
-            if(session.getMinParticipants() != arg2)
-            {
-                System.out.println(session.getStart() + " " + session.getMinParticipants());
-                Assert.fail();
-            }
-        });
-        //Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1+1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
     }
 
     @Then("All the sessions of {string} before today + {int} should have {int} min participants")
