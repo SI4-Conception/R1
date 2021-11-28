@@ -13,9 +13,9 @@ public class SessionRecurringBuilder
     private ZonedDateTime first;
     private Period period;
     private Duration duration;
-    private String adresse;
+    private String address;
     private Sport sport;
-    private User organisateur;
+    private User organizer;
 
     public SessionRecurringBuilder setFirst(ZonedDateTime first)
     {
@@ -35,9 +35,9 @@ public class SessionRecurringBuilder
         return this;
     }
 
-    public SessionRecurringBuilder setAdresse(String adresse)
+    public SessionRecurringBuilder setAddress(String address)
     {
-        this.adresse = adresse;
+        this.address = address;
         return this;
     }
 
@@ -47,14 +47,14 @@ public class SessionRecurringBuilder
         return this;
     }
 
-    public SessionRecurringBuilder setOrganisateur(User organisateur)
+    public SessionRecurringBuilder setOrganizer(User organizer)
     {
-        this.organisateur = organisateur;
+        this.organizer = organizer;
         return this;
     }
 
     public SessionRecurring createSessionRecurring() throws InvalidSessionDataException
     {
-        return new SessionRecurring(first, period, duration, adresse, sport, organisateur);
+        return new SessionRecurring(first, period, duration, address, sport, organizer);
     }
 }

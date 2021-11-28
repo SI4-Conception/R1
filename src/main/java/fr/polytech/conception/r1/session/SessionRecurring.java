@@ -3,9 +3,7 @@ package fr.polytech.conception.r1.session;
 import java.time.Duration;
 import java.time.Period;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -32,18 +30,18 @@ public class SessionRecurring extends Session
         initiateSavedParamsForSessionRecurring(duration, adresse, sport, Duration.ZERO, organisateur);
     }
 
-    public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur) throws InvalidSessionDataException
+    public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minRegistrationTime, User organisateur) throws InvalidSessionDataException
     {
         super(adresse, sport, organisateur);
-        checkDataRecurringSession(first, period, duration, adresse, sport, minInscriptionTime, organisateur);
+        checkDataRecurringSession(first, period, duration, adresse, sport, minRegistrationTime, organisateur);
         this.first = first;
         this.period = period;
         this.duration = duration;
-        this.minInscriptionTime = minInscriptionTime;
-        initiateSavedParamsForSessionRecurring(duration, adresse, sport, minInscriptionTime, organisateur);
+        this.minRegistrationTime = minRegistrationTime;
+        initiateSavedParamsForSessionRecurring(duration, adresse, sport, minRegistrationTime, organisateur);
     }
 
-    private void checkDataRecurringSession(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur) throws InvalidSessionDataException
+    private void checkDataRecurringSession(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minRegistrationTime, User organisateur) throws InvalidSessionDataException
     {
         if(first.isBefore(ZonedDateTime.now()))
         {
@@ -51,12 +49,12 @@ public class SessionRecurring extends Session
         }
     }
 
-    private void initiateSavedParamsForSessionRecurring(Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur)
+    private void initiateSavedParamsForSessionRecurring(Duration duration, String adresse, Sport sport, Duration minRegistrationTime, User organisateur)
     {
         ZonedDateTime beginDate = ZonedDateTime.parse("3000-01-01T12:00:00.000+01:00[Europe/Paris]");
         try
         {
-            savedParamsForSessionRecurring = new SessionRecurringInstance(beginDate, beginDate.plus(duration), adresse, sport, organisateur, false, minInscriptionTime, this);
+            savedParamsForSessionRecurring = new SessionRecurringInstance(beginDate, beginDate.plus(duration), adresse, sport, organisateur, false, minRegistrationTime, this);
         }
         catch (InvalidSessionDataException e)
         {
@@ -75,7 +73,7 @@ public class SessionRecurring extends Session
         {
             try
             {
-                SessionRecurringInstance sessionRecurringInstance = new SessionRecurringInstance(date, date.plus(duration), getAddress(), getSport(), getOrganizer(), false, minInscriptionTime, this);
+                SessionRecurringInstance sessionRecurringInstance = new SessionRecurringInstance(date, date.plus(duration), getAddress(), getSport(), getOrganizer(), false, minRegistrationTime, this);
                 sessionRecurringInstance.setMinParticipants(savedParamsForSessionRecurring.getMinParticipants());
                 sessionRecurringInstance.setMaxParticipants(savedParamsForSessionRecurring.getMaxParticipants());
                 sessionRecurringInstance.setAddress(savedParamsForSessionRecurring.getAddress());
@@ -180,8 +178,8 @@ public class SessionRecurring extends Session
     }
 
     @Override
-    public void setMinInscriptionTime(Duration d)
+    public void setMinRegistrationTime(Duration d)
     {
-        applyToRemainingSessions(s -> s.setMinInscriptionTime(d));
+        applyToRemainingSessions(s -> s.setMinRegistrationTime(d));
     }
 }

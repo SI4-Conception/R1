@@ -181,8 +181,8 @@ public class RecurringSessionSteps
         Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1-1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
     }
 
-    @Given("A recurring session of {string} beginning today + {int} days created by theo with a limit inscription time of {int} days")
-    public void aRecurringSessionOfBeginningTodayDaysCreatedByTheoWithALimitInscriptionTimeOfDays(String arg0, int arg1, int arg2) throws InvalidSessionDataException
+    @Given("A recurring session of {string} beginning today + {int} days created by theo with a limit registration time of {int} days")
+    public void aRecurringSessionOfBeginningTodayDaysCreatedByTheoWithALimitRegistrationTimeOfDays(String arg0, int arg1, int arg2) throws InvalidSessionDataException
     {
         SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().plusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), Duration.ofDays(arg2), theo);
         sessionsList.addSession(sessionRecurring);

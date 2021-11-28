@@ -33,18 +33,18 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         this.entryDeadline = start;
         if (Util.filterType(organizer.getOrganizedSessions().stream(), SessionOneshot.class).anyMatch(session ->
                 session != this && Util.intersect(start, end, session)))
-            throw new InvalidSessionDataException("Création de 2 sessions se déroulant au même moment");
+            throw new InvalidSessionDataException("Cannot create 2 sessions occurring at the same time");
         setSponsored(isSponsored);
     }
 
     @Override
-    void setMinInscriptionTime(Duration d) throws InvalidSessionDataException
+    void setMinRegistrationTime(Duration d) throws InvalidSessionDataException
     {
         if(!this.participants.isEmpty())
         {
-            throw new InvalidSessionDataException("Il y a deja des participants a cette session");
+            throw new InvalidSessionDataException("Cannot change minimum registration time because the session has participants");
         }
-        this.minInscriptionTime = d;
+        this.minRegistrationTime = d;
     }
 
     public ZonedDateTime getStart()
@@ -87,7 +87,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     {
         if (entryDeadline.isAfter(start))
         {
-            throw new InvalidSessionDataException("La date limite d'inscription doit etre avant le debut de la seance");
+            throw new InvalidSessionDataException("Registration time must occur before session");
         }
         this.entryDeadline = entryDeadline;
         notifyEdit();
@@ -114,25 +114,25 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     {
         if (participants.contains(participant))
         {
-            throw new InvalidSessionDataException("Vous participez deja a cette session.");
+            throw new InvalidSessionDataException("User already registered to session");
         }
         if (maxParticipants != 0 && participants.size() >= maxParticipants) // maxParticipants = 0 -> infinite
         {
-            throw new InvalidSessionDataException("Il y a deja trop de participants a cette session.");
+            throw new InvalidSessionDataException("Session is full");
         }
         if (friendsOnly && !organizer.getFriends().contains(participant))
         {
-            throw new InvalidSessionDataException("Cette session est reservee aux amis de l'organisateur, vous n'en faites pas partie.");
+            throw new InvalidSessionDataException("Session is friends only");
         }
         if (organizer.haveIBlacklistedUser(participant))
         {
-            throw new InvalidSessionDataException("You are blacklisted from this session");
+            throw new InvalidSessionDataException("User is blacklisted");
         }
         if (this.getStart().isBefore(ZonedDateTime.now()))
         {
-            throw new InvalidSessionDataException("Cannot participate a passed session");
+            throw new InvalidSessionDataException("Session has already started");
         }
-        if (!minInscriptionTime.equals(Duration.ZERO) && this.getStart().minus(minInscriptionTime).isAfter(ZonedDateTime.now()))
+        if (!minRegistrationTime.equals(Duration.ZERO) && this.getStart().minus(minRegistrationTime).isAfter(ZonedDateTime.now()))
         {
             throw new InvalidSessionDataException("You have to wait before registering for this session");
         }
@@ -321,7 +321,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         @Override
         public String getMessage()
         {
-            return "user canceled their participation";
+            return "user cancelled their participation";
         }
     }
 

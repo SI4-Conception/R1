@@ -7,15 +7,15 @@ import fr.polytech.conception.r1.session.SessionOneshot;
 
 public class Util
 {
-    public static boolean intersect(ZonedDateTime debut, ZonedDateTime fin, SessionOneshot session)
+    public static boolean intersect(ZonedDateTime start, ZonedDateTime end, SessionOneshot session)
     {
-        return isBetween(debut, fin, session.getStart())
-                || isBetween(debut, fin, session.getEnd());
+        return isBetween(start, end, session.getStart())
+                || isBetween(start, end, session.getEnd());
     }
 
-    private static boolean isBetween(ZonedDateTime debut, ZonedDateTime fin, ZonedDateTime date)
+    private static boolean isBetween(ZonedDateTime start, ZonedDateTime end, ZonedDateTime date)
     {
-        return !date.isBefore(debut) && !date.isAfter(fin);
+        return !date.isBefore(start) && !date.isAfter(end);
     }
 
     /**

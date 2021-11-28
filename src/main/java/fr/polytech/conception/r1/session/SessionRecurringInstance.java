@@ -3,7 +3,6 @@ package fr.polytech.conception.r1.session;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import fr.polytech.conception.r1.InvalidSessionDataException;
@@ -15,12 +14,12 @@ public class SessionRecurringInstance extends SessionOneshot
 {
     private final SessionRecurring parent;
 
-    public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, Duration minInscriptionTime, SessionRecurring parent) throws InvalidSessionDataException
+    public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, Duration minRegistrationTime, SessionRecurring parent) throws InvalidSessionDataException
     {
         super(start, end, address, sport, organizer, isSponsored);
         try
         {
-            setMinInscriptionTime(minInscriptionTime);
+            setMinRegistrationTime(minRegistrationTime);
         }
         catch (InvalidSessionDataException e)
         {
@@ -118,7 +117,7 @@ public class SessionRecurringInstance extends SessionOneshot
         SessionRecurringInstance clonedSession;
         try
         {
-            clonedSession = new SessionRecurringInstance(this.getStart().plus(timeOffset), this.getEnd().plus(timeOffset), this.getAddress(), this.getSport(), this.getOrganizer(), this.isSponsored, this.getMinInscriptionTime(), this.getParent());
+            clonedSession = new SessionRecurringInstance(this.getStart().plus(timeOffset), this.getEnd().plus(timeOffset), this.getAddress(), this.getSport(), this.getOrganizer(), this.isSponsored, this.getMinRegistrationTime(), this.getParent());
             clonedSession.setMinParticipants(this.getMinParticipants());
             clonedSession.setMaxParticipants(this.getMaxParticipants());
             clonedSession.setDifficulty(this.getDifficulty());

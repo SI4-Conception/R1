@@ -22,7 +22,7 @@ public abstract class Session
     private Level difficulty = Level.BEGINNER;
     private Sport sport;
     protected User organizer;
-    protected Duration minInscriptionTime = Duration.ZERO;
+    protected Duration minRegistrationTime = Duration.ZERO;
 
     public Session(String address, Sport sport, User organizer) throws InvalidSessionDataException
     {
@@ -32,11 +32,11 @@ public abstract class Session
         this.organizer.getOrganizedSessions().add(this);
     }
 
-    abstract void setMinInscriptionTime(Duration d) throws InvalidSessionDataException;
+    abstract void setMinRegistrationTime(Duration d) throws InvalidSessionDataException;
 
-    public Duration getMinInscriptionTime()
+    public Duration getMinRegistrationTime()
     {
-        return minInscriptionTime;
+        return minRegistrationTime;
     }
 
     public String getAddress()
@@ -110,7 +110,7 @@ public abstract class Session
     {
         if (end.isBefore(start))
         {
-            throw new InvalidSessionDataException("La date de fin est avant le debut.");
+            throw new InvalidSessionDataException("Session must start before it ends");
         }
     }
 
@@ -118,7 +118,7 @@ public abstract class Session
     {
         if ((minParticipants > maxParticipants && maxParticipants != 0) || minParticipants < 0 || maxParticipants < 0)
         {
-            throw new InvalidSessionDataException("Le nombre min de participants doit etre <= au nombre max, et leur nombres doivent etre positifs");
+            throw new InvalidSessionDataException("Amount of participants must be <= to max number, and there must be a positive amount of them");
         }
     }
 
