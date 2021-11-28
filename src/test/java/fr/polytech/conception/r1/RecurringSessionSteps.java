@@ -124,10 +124,10 @@ public class RecurringSessionSteps
         Assert.assertFalse(foundSession.get().isCancelled());
     }
 
-    @Given("A recurring session of {string} beginning today - {int} days created by theo")
+    @Given("A recurring session of {string} beginning today + {int} days created by theo")
     public void aRecurringSessionOfBeginningTodayMinCreatedByTheo(String arg0, int arg1) throws InvalidSessionDataException
     {
-        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().minusDays(arg1).plusMinutes(1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
+        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().plusDays(arg1).plusMinutes(1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
         sessionsList.addSession(sessionRecurring);
     }
 
@@ -183,10 +183,10 @@ public class RecurringSessionSteps
         Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1-1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
     }
 
-    @Given("A recurring session of {string} beginning today - {int} days created by theo with a limit inscription time of {int} days")
+    @Given("A recurring session of {string} beginning today + {int} days created by theo with a limit inscription time of {int} days")
     public void aRecurringSessionOfBeginningTodayDaysCreatedByTheoWithALimitInscriptionTimeOfDays(String arg0, int arg1, int arg2) throws InvalidSessionDataException
     {
-        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().minusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), Duration.ofDays(arg2), theo);
+        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().plusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), Duration.ofDays(arg2), theo);
         sessionsList.addSession(sessionRecurring);
     }
 
@@ -213,5 +213,17 @@ public class RecurringSessionSteps
     {
         Assert.assertFalse(paul.getAttendedSessions().stream().anyMatch(session -> session.getSport().getName().equals(arg0)));
         Assert.assertFalse(sessionsList.defaultSessionSearch(theo).filter(session -> session.getSport().getName().equals(arg0)).anyMatch(sessionOneshot -> sessionOneshot.getParticipants().contains(paul)));
+    }
+
+    @When("Theo tries to create a recurring session of {string} beginning today - {int} days")
+    public void theoTriesToCreateARecurringSessionOfBeginningTodayDays(String arg0, int arg1)
+    {
+        Assert.assertThrows(InvalidSessionDataException.class, () -> new SessionRecurring(ZonedDateTime.now().minusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo));
+    }
+
+    @Then("The recurring session of {string} doesn't exist")
+    public void theRecurringSessionOfDoesnTExist(String arg0)
+    {
+        Assert.assertFalse(sessionsList.defaultSessionSearch(theo).anyMatch(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)));
     }
 }

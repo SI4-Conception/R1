@@ -28,7 +28,7 @@ Feature: Recurring sessions
 
   Scenario: Changing difficulty for a recurring session changes difficulty only for futures sessions
     Given An empty list of sessions for searching recurring sessions
-    Given A recurring session of "Snorkeling" beginning today - 7 days created by theo
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo
     Given Theo level for "Snorkeling" set to "ADVANCED"
     When Theo sets the difficulty of the session of "Snorkeling" at today + 8 days to "ADVANCED"
     Then All the sessions of "Snorkeling" from today + 8 should be set to "ADVANCED" level
@@ -37,7 +37,7 @@ Feature: Recurring sessions
 
   Scenario: Changing min users for a recurring session changes difficulty only for futures sessions
     Given An empty list of sessions for searching recurring sessions
-    Given A recurring session of "Snorkeling" beginning today - 7 days created by theo
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo
     When Theo sets min participants of the session of "Snorkeling" at today + 8 days to 5
     Then All the sessions of "Snorkeling" from today + 8 should have 5 min participants
     Then All the sessions of "Snorkeling" before today + 8 should have 1 min participants
@@ -45,12 +45,17 @@ Feature: Recurring sessions
 
   Scenario: Can participate to recurring session if today is between the session limit inscription time and the session begin
     Given An empty list of sessions for searching recurring sessions
-    Given A recurring session of "Snorkeling" beginning today - 7 days created by theo with a limit inscription time of 10 days
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo with a limit inscription time of 10 days
     When Paul tries to participate to the "Snorkeling" session of today + 5 days
     Then Paul can participate to the session of "Snorkeling"
 
   Scenario: Cannot participate to recurring session if today is between the session limit inscription time and the session begin
     Given An empty list of sessions for searching recurring sessions
-    Given A recurring session of "Snorkeling" beginning today - 7 days created by theo with a limit inscription time of 10 days
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo with a limit inscription time of 10 days
     When Paul tries to participate to the "Snorkeling" session of today + 50 days
     Then Paul cannot participate to the session of "Snorkeling"
+
+  Scenario: Cannot create a recurring session from the past
+    Given An empty list of sessions for searching recurring sessions
+    When Theo tries to create a recurring session of "Snorkeling" beginning today - 1 days
+    Then The recurring session of "Snorkeling" doesn't exist

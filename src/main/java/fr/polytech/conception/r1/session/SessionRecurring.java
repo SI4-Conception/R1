@@ -25,20 +25,30 @@ public class SessionRecurring extends Session
     public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {
         super(adresse, sport, organisateur);
+        checkDataRecurringSession(first, period, duration, adresse, sport, Duration.ZERO, organisateur);
         this.first = first;
         this.period = period;
         this.duration = duration;
-        initiateSavedParamsForSessionRecurring(duration, adresse, sport, minInscriptionTime, organisateur);
+        initiateSavedParamsForSessionRecurring(duration, adresse, sport, Duration.ZERO, organisateur);
     }
 
     public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur) throws InvalidSessionDataException
     {
         super(adresse, sport, organisateur);
+        checkDataRecurringSession(first, period, duration, adresse, sport, minInscriptionTime, organisateur);
         this.first = first;
         this.period = period;
         this.duration = duration;
         this.minInscriptionTime = minInscriptionTime;
         initiateSavedParamsForSessionRecurring(duration, adresse, sport, minInscriptionTime, organisateur);
+    }
+
+    private void checkDataRecurringSession(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur) throws InvalidSessionDataException
+    {
+        if(first.isBefore(ZonedDateTime.now()))
+        {
+            throw new InvalidSessionDataException("Cannot create session from the past");
+        }
     }
 
     private void initiateSavedParamsForSessionRecurring(Duration duration, String adresse, Sport sport, Duration minInscriptionTime, User organisateur)
