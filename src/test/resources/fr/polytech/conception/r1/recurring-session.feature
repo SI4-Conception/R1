@@ -46,11 +46,11 @@ Feature: Recurring sessions
   Scenario: Can participate to recurring session if today is between the session limit inscription time and the session begin
     Given An empty list of sessions for searching recurring sessions
     Given A recurring session of "Snorkeling" beginning today - 7 days created by theo with a limit inscription time of 10 days
-    When Paul tries to participate to the session of today + 5 days
-    Then Paul can participate to the session
+    When Paul tries to participate to the "Snorkeling" session of today + 5 days
+    Then Paul can participate to the session of "Snorkeling"
 
   Scenario: Cannot participate to recurring session if today is between the session limit inscription time and the session begin
     Given An empty list of sessions for searching recurring sessions
     Given A recurring session of "Snorkeling" beginning today - 7 days created by theo with a limit inscription time of 10 days
-    When Paul tries to participate to the session of today + 50 days
-    Then Paul cannot participate to the session
+    When Paul tries to participate to the "Snorkeling" session of today + 50 days
+    Then Paul cannot participate to the session of "Snorkeling"

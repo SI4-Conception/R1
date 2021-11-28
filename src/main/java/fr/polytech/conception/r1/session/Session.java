@@ -1,5 +1,6 @@
 package fr.polytech.conception.r1.session;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
@@ -21,6 +22,7 @@ public abstract class Session
     private Level difficulty = Level.BEGINNER;
     private Sport sport;
     protected User organizer;
+    protected Duration minInscriptionTime = Duration.ZERO;
 
     public Session(String address, Sport sport, User organizer) throws InvalidSessionDataException
     {
@@ -28,6 +30,13 @@ public abstract class Session
         this.address = address;
         this.sport = sport;
         this.organizer.getOrganizedSessions().add(this);
+    }
+
+    abstract void setMinInscriptionTime(Duration d) throws InvalidSessionDataException;
+
+    public Duration getMinInscriptionTime()
+    {
+        return minInscriptionTime;
     }
 
     public String getAddress()

@@ -122,12 +122,6 @@ public class RecurringSessionSteps
         Assert.assertFalse(foundSession.get().isCancelled());
     }
 
-    /*@Then("All the sessions of {string} from now should be set to {string} level")
-    public void allTheSessionsOfFromNowShouldBeSetToLevel(String arg0, String arg1)
-    {
-        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).allMatch(sessionOneshot -> sessionOneshot.getDifficulty().equals(Level.getByString(arg1))));
-    }*/
-
     @Given("A recurring session of {string} beginning today - {int} days created by theo")
     public void aRecurringSessionOfBeginningTodayMinCreatedByTheo(String arg0, int arg1) throws InvalidSessionDataException
     {
@@ -157,12 +151,6 @@ public class RecurringSessionSteps
         foundSession.get().setMinParticipants(arg2);
     }
 
-    /*@Then("All the sessions of {string} from now should have {int} min participants")
-    public void allTheSessionsOfFromNowShouldHaveMinParticipants(String arg0, int arg1)
-    {
-        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg1));
-    }*/
-
     @Then("All the sessions of {string} from today + {int} should be set to {string} level")
     public void allTheSessionsOfFromTodayShouldBeSetToLevel(String arg0, int arg1, String arg2)
     {
@@ -191,5 +179,37 @@ public class RecurringSessionSteps
     public void allTheSessionsOfBeforeTodayShouldHaveMinParticipants(String arg0, int arg1, int arg2)
     {
         Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1-1))).allMatch(sessionOneshot -> sessionOneshot.getMinParticipants() == arg2));
+    }
+
+    @Given("A recurring session of {string} beginning today - {int} days created by theo with a limit inscription time of {int} days")
+    public void aRecurringSessionOfBeginningTodayDaysCreatedByTheoWithALimitInscriptionTimeOfDays(String arg0, int arg1, int arg2) throws InvalidSessionDataException
+    {
+        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().minusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), Duration.ofDays(arg2), theo);
+        sessionsList.addSession(sessionRecurring);
+    }
+
+    @When("Paul tries to participate to the {string} session of today + {int} days")
+    public void paulTriesToParticipateToTheSessionOfTodayDays(String arg0, int arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1-1)))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        paul.participer(foundSession.get());
+    }
+
+    @Then("Paul can participate to the session of {string}")
+    public void paulCanParticipateToTheSessionOf(String arg0)
+    {
+        Assert.assertTrue(paul.getAttendedSessions().stream().anyMatch(session -> session.getSport().getName().equals(arg0)));
+        Assert.assertTrue(sessionsList.defaultSessionSearch(theo).filter(session -> session.getSport().getName().equals(arg0)).anyMatch(sessionOneshot -> sessionOneshot.getParticipants().contains(paul)));
+    }
+
+    @Then("Paul cannot participate to the session of {string}")
+    public void paulCannotParticipateToTheSessionOf(String arg0)
+    {
+        Assert.assertFalse(paul.getAttendedSessions().stream().anyMatch(session -> session.getSport().getName().equals(arg0)));
+        Assert.assertFalse(sessionsList.defaultSessionSearch(theo).filter(session -> session.getSport().getName().equals(arg0)).anyMatch(sessionOneshot -> sessionOneshot.getParticipants().contains(paul)));
     }
 }

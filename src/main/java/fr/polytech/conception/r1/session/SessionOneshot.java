@@ -37,6 +37,16 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         setSponsored(isSponsored);
     }
 
+    @Override
+    void setMinInscriptionTime(Duration d) throws InvalidSessionDataException
+    {
+        if(!this.participants.isEmpty())
+        {
+            throw new InvalidSessionDataException("Il y a deja des participants a cette session");
+        }
+        this.minInscriptionTime = d;
+    }
+
     public ZonedDateTime getStart()
     {
         return start;
@@ -116,11 +126,15 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         }
         if (organizer.haveIBlacklistedUser(participant))
         {
-            throw new InvalidSessionDataException("T'es blacklist bro");
+            throw new InvalidSessionDataException("You are blacklisted from this session");
         }
         if (this.getStart().isBefore(ZonedDateTime.now()))
         {
             throw new InvalidSessionDataException("Cannot participate a passed session");
+        }
+        if (!minInscriptionTime.equals(Duration.ZERO) && this.getStart().minus(minInscriptionTime).isAfter(ZonedDateTime.now()))
+        {
+            throw new InvalidSessionDataException("You have to wait before registering for this session");
         }
         this.participants.add(participant);
     }
