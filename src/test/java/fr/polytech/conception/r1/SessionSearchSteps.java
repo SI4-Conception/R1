@@ -25,11 +25,11 @@ import io.cucumber.java.en.When;
 
 public class SessionSearchSteps
 {
+    private final List<User> otherUsers = new ArrayList<>();
     private SessionsList sessionsList;
     private User theo;
     private User karl;
     private Stream<SessionOneshot> resultSessionSearch;
-    private final List<User> otherUsers = new ArrayList<>();
 
     @Given("Users Karl and Theo special user")
     public void usersKarlAndTheoSpecialUser() throws InvalidProfileDataException
@@ -116,7 +116,8 @@ public class SessionSearchSteps
     public void usersFriendsWithKarl(String arg0)
     {
         Stream<String> otherUsersStream = Arrays.stream(arg0.split(", "));
-        otherUsersStream.forEach(username -> {
+        otherUsersStream.forEach(username ->
+        {
             try
             {
                 User user = new User(username, "p455w04d", username + "@mail.com");

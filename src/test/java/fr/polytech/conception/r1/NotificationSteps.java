@@ -71,7 +71,7 @@ public class NotificationSteps
     {
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(1, u.getNotifications().size());
-        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof Invitation.InvitationAcceptedNotification);
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size() - 1) instanceof Invitation.InvitationAcceptedNotification);
     }
 
     @And("user {int} can see the invitation has been received through a notification")
@@ -79,7 +79,7 @@ public class NotificationSteps
     {
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(1, u.getNotifications().size());
-        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof Invitation.InvitationReceivedNotification);
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size() - 1) instanceof Invitation.InvitationReceivedNotification);
     }
 
     @Then("user {int} can see the invitaion has been declined through a notification")
@@ -87,7 +87,7 @@ public class NotificationSteps
     {
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(1, u.getNotifications().size());
-        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof Invitation.InvitationDeclinedNotification);
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size() - 1) instanceof Invitation.InvitationDeclinedNotification);
     }
 
     @Given("user {int} has previoulsy blacklisted user {int}")
@@ -124,7 +124,7 @@ public class NotificationSteps
     {
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(1, u.getNotifications().size());
-        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof SessionOneshot.SessionCancelParticipationNotification);
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size() - 1) instanceof SessionOneshot.SessionCancelParticipationNotification);
     }
 
     @When("user {int} excludes user {int} from the session")
@@ -140,8 +140,8 @@ public class NotificationSteps
     {
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(1, u.getNotifications().size());
-        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof
-        SessionOneshot.SessionExcludedNotification);
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size() - 1) instanceof
+                SessionOneshot.SessionExcludedNotification);
     }
 
     @When("user {int} changes the location of the session")
@@ -155,7 +155,7 @@ public class NotificationSteps
     {
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(1, u.getNotifications().size());
-        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size() - 1) instanceof
                 SessionOneshot.SessionEditedNotification);
     }
 
@@ -170,7 +170,7 @@ public class NotificationSteps
     {
         User u = userList.get(arg0 - 1);
         Assert.assertEquals(1, u.getNotifications().size());
-        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size()-1) instanceof SessionOneshot.SessionCancelNotification);
+        Assert.assertTrue(u.getNotifications().get(u.getNotifications().size() - 1) instanceof SessionOneshot.SessionCancelNotification);
     }
 
     @When("user {int} changes the start time of the session")

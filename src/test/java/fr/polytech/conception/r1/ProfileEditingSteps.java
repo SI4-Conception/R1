@@ -11,11 +11,24 @@ import io.cucumber.java.en.When;
 public class ProfileEditingSteps
 {
 
+    User validUser;
+    String newUsername;
+    String tooShortUsername;
+    boolean errorRaised = false;
+    String tooLongUsername;
+    String newPassword;
+    String tooShortPassword;
+    String newPathToProfilePicture;
+    String newEmail;
+    String wrongEmail;
+    String newAddress;
+    String newFirstName;
+    String newLastName;
+    Sport favouriteSport;
+    Sport favouriteSport2, favouriteSport3;
     private String validUsername;
     private String validPassword;
     private String validEmail;
-
-    User validUser;
 
     @Given("a username {string}, a password {string} and an email address {string}")
     public void aUsernameAPasswordAndAnEmailAddress(String username, String password, String email)
@@ -32,7 +45,7 @@ public class ProfileEditingSteps
         {
             validUser = new User(validUsername, validPassword, validEmail);
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -48,8 +61,6 @@ public class ProfileEditingSteps
         Assert.assertNotNull(validUser.getEmail());
     }
 
-    String newUsername;
-
     @Given("an existing account and a valid username {string}")
     public void anExistingAccountAndAValidUsername(String username)
     {
@@ -57,7 +68,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -86,9 +97,6 @@ public class ProfileEditingSteps
         Assert.assertEquals(validUser.getNickname(), newUsername);
     }
 
-    String tooShortUsername;
-    boolean errorRaised = false;
-
     @Given("an existing account and a too short username {string}")
     public void aTooShortUsername(String username)
     {
@@ -96,7 +104,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -125,8 +133,6 @@ public class ProfileEditingSteps
         Assert.assertNotEquals(validUser.getNickname(), tooShortUsername);
     }
 
-    String tooLongUsername;
-
     @Given("an existing account and a too long username {string}")
     public void anExistingAccountAndATooLongUsername(String username)
     {
@@ -134,7 +140,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -164,8 +170,6 @@ public class ProfileEditingSteps
         Assert.assertNotEquals(validUser.getNickname(), tooLongUsername);
     }
 
-    String newPassword;
-
     @Given("an existing account and a valid passsword {string}")
     public void anExistingAccountAndAValidPasssword(String password)
     {
@@ -173,7 +177,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -202,8 +206,6 @@ public class ProfileEditingSteps
         Assert.assertEquals(validUser.getPassword(), newPassword);
     }
 
-    String tooShortPassword;
-
     @Given("an existing account and a too short passsword {string}")
     public void anExistingAccountAndATooShortPasssword(String password)
     {
@@ -211,7 +213,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -241,8 +243,6 @@ public class ProfileEditingSteps
         Assert.assertNotEquals(validUser.getPassword(), tooShortPassword);
     }
 
-    String newPathToProfilePicture;
-
     @Given("an existing account and a valid profile picture path {string}")
     public void anExistingAccountAndAValidProfilePicturePath(String pathToProfilePicture)
     {
@@ -250,7 +250,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -279,8 +279,6 @@ public class ProfileEditingSteps
         Assert.assertEquals(validUser.getPathToProfilePicture(), newPathToProfilePicture);
     }
 
-    String newEmail;
-
     @Given("an existing account and a valid email address {string}")
     public void anExistingAccountAndAValidEmailAddress(String email)
     {
@@ -288,7 +286,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -317,8 +315,6 @@ public class ProfileEditingSteps
         Assert.assertEquals(validUser.getEmail(), newEmail);
     }
 
-    String wrongEmail;
-
     @Given("an existing account and a wrong email {string}")
     public void anExistingAccountAndAWrongEmail(String email)
     {
@@ -326,7 +322,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -356,8 +352,6 @@ public class ProfileEditingSteps
         Assert.assertNotEquals(validUser.getEmail(), wrongEmail);
     }
 
-    String newAddress;
-
     @Given("an existing account and a valid address {string}")
     public void anExistingAccountAndAValidAddress(String address)
     {
@@ -365,7 +359,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -394,8 +388,6 @@ public class ProfileEditingSteps
         Assert.assertEquals(validUser.getAddress(), newAddress);
     }
 
-    String newFirstName;
-
     @Given("an existing account and a valid first name {string}")
     public void anExistingAccountAndAValidFirstName(String firstName)
     {
@@ -403,7 +395,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -432,8 +424,6 @@ public class ProfileEditingSteps
         Assert.assertEquals(validUser.getFirstName(), newFirstName);
     }
 
-    String newLastName;
-
     @Given("an existing account and a valid last name {string}")
     public void anExistingAccountAndAValidLastName(String lastName)
     {
@@ -441,7 +431,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -470,8 +460,6 @@ public class ProfileEditingSteps
         Assert.assertEquals(validUser.getLastName(), newLastName);
     }
 
-    Sport favouriteSport;
-
     @Given("an existing account and a sport {sport}")
     public void anExistingAccountAndASport(Sport sport)
     {
@@ -479,7 +467,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();
@@ -508,8 +496,6 @@ public class ProfileEditingSteps
         Assert.assertTrue(validUser.getFavouriteSports().containsKey(favouriteSport));
     }
 
-    Sport favouriteSport2, favouriteSport3;
-
     @Given("an existing account and some sports {sport} {sport} {sport}")
     public void anExistingAccountAndSomeSports(Sport sport, Sport sport2, Sport sport3)
     {
@@ -517,7 +503,7 @@ public class ProfileEditingSteps
         {
             validUser = new User("validUsername", "validPassword", "validEmail@gmail.com");
         }
-        catch(InvalidProfileDataException e)
+        catch (InvalidProfileDataException e)
         {
             e.printStackTrace();
             Assert.fail();

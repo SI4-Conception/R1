@@ -101,6 +101,6 @@ public class BlacklistingSteps
     @When("Theo unblacklists Enzo")
     public void theoUnblacklistsEnzo()
     {
-       theo.unblacklist(enzo);
+        theo.unblacklist(enzo);
     }
 }

@@ -11,18 +11,17 @@ import fr.polytech.conception.r1.profile.User;
 
 public abstract class Session
 {
-    private String address;
-
     protected boolean friendsOnly = false;
-    private int minParticipants = 1;
     /**
      * Set maxParticipants to zero to specify infinite number of participants
      */
     protected int maxParticipants = 0;
-    private Level difficulty = Level.BEGINNER;
-    private Sport sport;
     protected User organizer;
     protected Duration minRegistrationTime = Duration.ZERO;
+    private String address;
+    private int minParticipants = 1;
+    private Level difficulty = Level.BEGINNER;
+    private Sport sport;
 
     public Session(String address, Sport sport, User organizer) throws InvalidSessionDataException
     {
@@ -32,12 +31,12 @@ public abstract class Session
         this.organizer.getOrganizedSessions().add(this);
     }
 
-    abstract void setMinRegistrationTime(Duration d) throws InvalidSessionDataException;
-
     public Duration getMinRegistrationTime()
     {
         return minRegistrationTime;
     }
+
+    abstract void setMinRegistrationTime(Duration d) throws InvalidSessionDataException;
 
     public String getAddress()
     {

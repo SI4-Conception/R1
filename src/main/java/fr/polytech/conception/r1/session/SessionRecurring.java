@@ -43,7 +43,7 @@ public class SessionRecurring extends Session
 
     private void checkDataRecurringSession(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minRegistrationTime, User organisateur) throws InvalidSessionDataException
     {
-        if(first.isBefore(ZonedDateTime.now()))
+        if (first.isBefore(ZonedDateTime.now()))
         {
             throw new InvalidSessionDataException("Cannot create session from the past");
         }
@@ -69,7 +69,7 @@ public class SessionRecurring extends Session
 
     private SessionRecurringInstance getOneshotInstance(ZonedDateTime date)
     {
-        if(!cachedInstances.containsKey(date))
+        if (!cachedInstances.containsKey(date))
         {
             try
             {
@@ -111,11 +111,6 @@ public class SessionRecurring extends Session
     {
         return getOneshotsAfter(ZonedDateTime.now()).map(Map.Entry::getValue);
         //return Stream.concat(Stream.of(this), getOneshotsAfter(ZonedDateTime.now()).map(Map.Entry::getValue));
-    }
-
-    public interface SessionModification
-    {
-        void apply(Session s) throws Exception;
     }
 
     private void applyToRemainingSessions(SessionModification modification)
@@ -181,5 +176,10 @@ public class SessionRecurring extends Session
     public void setMinRegistrationTime(Duration d)
     {
         applyToRemainingSessions(s -> s.setMinRegistrationTime(d));
+    }
+
+    public interface SessionModification
+    {
+        void apply(Session s) throws Exception;
     }
 }

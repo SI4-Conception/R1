@@ -13,6 +13,7 @@ import fr.polytech.conception.r1.profile.User;
 public class SessionRecurringInstance extends SessionOneshot
 {
     private final SessionRecurring parent;
+    private boolean batchEditing = false;
 
     public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, Duration minRegistrationTime, SessionRecurring parent) throws InvalidSessionDataException
     {
@@ -37,8 +38,6 @@ public class SessionRecurringInstance extends SessionOneshot
     {
         return parent.getOneshotsAfter(getStart()).map(Map.Entry::getValue);
     }
-
-    private boolean batchEditing = false;
 
     private void applyToRemainingSessions(SessionRecurring.SessionModification modification)
     {
@@ -129,6 +128,7 @@ public class SessionRecurringInstance extends SessionOneshot
 
     /**
      * Tries to change the limit regsitration time for this session and all others in the recuring session
+     *
      * @param d Limit registration time
      * @return true if this particular session has been modified, false otherwise. Note that it doesn't impact the whole recurring session modification
      */
@@ -159,7 +159,7 @@ public class SessionRecurringInstance extends SessionOneshot
             clonedSession.setFriendsOnly(this.friendsOnly);
             clonedSession.setEntryDeadline(this.getEntryDeadline().plus(timeOffset));
             clonedSession.setSponsored(this.isSponsored);
-            if(this.isSponsored)
+            if (this.isSponsored)
             {
                 clonedSession.setPrice(this.getPrice());
             }

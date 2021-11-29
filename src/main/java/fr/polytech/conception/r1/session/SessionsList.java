@@ -13,21 +13,20 @@ import fr.polytech.conception.r1.profile.User;
 public class SessionsList
 {
     private static SessionsList SESSIONSLIST = null;
-
-    public static SessionsList getInstance()
-    {
-        if(SESSIONSLIST == null)
-        {
-            SESSIONSLIST = new SessionsList();
-        }
-        return SESSIONSLIST;
-    }
-
     private final List<Session> sessions = new ArrayList<>();
 
     private SessionsList()
     {
         //
+    }
+
+    public static SessionsList getInstance()
+    {
+        if (SESSIONSLIST == null)
+        {
+            SESSIONSLIST = new SessionsList();
+        }
+        return SESSIONSLIST;
     }
 
     private Stream<SessionOneshot> getOneshots(ZonedDateTime fin)
@@ -64,7 +63,7 @@ public class SessionsList
     {
         sessions.clear();
     }
-    
+
     public Stream<SessionOneshot> defaultSessionSearch(User user)
     {
         return getOneshots(ZonedDateTime.now().plus(Period.ofYears(1))).filter(s -> (!s.isFriendsOnly() || user.getFriends().contains(s.getOrganizer()))).filter(s -> (s.getDifficulty() == Level.BEGINNER || (user.getFavouriteSports().containsKey(s.getSport()) && s.getDifficulty().compareTo(user.getFavouriteSports().get(s.getSport())) >= 0)))

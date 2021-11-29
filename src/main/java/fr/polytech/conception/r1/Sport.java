@@ -263,16 +263,16 @@ public enum Sport
         this.name = name;
     }
 
-    public String getName()
-    {
-        return this.name;
-    }
-
     public static Sport getByName(String name)
     {
         return Arrays.stream(values())
                 .filter(val -> val.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unknown sport: " + name));
+    }
+
+    public String getName()
+    {
+        return this.name;
     }
 }

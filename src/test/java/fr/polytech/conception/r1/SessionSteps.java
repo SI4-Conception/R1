@@ -2,6 +2,8 @@ package fr.polytech.conception.r1;
 
 import org.junit.Assert;
 
+import java.time.ZonedDateTime;
+
 import fr.polytech.conception.r1.profile.User;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.session.SessionOneshotBuilder;
@@ -9,23 +11,20 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import java.time.ZonedDateTime;
-
 public class SessionSteps
 {
-    private ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
-    private ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
-    private int validMinParticipants = 4;
-    private int validMaxParticipants = 55;
     private final ZonedDateTime invalidDateTimeBegin = ZonedDateTime.parse("2030-02-02T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEndSubscription = ZonedDateTime.parse("2030-01-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime invalidDateTimeEndSubscription = ZonedDateTime.parse("2035-01-01T12:00:00.000+01:00[Europe/Paris]");
-    private String validAddress = "14 rue Bolchaia Loubianka";
-    private Sport validSport = Sport.KAYAK;
     private final User julien = new User();
     private final User louis = new User();
-
+    private ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
+    private ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
+    private int validMinParticipants = 4;
+    private int validMaxParticipants = 55;
+    private String validAddress = "14 rue Bolchaia Loubianka";
+    private Sport validSport = Sport.KAYAK;
     private SessionOneshot session = null;
 
     @Given("Valid begin time for the session: {string}")
@@ -146,7 +145,8 @@ public class SessionSteps
     @Given("{string} wants to create a session at the same time as another session he has already created")
     public void wantsToCreateASessionAtTheSameTimeAsAnotherSessionHeHasAlreadyCreated(String arg0)
     {
-        try {
+        try
+        {
             session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
         }
         catch (InvalidSessionDataException e)
@@ -159,7 +159,8 @@ public class SessionSteps
     @When("I try to create a session at the same time as another session I have already created")
     public void iTryToCreateASessionAtTheSameTimeAsAnotherSessionIHaveAlreadyCreated()
     {
-        try {
+        try
+        {
             session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
             Assert.fail();
         }
@@ -246,7 +247,7 @@ public class SessionSteps
     {
         try
         {
-            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport,julien, false);
+            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
             session.setEntryDeadline(validDateTimeEndSubscription);
         }
         catch (InvalidSessionDataException e)
@@ -294,7 +295,7 @@ public class SessionSteps
         {
             session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
             session.setMaxParticipants(arg0);
-            for(int i=0; i<arg1; i++)
+            for (int i = 0; i < arg1; i++)
             {
                 User u = new User();
                 u.participate(session);
@@ -323,7 +324,7 @@ public class SessionSteps
     @When("{int} users participate to the session")
     public void usersParticipateToTheSession(int arg0)
     {
-        for(int i = 0; i < arg0; i++)
+        for (int i = 0; i < arg0; i++)
         {
             User u = new User();
             Assert.assertTrue(u.participate(session));

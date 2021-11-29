@@ -37,14 +37,6 @@ public class Invitation
         return session;
     }
 
-    public enum Status {
-        PENDING,
-        //ACCEPTED,
-        DECLINED,
-        ARCHIVED,
-        BLACKLISTED
-    }
-
     public void notifyAccepted()
     {
         notifyOrganizer(new InvitationAcceptedNotification(this));
@@ -70,9 +62,19 @@ public class Invitation
         guest.notify(notification);
     }
 
+    public enum Status
+    {
+        PENDING,
+        //ACCEPTED,
+        DECLINED,
+        ARCHIVED,
+        BLACKLISTED
+    }
+
     public static class InvitationReceivedNotification extends Notification
     {
         private final Invitation invitation;
+
         public InvitationReceivedNotification(Invitation invitation)
         {
             super();
@@ -94,6 +96,7 @@ public class Invitation
     public static class InvitationAcceptedNotification extends Notification
     {
         private final Invitation invitation;
+
         public InvitationAcceptedNotification(Invitation invitation)
         {
             super();
@@ -115,11 +118,13 @@ public class Invitation
     public static class InvitationDeclinedNotification extends Notification
     {
         private final Invitation invitation;
+
         public InvitationDeclinedNotification(Invitation invitation)
         {
             super();
             this.invitation = invitation;
         }
+
         public Invitation getInvitation()
         {
             return invitation;

@@ -1,7 +1,6 @@
 package fr.polytech.conception.r1;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.LinkedList;
 
 import fr.polytech.conception.r1.profile.User;

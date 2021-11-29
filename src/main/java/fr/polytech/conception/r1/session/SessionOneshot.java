@@ -40,7 +40,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     @Override
     void setMinRegistrationTime(Duration d) throws InvalidSessionDataException
     {
-        if(!this.participants.isEmpty())
+        if (!this.participants.isEmpty())
         {
             throw new InvalidSessionDataException("Cannot change minimum registration time because the session has participants");
         }
@@ -101,7 +101,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
     public void setCancelled(boolean cancelled)
     {
         this.isCancelled = cancelled;
-        if(cancelled)
+        if (cancelled)
             notifyCancel();
     }
 
@@ -250,7 +250,10 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         notifyOrganizer(new SessionCancelParticipationNotification(this, user));
     }
 
-    private void notifyExcluded(User user) { user.notify(new SessionExcludedNotification(this));}
+    private void notifyExcluded(User user)
+    {
+        user.notify(new SessionExcludedNotification(this));
+    }
 
     public static class SessionEditedNotification extends Notification
     {

@@ -15,10 +15,10 @@ import io.cucumber.java.en.When;
 
 public class UserExclusionSteps
 {
-    private SessionsList sessionsList;
-    private SessionOneshot session;
     private final User helene = new User("Helene", "helene06", "helene@mail.com");
     private final User zhang = new User("Zhang", "zhangFromBolivia", "zhang@mail.com");
+    private SessionsList sessionsList;
+    private SessionOneshot session;
 
     public UserExclusionSteps() throws InvalidProfileDataException
     {

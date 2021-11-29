@@ -127,7 +127,7 @@ public class InvitationSteps
     public void aFullSession() throws InvalidSessionDataException
     {
         session.setMaxParticipants(5);
-        for(int i=0; i<5; i++)
+        for (int i = 0; i < 5; i++)
         {
             User u = new User();
             u.participate(session);

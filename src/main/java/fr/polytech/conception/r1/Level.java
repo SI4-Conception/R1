@@ -16,16 +16,16 @@ public enum Level
         this.levelAsString = level;
     }
 
-    public String getLevelAsString()
-    {
-        return this.levelAsString;
-    }
-
     public static Level getByString(String level)
     {
         return Arrays.stream(values())
                 .filter(val -> val.getLevelAsString().equals(level))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unknown level: " + level));
+    }
+
+    public String getLevelAsString()
+    {
+        return this.levelAsString;
     }
 }
