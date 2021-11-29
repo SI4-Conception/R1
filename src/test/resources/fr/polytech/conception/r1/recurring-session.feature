@@ -67,3 +67,28 @@ Feature: Recurring sessions
     Examples:
       | arg0     |
       | "Tennis" |
+
+  Scenario: Can change limit registration time if no user already participate
+    Given An empty list of sessions for searching recurring sessions
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo
+    When Theo sets the limit registration time for the recurring session of "Snorkeling" to 10 days
+    When Paul tries to participate to the "Snorkeling" session of today + 15 days
+    Then Paul cannot participate to the session of "Snorkeling"
+
+  Scenario: Cannot change limit registration time if some users already participate, but can change limit registration time for all other sessions in the recurring session
+    Given An empty list of sessions for searching recurring sessions
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo
+    When Paul tries to participate to the "Snorkeling" session of today + 1 days
+    When Theo tries to set the limit registration time for the recurring session of "Snorkeling" to 10 days
+    When Paul tries to participate to the "Snorkeling" session of today + 15 days
+    Then Paul cannot participate to the session of "Snorkeling" of today + 15 days
+    And Jacques can participate to the session of "Snorkeling" of today + 1 days
+
+  Scenario: Cannot change max participants if there are already more participants, but can handle it for other sessions
+    Given An empty list of sessions for searching recurring sessions
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo
+    When Paul tries to participate to the "Snorkeling" session of today + 1 days
+    And Jacques tries to participate to the "Snorkeling" session of today + 1 days
+    And Theo tries to set max participants of the "Snorkeling" session of today + 1 days to 1
+    Then The max users of the "Snorkeling" session of today + 1 days should be infinite
+    Then The max users of the "Snorkeling" session of today + 15 days should be 1
