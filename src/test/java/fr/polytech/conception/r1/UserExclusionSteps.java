@@ -35,7 +35,7 @@ public class UserExclusionSteps
     @When("Zhang participates to the session")
     public void zhangParticipatesToTheSession()
     {
-        zhang.participer(session);
+        zhang.participate(session);
     }
 
     @And("Helene exclude Zhang from the session")

@@ -69,7 +69,7 @@ public class BlacklistingSteps
     @Then("Enzo cannot participate to the session created by Theo")
     public void enzoCannotParticipateToTheSessionCreatedByTheo()
     {
-        Assert.assertFalse(enzo.participer(session));
+        Assert.assertFalse(enzo.participate(session));
     }
 
     @Then("Enzo doesn't participate to the session")
@@ -82,7 +82,7 @@ public class BlacklistingSteps
     @Then("Enzo can participate to the session created by Theo")
     public void enzoCanParticipateToTheSessionCreatedByTheo()
     {
-        Assert.assertTrue(enzo.participer(session));
+        Assert.assertTrue(enzo.participate(session));
     }
 
     @Then("Enzo participates to the session")

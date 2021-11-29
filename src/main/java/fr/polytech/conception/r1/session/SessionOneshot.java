@@ -110,7 +110,7 @@ public class SessionOneshot extends Session implements Comparable<SessionOneshot
         return participants;
     }
 
-    public void participer(User participant) throws InvalidSessionDataException
+    public void participate(User participant) throws InvalidSessionDataException
     {
         if (participants.contains(participant))
         {

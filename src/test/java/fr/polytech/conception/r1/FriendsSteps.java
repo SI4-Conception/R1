@@ -113,7 +113,7 @@ public class FriendsSteps
     public void userTryToParticipateToTheSession(int arg0)
     {
         User u = userList.get(arg0 - 1);
-        u.participer(session);
+        u.participate(session);
     }
 
     @Then("User {int} registration should be ok")

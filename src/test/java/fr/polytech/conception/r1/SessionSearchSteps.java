@@ -137,7 +137,7 @@ public class SessionSearchSteps
     {
         final User user = otherUsers.stream().filter(u -> u.getNickname().equals(arg0)).findFirst().orElse(null);
         Assert.assertNotNull(user);
-        sessionsList.defaultSessionSearch(user).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg1)).forEach(user::participer);
+        sessionsList.defaultSessionSearch(user).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg1)).forEach(user::participate);
     }
 
     @When("Karl does a friends-participating search on the sessions")

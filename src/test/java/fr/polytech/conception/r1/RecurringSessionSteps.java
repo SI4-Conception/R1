@@ -56,7 +56,7 @@ public class RecurringSessionSteps
     {
         Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(paul).filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)).filter(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1))).findFirst();
         Assert.assertTrue(foundSession.isPresent());
-        paul.participer(foundSession.get());
+        paul.participate(foundSession.get());
     }
 
     @Then("Paul should participate to the recurring session of {string} at {string}")
@@ -205,7 +205,7 @@ public class RecurringSessionSteps
                 .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1-1)))
                 .findFirst();
         Assert.assertTrue(foundSession.isPresent());
-        paul.participer(foundSession.get());
+        paul.participate(foundSession.get());
     }
 
     @Then("Paul can participate to the session of {string}")
@@ -304,7 +304,7 @@ public class RecurringSessionSteps
                 .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1-1)))
                 .findFirst();
         Assert.assertTrue(foundSession.isPresent());
-        Assert.assertTrue(jacques.participer(foundSession.get()));
+        Assert.assertTrue(jacques.participate(foundSession.get()));
         Assert.assertTrue(jacques.getAttendedSessions().stream().anyMatch(session -> session.getSport().getName().equals(arg0)));
         Assert.assertTrue(sessionsList.defaultSessionSearch(theo)
                 .filter(session -> session.getSport().getName().equals(arg0))
@@ -319,7 +319,7 @@ public class RecurringSessionSteps
                 .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1-1)))
                 .findFirst();
         Assert.assertTrue(foundSession.isPresent());
-        jacques.participer(foundSession.get());
+        jacques.participate(foundSession.get());
     }
 
     @And("Theo tries to set max participants of the {string} session of today + {int} days to {int}")

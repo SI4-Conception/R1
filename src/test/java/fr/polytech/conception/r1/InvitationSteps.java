@@ -130,7 +130,7 @@ public class InvitationSteps
         for(int i=0; i<5; i++)
         {
             User u = new User();
-            u.participer(session);
+            u.participate(session);
         }
     }
 
@@ -231,7 +231,7 @@ public class InvitationSteps
     public void userParticipatingSession(int arg0) throws InvalidSessionDataException
     {
         User u = userList.get(arg0 - 1);
-        session.participer(u);
+        session.participate(u);
     }
 
     @When("user {int} invites user {int} again")

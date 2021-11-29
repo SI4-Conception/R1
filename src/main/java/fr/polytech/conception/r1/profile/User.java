@@ -84,11 +84,11 @@ public class User
         }
     }
 
-    public boolean participer(SessionOneshot session)
+    public boolean participate(SessionOneshot session)
     {
         try
         {
-            session.participer(this);
+            session.participate(this);
         }
         catch (InvalidSessionDataException e)
         {
@@ -450,7 +450,7 @@ public class User
         }
         try
         {
-            invitation.getSession().participer(this);
+            invitation.getSession().participate(this);
         }
         catch (InvalidSessionDataException e)
         {

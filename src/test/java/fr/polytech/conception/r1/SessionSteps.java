@@ -277,7 +277,7 @@ public class SessionSteps
     @When("I try to participate in a session found")
     public void iTryToParticipateInASessionFound()
     {
-        louis.participer(session);
+        louis.participate(session);
     }
 
     @Then("The registration is taken into account by the session")
@@ -297,7 +297,7 @@ public class SessionSteps
             for(int i=0; i<arg1; i++)
             {
                 User u = new User();
-                u.participer(session);
+                u.participate(session);
             }
         }
         catch (InvalidSessionDataException e)
@@ -317,7 +317,7 @@ public class SessionSteps
     @Then("I cannot participate a second time to the session")
     public void iCannotParticipateASecondTimeToTheSession()
     {
-        Assert.assertFalse(louis.participer(session));
+        Assert.assertFalse(louis.participate(session));
     }
 
     @When("{int} users participate to the session")
@@ -326,7 +326,7 @@ public class SessionSteps
         for(int i = 0; i < arg0; i++)
         {
             User u = new User();
-            Assert.assertTrue(u.participer(session));
+            Assert.assertTrue(u.participate(session));
         }
     }
 

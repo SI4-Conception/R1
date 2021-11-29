@@ -109,7 +109,7 @@ public class NotificationSteps
     public void userParticipatingTheSession(int arg0)
     {
         User u = userList.get(arg0 - 1);
-        u.participer(session);
+        u.participate(session);
     }
 
     @When("user {int} unparticipates the session")
