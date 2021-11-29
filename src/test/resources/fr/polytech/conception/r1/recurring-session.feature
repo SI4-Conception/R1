@@ -75,3 +75,12 @@ Feature: Recurring sessions
     When Paul tries to participate to the "Snorkeling" session of today + 15 days
     Then Paul cannot participate to the session of "Snorkeling" of today + 15 days
     And Jacques can participate to the session of "Snorkeling" of today + 1 days
+
+  Scenario: Cannot change max participants if there are already more participants, but can handle it for other sessions
+    Given An empty list of sessions for searching recurring sessions
+    Given A recurring session of "Snorkeling" beginning today + 1 days created by theo
+    When Paul tries to participate to the "Snorkeling" session of today + 1 days
+    And Jacques tries to participate to the "Snorkeling" session of today + 1 days
+    And Theo tries to set max participants of the "Snorkeling" session of today + 1 days to 1
+    Then The max users of the "Snorkeling" session of today + 1 days should be infinite
+    Then The max users of the "Snorkeling" session of today + 15 days should be 1

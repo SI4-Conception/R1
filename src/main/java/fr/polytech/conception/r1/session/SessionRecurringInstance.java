@@ -85,16 +85,31 @@ public class SessionRecurringInstance extends SessionOneshot
     }
 
     @Override
-    public void setMinParticipants(int minParticipants) throws InvalidSessionDataException
+    public void setMinParticipants(int minParticipants)
     {
-        super.setMinParticipants(minParticipants);
+
+        try
+        {
+            super.setMinParticipants(minParticipants);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            // Ingore exception here
+        }
         applyToRemainingSessions(s -> s.setMinParticipants(minParticipants));
     }
 
     @Override
-    public void setMaxParticipants(int maxParticipants) throws InvalidSessionDataException
+    public void setMaxParticipants(int maxParticipants)
     {
-        super.setMaxParticipants(maxParticipants);
+        try
+        {
+            super.setMaxParticipants(maxParticipants);
+        }
+        catch (InvalidSessionDataException e)
+        {
+            // Ingore exception here
+        }
         applyToRemainingSessions(s -> s.setMaxParticipants(maxParticipants));
     }
 

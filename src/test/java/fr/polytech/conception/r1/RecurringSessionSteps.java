@@ -277,4 +277,52 @@ public class RecurringSessionSteps
                 .filter(session -> session.getSport().getName().equals(arg0))
                 .anyMatch(sessionOneshot -> sessionOneshot.getParticipants().contains(paul)));
     }
+
+    @When("Jacques tries to participate to the {string} session of today + {int} days")
+    public void jacquesTriesToParticipateToTheSessionOfTodayDays(String arg0, int arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(jacques)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1-1)))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        jacques.participer(foundSession.get());
+    }
+
+    @And("Theo tries to set max participants of the {string} session of today + {int} days to {int}")
+    public void theoTriesToSetMaxParticipantsOfTheSessionOfTodayDaysTo(String arg0, int arg1, int arg2)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(theo)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1 - 1)))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1 + 1)))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertTrue(foundSession.get() instanceof SessionRecurringInstance);
+        ((SessionRecurringInstance)foundSession.get()).setMaxParticipants(arg2);
+    }
+
+    @Then("The max users of the {string} session of today + {int} days should be infinite")
+    public void theMaxUsersOfTheSessionOfTodayDaysShouldBeInfinite(String arg0, int arg1)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(theo)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1 - 1)))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1 + 1)))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertEquals(0, foundSession.get().getMaxParticipants());
+    }
+
+    @Then("The max users of the {string} session of today + {int} days should be {int}")
+    public void theMaxUsersOfTheSessionOfTodayDaysShouldBe(String arg0, int arg1, int arg2)
+    {
+        Optional<SessionOneshot> foundSession = sessionsList.defaultSessionSearch(theo)
+                .filter(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isAfter(ZonedDateTime.now().plusDays(arg1 - 1)))
+                .filter(sessionOneshot -> sessionOneshot.getStart().isBefore(ZonedDateTime.now().plusDays(arg1 + 1)))
+                .findFirst();
+        Assert.assertTrue(foundSession.isPresent());
+        Assert.assertEquals(arg2, foundSession.get().getMaxParticipants());
+    }
 }
