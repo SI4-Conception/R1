@@ -59,3 +59,11 @@ Feature: Recurring sessions
     Given An empty list of sessions for searching recurring sessions
     When Theo tries to create a recurring session of "Snorkeling" beginning today - 1 days
     Then The recurring session of "Snorkeling" doesn't exist
+
+  Scenario Outline: Creating a new recurring session
+    Given Valid sport for this recurring session: <arg0>
+    When I create the recurring session with these valid data beginning today + 40 days
+    Then I should have a valid recurring session
+    Examples:
+      | arg0     |
+      | "Tennis" |

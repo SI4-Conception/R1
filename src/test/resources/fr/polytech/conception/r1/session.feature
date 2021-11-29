@@ -61,3 +61,14 @@ Feature: Features of my session
     Given Previously created session with valid end subscription date
     When 5 users participate to the session
     Then I cannot set the max number of participants to 4
+
+  Scenario Outline: Creating a new session (2)
+    Given Valid begin time for the session: <arg0>
+    Given Valid end time for the session: <arg01>
+    Given Valid address for the session <arg02>
+    Given Valid sport for the session <arg03>
+    When I create the session with these valid data bis
+    Then I should have a valid session bis
+    Examples:
+      | arg0                                          | arg01                                         | arg02                       | arg03   |
+      | "2030-02-01T12:00:00.000+01:00[Europe/Paris]" | "2030-02-01T15:00:00.000+01:00[Europe/Paris]" | "14 rue Bolchaia Loubianka" | "Kayak" |

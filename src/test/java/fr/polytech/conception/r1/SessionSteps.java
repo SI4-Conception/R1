@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import fr.polytech.conception.r1.profile.User;
 import fr.polytech.conception.r1.session.SessionOneshot;
+import fr.polytech.conception.r1.session.SessionOneshotBuilder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -333,5 +334,25 @@ public class SessionSteps
     public void iCannotSetTheMaxNumberOfParticipantsTo(int arg0)
     {
         Assert.assertThrows(InvalidSessionDataException.class, () -> session.setMaxParticipants(arg0));
+    }
+
+    @When("I create the session with these valid data bis")
+    public void iCreateTheSessionWithTheseValidData()
+    {
+        try
+        {
+            session = new SessionOneshotBuilder().setStart(validDateTimeBegin).setEnd(validDateTimeEnd).setAddress(validAddress).setSport(validSport).setOrganizer(julien).setIsSponsored(false).createSessionOneshot();
+        }
+        catch (InvalidSessionDataException e)
+        {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Then("I should have a valid session bis")
+    public void iShouldHaveAValidSessionBis()
+    {
+        Assert.assertNotNull(session);
     }
 }

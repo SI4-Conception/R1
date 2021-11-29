@@ -12,6 +12,7 @@ import fr.polytech.conception.r1.profile.User;
 import fr.polytech.conception.r1.session.Session;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.session.SessionRecurring;
+import fr.polytech.conception.r1.session.SessionRecurringBuilder;
 import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -23,6 +24,12 @@ public class RecurringSessionSteps
     private SessionsList sessionsList;
     private final User theo = new User("Theo", "The0Pa55w0rd", "theo@mail.com");
     private final User paul = new User("Paul", "PaulPa55w0rd", "paul@mail.com");
+
+    ZonedDateTime beginDate = ZonedDateTime.parse("3000-01-01T12:00:00.000+01:00[Europe/Paris]");
+
+    private Sport validSport = Sport.TENNIS;
+
+    private SessionRecurring recurringSession = null;
 
     public RecurringSessionSteps() throws InvalidProfileDataException
     {
@@ -223,5 +230,31 @@ public class RecurringSessionSteps
     public void theRecurringSessionOfDoesnTExist(String arg0)
     {
         Assert.assertFalse(sessionsList.defaultSessionSearch(theo).anyMatch(sessionOneshot -> sessionOneshot.getSport().getName().equals(arg0)));
+    }
+
+    @Given("Valid sport for this recurring session: {string}")
+    public void validSportForThisRecurringSessionArg(String arg0)
+    {
+        validSport = Sport.getByName(arg0);
+    }
+
+    @When("I create the recurring session with these valid data beginning today + {int} days")
+    public void iCreateTheRecurringSessionWithTheseValidData(int arg0) throws InvalidSessionDataException
+    {
+        try
+        {
+            recurringSession = new SessionRecurringBuilder().setFirst(ZonedDateTime.now().plusDays(arg0).plusMinutes(1)).setPeriod(Period.ofDays(1)).setDuration(Duration.ofHours(12)).setAddress("").setSport(validSport).setOrganizer(theo).createSessionRecurring();
+        }
+        catch (InvalidSessionDataException e)
+        {
+            e.printStackTrace();
+            Assert.fail();
+        }
+    }
+
+    @Then("I should have a valid recurring session")
+    public void iShouldHaveAValidRecurringSession()
+    {
+        Assert.assertNotNull(recurringSession);
     }
 }
