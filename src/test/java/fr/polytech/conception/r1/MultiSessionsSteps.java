@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.profile.User;
-import fr.polytech.conception.r1.session.Session;
+import fr.polytech.conception.r1.session.SessionInterface;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.Given;
@@ -17,7 +17,7 @@ import io.cucumber.java.en.When;
 
 public class MultiSessionsSteps
 {
-    private final List<Session> validSessionsList = new ArrayList<>();
+    private final List<SessionInterface> validSessionsList = new ArrayList<>();
     private final List<SessionOneshot> foundSessionsList = new ArrayList<>();
     private final List<User> usersList = new ArrayList<>();
     private SessionsList sessionsList;

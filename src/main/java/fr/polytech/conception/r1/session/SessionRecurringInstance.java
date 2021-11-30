@@ -12,10 +12,10 @@ import fr.polytech.conception.r1.profile.User;
 
 public class SessionRecurringInstance extends SessionOneshot
 {
-    private final SessionRecurring parent;
+    private final SessionRecurringGenerator parent;
     private boolean batchEditing = false;
 
-    public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, Duration minRegistrationTime, SessionRecurring parent) throws InvalidSessionDataException
+    public SessionRecurringInstance(ZonedDateTime start, ZonedDateTime end, String address, Sport sport, User organizer, boolean isSponsored, Duration minRegistrationTime, SessionRecurringGenerator parent) throws InvalidSessionDataException
     {
         super(start, end, address, sport, organizer, isSponsored);
         this.parent = parent;
@@ -29,7 +29,7 @@ public class SessionRecurringInstance extends SessionOneshot
         }
     }
 
-    public SessionRecurring getParent()
+    public SessionRecurringGenerator getParent()
     {
         return parent;
     }
@@ -39,7 +39,7 @@ public class SessionRecurringInstance extends SessionOneshot
         return parent.getOneshotsAfter(getStart()).map(Map.Entry::getValue);
     }
 
-    private void applyToRemainingSessions(SessionRecurring.SessionModification modification)
+    private void applyToRemainingSessions(SessionRecurringGenerator.SessionModification modification)
     {
         if (batchEditing)
             return;

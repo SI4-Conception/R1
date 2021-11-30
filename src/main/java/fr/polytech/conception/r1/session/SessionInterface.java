@@ -9,7 +9,7 @@ import fr.polytech.conception.r1.Level;
 import fr.polytech.conception.r1.Sport;
 import fr.polytech.conception.r1.profile.User;
 
-public abstract class Session
+public abstract class SessionInterface
 {
     protected boolean friendsOnly = false;
     /**
@@ -23,7 +23,7 @@ public abstract class Session
     private Level difficulty = Level.BEGINNER;
     private Sport sport;
 
-    public Session(String address, Sport sport, User organizer) throws InvalidSessionDataException
+    public SessionInterface(String address, Sport sport, User organizer)
     {
         this.organizer = organizer;
         this.address = address;

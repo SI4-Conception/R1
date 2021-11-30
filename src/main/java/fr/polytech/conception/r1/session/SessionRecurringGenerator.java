@@ -12,7 +12,7 @@ import fr.polytech.conception.r1.Level;
 import fr.polytech.conception.r1.Sport;
 import fr.polytech.conception.r1.profile.User;
 
-public class SessionRecurring extends Session
+public class SessionRecurringGenerator extends SessionInterface
 {
     private final Map<ZonedDateTime, SessionRecurringInstance> cachedInstances = new TreeMap<>(ZonedDateTime::compareTo);
     private final Period period;
@@ -20,7 +20,7 @@ public class SessionRecurring extends Session
     private final ZonedDateTime first;
     private SessionRecurringInstance savedParamsForSessionRecurring = null;
 
-    public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
+    public SessionRecurringGenerator(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, User organisateur) throws InvalidSessionDataException
     {
         super(adresse, sport, organisateur);
         checkDataRecurringSession(first, period, duration, adresse, sport, Duration.ZERO, organisateur);
@@ -30,7 +30,7 @@ public class SessionRecurring extends Session
         initiateSavedParamsForSessionRecurring(duration, adresse, sport, Duration.ZERO, organisateur);
     }
 
-    public SessionRecurring(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minRegistrationTime, User organisateur) throws InvalidSessionDataException
+    public SessionRecurringGenerator(ZonedDateTime first, Period period, Duration duration, String adresse, Sport sport, Duration minRegistrationTime, User organisateur) throws InvalidSessionDataException
     {
         super(adresse, sport, organisateur);
         checkDataRecurringSession(first, period, duration, adresse, sport, minRegistrationTime, organisateur);
@@ -107,7 +107,7 @@ public class SessionRecurring extends Session
         return cachedInstances.entrySet().stream().filter(s -> s.getKey().isAfter(after));
     }
 
-    private Stream<? extends Session> getSessionsToChange()
+    private Stream<? extends SessionInterface> getSessionsToChange()
     {
         return getOneshotsAfter(ZonedDateTime.now()).map(Map.Entry::getValue);
         //return Stream.concat(Stream.of(this), getOneshotsAfter(ZonedDateTime.now()).map(Map.Entry::getValue));
@@ -180,6 +180,6 @@ public class SessionRecurring extends Session
 
     public interface SessionModification
     {
-        void apply(Session s) throws Exception;
+        void apply(SessionInterface s) throws Exception;
     }
 }

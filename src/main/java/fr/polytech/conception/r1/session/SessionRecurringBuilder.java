@@ -53,8 +53,8 @@ public class SessionRecurringBuilder
         return this;
     }
 
-    public SessionRecurring createSessionRecurring() throws InvalidSessionDataException
+    public SessionRecurringGenerator createSessionRecurring() throws InvalidSessionDataException
     {
-        return new SessionRecurring(first, period, duration, address, sport, organizer);
+        return new SessionRecurringGenerator(first, period, duration, address, sport, organizer);
     }
 }

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import fr.polytech.conception.r1.profile.InvalidFriendshipException;
 import fr.polytech.conception.r1.profile.User;
-import fr.polytech.conception.r1.session.Session;
+import fr.polytech.conception.r1.session.SessionInterface;
 import fr.polytech.conception.r1.session.SessionOneshot;
 import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.Given;
@@ -20,7 +20,7 @@ import io.cucumber.java.en.When;
 public class FriendsSteps
 {
     private final List<User> userList = new LinkedList<>();
-    private final List<List<Session>> foundSessionsList = new ArrayList<>();
+    private final List<List<SessionInterface>> foundSessionsList = new ArrayList<>();
     private final ZonedDateTime validDateTimeBegin = ZonedDateTime.parse("2030-02-01T12:00:00.000+01:00[Europe/Paris]");
     private final ZonedDateTime validDateTimeEnd = ZonedDateTime.parse("2030-02-01T15:00:00.000+01:00[Europe/Paris]");
     private SessionOneshot session;

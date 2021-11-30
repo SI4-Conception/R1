@@ -14,7 +14,7 @@ import fr.polytech.conception.r1.Sport;
 import fr.polytech.conception.r1.Util;
 import fr.polytech.conception.r1.profile.User;
 
-public class SessionOneshot extends Session implements Comparable<SessionOneshot>
+public class SessionOneshot extends SessionInterface implements Comparable<SessionOneshot>
 {
     private final List<User> participants = new LinkedList<>();
     protected boolean isSponsored = false;

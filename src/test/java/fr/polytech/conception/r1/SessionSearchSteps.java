@@ -16,7 +16,7 @@ import fr.polytech.conception.r1.profile.InvalidFriendshipException;
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
 import fr.polytech.conception.r1.session.SessionOneshot;
-import fr.polytech.conception.r1.session.SessionRecurring;
+import fr.polytech.conception.r1.session.SessionRecurringGenerator;
 import fr.polytech.conception.r1.session.SessionsList;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -102,8 +102,8 @@ public class SessionSearchSteps
         Sport sport = Sport.getByName(arg0);
         ZonedDateTime premiere = ZonedDateTime.parse(arg1);
         Duration duration = Duration.ofHours(1);
-        SessionRecurring sessionRecurring = new SessionRecurring(premiere, Period.ofDays(arg2), duration, "", sport, theo);
-        sessionsList.addSession(sessionRecurring);
+        SessionRecurringGenerator sessionRecurringGenerator = new SessionRecurringGenerator(premiere, Period.ofDays(arg2), duration, "", sport, theo);
+        sessionsList.addSession(sessionRecurringGenerator);
     }
 
     @And("Karl looks only for the {int} first results of the search")

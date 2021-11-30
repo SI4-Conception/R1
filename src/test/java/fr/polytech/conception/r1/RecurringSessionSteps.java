@@ -9,9 +9,9 @@ import java.util.Optional;
 
 import fr.polytech.conception.r1.profile.InvalidProfileDataException;
 import fr.polytech.conception.r1.profile.User;
-import fr.polytech.conception.r1.session.Session;
+import fr.polytech.conception.r1.session.SessionInterface;
 import fr.polytech.conception.r1.session.SessionOneshot;
-import fr.polytech.conception.r1.session.SessionRecurring;
+import fr.polytech.conception.r1.session.SessionRecurringGenerator;
 import fr.polytech.conception.r1.session.SessionRecurringBuilder;
 import fr.polytech.conception.r1.session.SessionRecurringInstance;
 import fr.polytech.conception.r1.session.SessionsList;
@@ -29,7 +29,7 @@ public class RecurringSessionSteps
     private SessionsList sessionsList;
     private Sport validSport = Sport.TENNIS;
 
-    private SessionRecurring recurringSession = null;
+    private SessionRecurringGenerator recurringSession = null;
 
     public RecurringSessionSteps() throws InvalidProfileDataException
     {
@@ -45,8 +45,8 @@ public class RecurringSessionSteps
     @Given("A recurring session of {string} at {string} created by theo")
     public void aRecurringSessionOfAtCreatedByTheo(String arg0, String arg1) throws InvalidSessionDataException
     {
-        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.parse(arg1), Period.ofDays(2), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
-        sessionsList.addSession(sessionRecurring);
+        SessionRecurringGenerator sessionRecurringGenerator = new SessionRecurringGenerator(ZonedDateTime.parse(arg1), Period.ofDays(2), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
+        sessionsList.addSession(sessionRecurringGenerator);
     }
 
     @When("Paul participates to the recurring session of {string} at {string}")
@@ -62,7 +62,7 @@ public class RecurringSessionSteps
     {
         for (int i = 0; i < paul.getAttendedSessions().size(); i++)
         {
-            Session session = paul.getAttendedSessions().get(i);
+            SessionInterface session = paul.getAttendedSessions().get(i);
             if (session.getOneshots(ZonedDateTime.parse(arg1).plusDays(1)).anyMatch(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1)) && sessionOneshot.getSport().getName().equals(arg0)))
             {
                 return;
@@ -76,7 +76,7 @@ public class RecurringSessionSteps
     {
         for (int i = 0; i < paul.getAttendedSessions().size(); i++)
         {
-            Session session = paul.getAttendedSessions().get(i);
+            SessionInterface session = paul.getAttendedSessions().get(i);
             if (session.getOneshots(ZonedDateTime.parse(arg1).plusDays(1)).anyMatch(sessionOneshot -> sessionOneshot.getStart().isEqual(ZonedDateTime.parse(arg1)) && sessionOneshot.getSport().getName().equals(arg0)))
             {
                 Assert.fail();
@@ -132,8 +132,8 @@ public class RecurringSessionSteps
     @Given("A recurring session of {string} beginning today + {int} days created by theo")
     public void aRecurringSessionOfBeginningTodayMinCreatedByTheo(String arg0, int arg1) throws InvalidSessionDataException
     {
-        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().plusDays(arg1).plusMinutes(1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
-        sessionsList.addSession(sessionRecurring);
+        SessionRecurringGenerator sessionRecurringGenerator = new SessionRecurringGenerator(ZonedDateTime.now().plusDays(arg1).plusMinutes(1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo);
+        sessionsList.addSession(sessionRecurringGenerator);
     }
 
     @When("Theo sets the difficulty of the session of {string} at today + {int} days to {string}")
@@ -191,8 +191,8 @@ public class RecurringSessionSteps
     @Given("A recurring session of {string} beginning today + {int} days created by theo with a limit registration time of {int} days")
     public void aRecurringSessionOfBeginningTodayDaysCreatedByTheoWithALimitRegistrationTimeOfDays(String arg0, int arg1, int arg2) throws InvalidSessionDataException
     {
-        SessionRecurring sessionRecurring = new SessionRecurring(ZonedDateTime.now().plusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), Duration.ofDays(arg2), theo);
-        sessionsList.addSession(sessionRecurring);
+        SessionRecurringGenerator sessionRecurringGenerator = new SessionRecurringGenerator(ZonedDateTime.now().plusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), Duration.ofDays(arg2), theo);
+        sessionsList.addSession(sessionRecurringGenerator);
     }
 
     @When("Paul tries to participate to the {string} session of today + {int} days")
@@ -223,7 +223,7 @@ public class RecurringSessionSteps
     @When("Theo tries to create a recurring session of {string} beginning today - {int} days")
     public void theoTriesToCreateARecurringSessionOfBeginningTodayDays(String arg0, int arg1)
     {
-        Assert.assertThrows(InvalidSessionDataException.class, () -> new SessionRecurring(ZonedDateTime.now().minusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo));
+        Assert.assertThrows(InvalidSessionDataException.class, () -> new SessionRecurringGenerator(ZonedDateTime.now().minusDays(arg1), Period.ofDays(1), Duration.ofHours(12), "", Sport.getByName(arg0), theo));
     }
 
     @Then("The recurring session of {string} doesn't exist")
@@ -239,7 +239,7 @@ public class RecurringSessionSteps
     }
 
     @When("I create the recurring session with these valid data beginning today + {int} days")
-    public void iCreateTheRecurringSessionWithTheseValidData(int arg0) throws InvalidSessionDataException
+    public void iCreateTheRecurringSessionWithTheseValidData(int arg0)
     {
         try
         {

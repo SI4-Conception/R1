@@ -19,14 +19,14 @@ import fr.polytech.conception.r1.Invitation;
 import fr.polytech.conception.r1.Level;
 import fr.polytech.conception.r1.Notification;
 import fr.polytech.conception.r1.Sport;
-import fr.polytech.conception.r1.session.Session;
+import fr.polytech.conception.r1.session.SessionInterface;
 import fr.polytech.conception.r1.session.SessionOneshot;
 
 public class User
 {
     private final Map<Sport, Level> favouriteSports = new HashMap<>();
-    private final List<Session> organizedSessions = new ArrayList<>();
-    private final List<Session> attendedSessions = new ArrayList<>();
+    private final List<SessionInterface> organizedSessions = new ArrayList<>();
+    private final List<SessionInterface> attendedSessions = new ArrayList<>();
     private final List<User> friends = new ArrayList<>();
     private final List<User> friendsRequested = new ArrayList<>();
     private final List<User> friendsRequests = new ArrayList<>();
@@ -327,12 +327,12 @@ public class User
         return favouriteSports;
     }
 
-    public List<Session> getOrganizedSessions()
+    public List<SessionInterface> getOrganizedSessions()
     {
         return organizedSessions;
     }
 
-    public List<Session> getAttendedSessions()
+    public List<SessionInterface> getAttendedSessions()
     {
         return attendedSessions;
     }

@@ -13,7 +13,7 @@ import fr.polytech.conception.r1.profile.User;
 public class SessionsList
 {
     private static SessionsList SESSIONSLIST = null;
-    private final List<Session> sessions = new ArrayList<>();
+    private final List<SessionInterface> sessions = new ArrayList<>();
 
     private SessionsList()
     {
@@ -54,7 +54,7 @@ public class SessionsList
                 .filter(s -> !s.getOrganizer().haveIBlacklistedUser(user));
     }
 
-    public void addSession(Session session)
+    public void addSession(SessionInterface session)
     {
         sessions.add(session);
     }
