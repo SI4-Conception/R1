@@ -156,18 +156,10 @@ public class SessionSteps
         }
     }
 
-    @When("I try to create a session at the same time as another session I have already created")
-    public void iTryToCreateASessionAtTheSameTimeAsAnotherSessionIHaveAlreadyCreated()
+    @When("Julien tries to create a session at the same time as another session he has already created")
+    public void julienTriesToCreateASessionAtTheSameTimeAsAnotherSessionHeHasAlreadyCreated()
     {
-        try
-        {
-            session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false);
-            Assert.fail();
-        }
-        catch (InvalidSessionDataException e)
-        {
-            // Success
-        }
+        Assert.assertThrows(InvalidSessionDataException.class, () -> session = new SessionOneshot(validDateTimeBegin, validDateTimeEnd, validAddress, validSport, julien, false));
     }
 
     @Then("the session is not created")
@@ -257,8 +249,8 @@ public class SessionSteps
         }
     }
 
-    @When("I try to set a invalid end subscription date")
-    public void iTryToSetAInvalidEndSubscriptionDate()
+    @When("I try to set an invalid end subscription date")
+    public void iTryToSetAnInvalidEndSubscriptionDate()
     {
         try
         {

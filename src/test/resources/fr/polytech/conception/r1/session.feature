@@ -24,7 +24,7 @@ Feature: Features of my session
 
   Scenario: not two simultaneous sessions
     Given "Julien" wants to create a session at the same time as another session he has already created
-    When I try to create a session at the same time as another session I have already created
+    When Julien tries to create a session at the same time as another session he has already created
     Then the session is not created
 
   Scenario: Trying to change session with more min users than max users
@@ -54,7 +54,7 @@ Feature: Features of my session
 
   Scenario: Trying to change session with incorrect limit subscription date
     Given Previously created session with valid end subscription date
-    When I try to set a invalid end subscription date
+    When I try to set an invalid end subscription date
     Then I should have a session with old end subscription date
 
   Scenario: Trying to set less max users than the current number of participants

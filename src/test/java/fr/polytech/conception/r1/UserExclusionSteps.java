@@ -38,8 +38,8 @@ public class UserExclusionSteps
         zhang.participate(session);
     }
 
-    @And("Helene exclude Zhang from the session")
-    public void heleneExcludeZhangFromTheSession()
+    @And("Helene excludes Zhang from the session")
+    public void helenesExcludeZhangFromTheSession()
     {
         Assert.assertTrue(session.excludeUser(zhang));
     }

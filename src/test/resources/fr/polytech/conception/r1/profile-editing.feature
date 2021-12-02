@@ -31,7 +31,7 @@ Feature: profile editing features
     Then An errors should occur because the password is too short
 
   Scenario: valid profile picture change
-    Given an existing account and a valid profile picture path "thisPasswordIsGood"
+    Given an existing account and a valid profile picture path "thisPictureIsGood"
     When I change my profile picture to the valid profile picture
     Then My profile picture should be updated
 
